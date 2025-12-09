@@ -11,6 +11,8 @@ __all__ = ["RepositoryListResponse", "CodeRepository", "CodeRepositoryIntegratio
 
 
 class CodeRepositoryIntegration(BaseModel):
+    """Associated integration details"""
+
     id: str
     """Unique identifier for the integration"""
 
