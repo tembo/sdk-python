@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping
 from typing_extensions import Self, override
 
 import httpx
@@ -20,8 +20,8 @@ from ._types import (
     not_given,
 )
 from ._utils import is_given, get_async_library
+from ._compat import cached_property
 from ._version import __version__
-from .resources import me, task, repository
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import TemboError, APIStatusError
 from ._base_client import (
@@ -30,16 +30,16 @@ from ._base_client import (
     AsyncAPIClient,
 )
 
+if TYPE_CHECKING:
+    from .resources import me, task, repository
+    from .resources.me import MeResource, AsyncMeResource
+    from .resources.task import TaskResource, AsyncTaskResource
+    from .resources.repository import RepositoryResource, AsyncRepositoryResource
+
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Tembo", "AsyncTembo", "Client", "AsyncClient"]
 
 
 class Tembo(SyncAPIClient):
-    me: me.MeResource
-    task: task.TaskResource
-    repository: repository.RepositoryResource
-    with_raw_response: TemboWithRawResponse
-    with_streaming_response: TemboWithStreamedResponse
-
     # client options
     api_key: str
 
@@ -94,11 +94,31 @@ class Tembo(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.me = me.MeResource(self)
-        self.task = task.TaskResource(self)
-        self.repository = repository.RepositoryResource(self)
-        self.with_raw_response = TemboWithRawResponse(self)
-        self.with_streaming_response = TemboWithStreamedResponse(self)
+    @cached_property
+    def me(self) -> MeResource:
+        from .resources.me import MeResource
+
+        return MeResource(self)
+
+    @cached_property
+    def task(self) -> TaskResource:
+        from .resources.task import TaskResource
+
+        return TaskResource(self)
+
+    @cached_property
+    def repository(self) -> RepositoryResource:
+        from .resources.repository import RepositoryResource
+
+        return RepositoryResource(self)
+
+    @cached_property
+    def with_raw_response(self) -> TemboWithRawResponse:
+        return TemboWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> TemboWithStreamedResponse:
+        return TemboWithStreamedResponse(self)
 
     @property
     @override
@@ -206,12 +226,6 @@ class Tembo(SyncAPIClient):
 
 
 class AsyncTembo(AsyncAPIClient):
-    me: me.AsyncMeResource
-    task: task.AsyncTaskResource
-    repository: repository.AsyncRepositoryResource
-    with_raw_response: AsyncTemboWithRawResponse
-    with_streaming_response: AsyncTemboWithStreamedResponse
-
     # client options
     api_key: str
 
@@ -266,11 +280,31 @@ class AsyncTembo(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.me = me.AsyncMeResource(self)
-        self.task = task.AsyncTaskResource(self)
-        self.repository = repository.AsyncRepositoryResource(self)
-        self.with_raw_response = AsyncTemboWithRawResponse(self)
-        self.with_streaming_response = AsyncTemboWithStreamedResponse(self)
+    @cached_property
+    def me(self) -> AsyncMeResource:
+        from .resources.me import AsyncMeResource
+
+        return AsyncMeResource(self)
+
+    @cached_property
+    def task(self) -> AsyncTaskResource:
+        from .resources.task import AsyncTaskResource
+
+        return AsyncTaskResource(self)
+
+    @cached_property
+    def repository(self) -> AsyncRepositoryResource:
+        from .resources.repository import AsyncRepositoryResource
+
+        return AsyncRepositoryResource(self)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncTemboWithRawResponse:
+        return AsyncTemboWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncTemboWithStreamedResponse:
+        return AsyncTemboWithStreamedResponse(self)
 
     @property
     @override
@@ -378,31 +412,103 @@ class AsyncTembo(AsyncAPIClient):
 
 
 class TemboWithRawResponse:
+    _client: Tembo
+
     def __init__(self, client: Tembo) -> None:
-        self.me = me.MeResourceWithRawResponse(client.me)
-        self.task = task.TaskResourceWithRawResponse(client.task)
-        self.repository = repository.RepositoryResourceWithRawResponse(client.repository)
+        self._client = client
+
+    @cached_property
+    def me(self) -> me.MeResourceWithRawResponse:
+        from .resources.me import MeResourceWithRawResponse
+
+        return MeResourceWithRawResponse(self._client.me)
+
+    @cached_property
+    def task(self) -> task.TaskResourceWithRawResponse:
+        from .resources.task import TaskResourceWithRawResponse
+
+        return TaskResourceWithRawResponse(self._client.task)
+
+    @cached_property
+    def repository(self) -> repository.RepositoryResourceWithRawResponse:
+        from .resources.repository import RepositoryResourceWithRawResponse
+
+        return RepositoryResourceWithRawResponse(self._client.repository)
 
 
 class AsyncTemboWithRawResponse:
+    _client: AsyncTembo
+
     def __init__(self, client: AsyncTembo) -> None:
-        self.me = me.AsyncMeResourceWithRawResponse(client.me)
-        self.task = task.AsyncTaskResourceWithRawResponse(client.task)
-        self.repository = repository.AsyncRepositoryResourceWithRawResponse(client.repository)
+        self._client = client
+
+    @cached_property
+    def me(self) -> me.AsyncMeResourceWithRawResponse:
+        from .resources.me import AsyncMeResourceWithRawResponse
+
+        return AsyncMeResourceWithRawResponse(self._client.me)
+
+    @cached_property
+    def task(self) -> task.AsyncTaskResourceWithRawResponse:
+        from .resources.task import AsyncTaskResourceWithRawResponse
+
+        return AsyncTaskResourceWithRawResponse(self._client.task)
+
+    @cached_property
+    def repository(self) -> repository.AsyncRepositoryResourceWithRawResponse:
+        from .resources.repository import AsyncRepositoryResourceWithRawResponse
+
+        return AsyncRepositoryResourceWithRawResponse(self._client.repository)
 
 
 class TemboWithStreamedResponse:
+    _client: Tembo
+
     def __init__(self, client: Tembo) -> None:
-        self.me = me.MeResourceWithStreamingResponse(client.me)
-        self.task = task.TaskResourceWithStreamingResponse(client.task)
-        self.repository = repository.RepositoryResourceWithStreamingResponse(client.repository)
+        self._client = client
+
+    @cached_property
+    def me(self) -> me.MeResourceWithStreamingResponse:
+        from .resources.me import MeResourceWithStreamingResponse
+
+        return MeResourceWithStreamingResponse(self._client.me)
+
+    @cached_property
+    def task(self) -> task.TaskResourceWithStreamingResponse:
+        from .resources.task import TaskResourceWithStreamingResponse
+
+        return TaskResourceWithStreamingResponse(self._client.task)
+
+    @cached_property
+    def repository(self) -> repository.RepositoryResourceWithStreamingResponse:
+        from .resources.repository import RepositoryResourceWithStreamingResponse
+
+        return RepositoryResourceWithStreamingResponse(self._client.repository)
 
 
 class AsyncTemboWithStreamedResponse:
+    _client: AsyncTembo
+
     def __init__(self, client: AsyncTembo) -> None:
-        self.me = me.AsyncMeResourceWithStreamingResponse(client.me)
-        self.task = task.AsyncTaskResourceWithStreamingResponse(client.task)
-        self.repository = repository.AsyncRepositoryResourceWithStreamingResponse(client.repository)
+        self._client = client
+
+    @cached_property
+    def me(self) -> me.AsyncMeResourceWithStreamingResponse:
+        from .resources.me import AsyncMeResourceWithStreamingResponse
+
+        return AsyncMeResourceWithStreamingResponse(self._client.me)
+
+    @cached_property
+    def task(self) -> task.AsyncTaskResourceWithStreamingResponse:
+        from .resources.task import AsyncTaskResourceWithStreamingResponse
+
+        return AsyncTaskResourceWithStreamingResponse(self._client.task)
+
+    @cached_property
+    def repository(self) -> repository.AsyncRepositoryResourceWithStreamingResponse:
+        from .resources.repository import AsyncRepositoryResourceWithStreamingResponse
+
+        return AsyncRepositoryResourceWithStreamingResponse(self._client.repository)
 
 
 Client = Tembo

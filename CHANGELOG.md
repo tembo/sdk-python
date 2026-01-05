@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (2026-01-05)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/tembo/sdk-python/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** api update ([ec8177b](https://github.com/tembo/sdk-python/commit/ec8177b069c4f04a6a525ae831aea5cd21411e66))
+* **api:** api update ([c13ae2a](https://github.com/tembo/sdk-python/commit/c13ae2a7df6d479fc2010a93ef4f97e4bba45743))
+
 ## 0.1.0 (2025-11-30)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/tembo/sdk-python/compare/v0.0.1...v0.1.0)

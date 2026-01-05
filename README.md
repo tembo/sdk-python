@@ -79,6 +79,7 @@ pip install tembo-sdk-python[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from tembo import DefaultAioHttpClient
 from tembo import AsyncTembo
@@ -86,7 +87,7 @@ from tembo import AsyncTembo
 
 async def main() -> None:
     async with AsyncTembo(
-        api_key="My API Key",
+        api_key=os.environ.get("TEMBO_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         task = await client.task.create()
