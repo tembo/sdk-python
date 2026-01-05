@@ -16,6 +16,9 @@ class TaskCreateResponse(BaseModel):
 
     description: str
 
+    html_url: str = FieldInfo(alias="htmlUrl")
+    """URL to view this task in the Tembo web application"""
+
     organization_id: str = FieldInfo(alias="organizationId")
 
     status: str
