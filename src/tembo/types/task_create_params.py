@@ -15,8 +15,8 @@ class TaskCreateParams(TypedDict, total=False):
     agent: str
     """The agent to use for this task"""
 
-    branch: Optional[str]
-    """Specific git branch to target for this task"""
+    branch_name: Annotated[Optional[str], PropertyInfo(alias="branchName")]
+    """The branch name to use for the work"""
 
     prompt: str
     """Description of the task to be performed. Supports tagging files."""
@@ -29,3 +29,6 @@ class TaskCreateParams(TypedDict, total=False):
 
     repositories: SequenceNotStr[str]
     """Array of code repository urls that this task relates to"""
+
+    target_branch: Annotated[Optional[str], PropertyInfo(alias="targetBranch")]
+    """The branch to open the pull request against (e.g. main, develop)"""

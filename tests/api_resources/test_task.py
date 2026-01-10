@@ -32,10 +32,11 @@ class TestTask:
     def test_method_create_with_all_params(self, client: Tembo) -> None:
         task = client.task.create(
             agent="claudeCode:claude-4-5-sonnet",
-            branch="feature/auth-fix",
+            branch_name="feature/auth-fix",
             prompt="Fix the authentication bug in the login component",
             queue_right_away=False,
             repositories=["https://github.com/org/repo", "https://gitlab.com/org/repo-2"],
+            target_branch="main",
         )
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
@@ -159,10 +160,11 @@ class TestAsyncTask:
     async def test_method_create_with_all_params(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.create(
             agent="claudeCode:claude-4-5-sonnet",
-            branch="feature/auth-fix",
+            branch_name="feature/auth-fix",
             prompt="Fix the authentication bug in the login component",
             queue_right_away=False,
             repositories=["https://github.com/org/repo", "https://gitlab.com/org/repo-2"],
+            target_branch="main",
         )
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
