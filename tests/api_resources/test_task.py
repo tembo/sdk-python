@@ -21,25 +21,26 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestTask:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create(self, client: Tembo) -> None:
         task = client.task.create()
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_with_all_params(self, client: Tembo) -> None:
         task = client.task.create(
             agent="claudeCode:claude-4-5-sonnet",
-            branch="feature/auth-fix",
+            branch_name="feature/auth-fix",
             prompt="Fix the authentication bug in the login component",
             queue_right_away=False,
             repositories=["https://github.com/org/repo", "https://gitlab.com/org/repo-2"],
+            target_branch="main",
         )
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create(self, client: Tembo) -> None:
         response = client.task.with_raw_response.create()
@@ -49,7 +50,7 @@ class TestTask:
         task = response.parse()
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create(self, client: Tembo) -> None:
         with client.task.with_streaming_response.create() as response:
@@ -61,13 +62,13 @@ class TestTask:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Tembo) -> None:
         task = client.task.list()
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Tembo) -> None:
         task = client.task.list(
@@ -76,7 +77,7 @@ class TestTask:
         )
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Tembo) -> None:
         response = client.task.with_raw_response.list()
@@ -86,7 +87,7 @@ class TestTask:
         task = response.parse()
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Tembo) -> None:
         with client.task.with_streaming_response.list() as response:
@@ -98,7 +99,7 @@ class TestTask:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search(self, client: Tembo) -> None:
         task = client.task.search(
@@ -106,7 +107,7 @@ class TestTask:
         )
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search_with_all_params(self, client: Tembo) -> None:
         task = client.task.search(
@@ -116,7 +117,7 @@ class TestTask:
         )
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_search(self, client: Tembo) -> None:
         response = client.task.with_raw_response.search(
@@ -128,7 +129,7 @@ class TestTask:
         task = response.parse()
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_search(self, client: Tembo) -> None:
         with client.task.with_streaming_response.search(
@@ -148,25 +149,26 @@ class TestAsyncTask:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.create()
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.create(
             agent="claudeCode:claude-4-5-sonnet",
-            branch="feature/auth-fix",
+            branch_name="feature/auth-fix",
             prompt="Fix the authentication bug in the login component",
             queue_right_away=False,
             repositories=["https://github.com/org/repo", "https://gitlab.com/org/repo-2"],
+            target_branch="main",
         )
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncTembo) -> None:
         response = await async_client.task.with_raw_response.create()
@@ -176,7 +178,7 @@ class TestAsyncTask:
         task = await response.parse()
         assert_matches_type(TaskCreateResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncTembo) -> None:
         async with async_client.task.with_streaming_response.create() as response:
@@ -188,13 +190,13 @@ class TestAsyncTask:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.list()
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.list(
@@ -203,7 +205,7 @@ class TestAsyncTask:
         )
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncTembo) -> None:
         response = await async_client.task.with_raw_response.list()
@@ -213,7 +215,7 @@ class TestAsyncTask:
         task = await response.parse()
         assert_matches_type(TaskListResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncTembo) -> None:
         async with async_client.task.with_streaming_response.list() as response:
@@ -225,7 +227,7 @@ class TestAsyncTask:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.search(
@@ -233,7 +235,7 @@ class TestAsyncTask:
         )
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search_with_all_params(self, async_client: AsyncTembo) -> None:
         task = await async_client.task.search(
@@ -243,7 +245,7 @@ class TestAsyncTask:
         )
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_search(self, async_client: AsyncTembo) -> None:
         response = await async_client.task.with_raw_response.search(
@@ -255,7 +257,7 @@ class TestAsyncTask:
         task = await response.parse()
         assert_matches_type(TaskSearchResponse, task, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_search(self, async_client: AsyncTembo) -> None:
         async with async_client.task.with_streaming_response.search(
