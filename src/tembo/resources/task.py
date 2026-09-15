@@ -49,10 +49,11 @@ class TaskResource(SyncAPIResource):
         self,
         *,
         agent: str | Omit = omit,
-        branch: Optional[str] | Omit = omit,
+        branch_name: Optional[str] | Omit = omit,
         prompt: str | Omit = omit,
         queue_right_away: Optional[bool] | Omit = omit,
         repositories: SequenceNotStr[str] | Omit = omit,
+        target_branch: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -66,7 +67,7 @@ class TaskResource(SyncAPIResource):
         Args:
           agent: The agent to use for this task
 
-          branch: Specific git branch to target for this task
+          branch_name: The branch name to use for the work
 
           prompt: Description of the task to be performed. Supports tagging files.
 
@@ -74,6 +75,8 @@ class TaskResource(SyncAPIResource):
               true)
 
           repositories: Array of code repository urls that this task relates to
+
+          target_branch: The branch to open the pull request against (e.g. main, develop)
 
           extra_headers: Send extra headers
 
@@ -88,10 +91,11 @@ class TaskResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "agent": agent,
-                    "branch": branch,
+                    "branch_name": branch_name,
                     "prompt": prompt,
                     "queue_right_away": queue_right_away,
                     "repositories": repositories,
+                    "target_branch": target_branch,
                 },
                 task_create_params.TaskCreateParams,
             ),
@@ -222,10 +226,11 @@ class AsyncTaskResource(AsyncAPIResource):
         self,
         *,
         agent: str | Omit = omit,
-        branch: Optional[str] | Omit = omit,
+        branch_name: Optional[str] | Omit = omit,
         prompt: str | Omit = omit,
         queue_right_away: Optional[bool] | Omit = omit,
         repositories: SequenceNotStr[str] | Omit = omit,
+        target_branch: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -239,7 +244,7 @@ class AsyncTaskResource(AsyncAPIResource):
         Args:
           agent: The agent to use for this task
 
-          branch: Specific git branch to target for this task
+          branch_name: The branch name to use for the work
 
           prompt: Description of the task to be performed. Supports tagging files.
 
@@ -247,6 +252,8 @@ class AsyncTaskResource(AsyncAPIResource):
               true)
 
           repositories: Array of code repository urls that this task relates to
+
+          target_branch: The branch to open the pull request against (e.g. main, develop)
 
           extra_headers: Send extra headers
 
@@ -261,10 +268,11 @@ class AsyncTaskResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "agent": agent,
-                    "branch": branch,
+                    "branch_name": branch_name,
                     "prompt": prompt,
                     "queue_right_away": queue_right_away,
                     "repositories": repositories,
+                    "target_branch": target_branch,
                 },
                 task_create_params.TaskCreateParams,
             ),
