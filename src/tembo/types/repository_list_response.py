@@ -1,63 +1,50 @@
-# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+# File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-from typing import Dict, List, Optional
+from __future__ import annotations
+
+from typing import List, Optional
 from datetime import datetime
 
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["RepositoryListResponse", "CodeRepository", "CodeRepositoryIntegration"]
+__all__ = ["RepositoryListResponse", "Item", "ItemProvider"]
 
 
-class CodeRepositoryIntegration(BaseModel):
-    """Associated integration details"""
+class ItemProvider(BaseModel):
+    display_name: str = FieldInfo(alias="displayName")
 
-    id: str
-    """Unique identifier for the integration"""
-
-    configuration: Dict[str, object]
-    """Integration configuration settings"""
-
-    name: str
-    """Name of the integration"""
+    integration_id: str = FieldInfo(alias="integrationId")
 
     type: str
-    """Type of integration (e.g., github, gitlab)"""
 
 
-class CodeRepository(BaseModel):
-    id: str
-    """Unique identifier for the code repository"""
+class Item(BaseModel):
+    base_branch: Optional[str] = FieldInfo(alias="baseBranch", default=None)
 
     created_at: datetime = FieldInfo(alias="createdAt")
-    """Timestamp when the repository record was created"""
-
-    enabled_at: datetime = FieldInfo(alias="enabledAt")
-    """Timestamp when the repository was enabled"""
-
-    name: str
-    """Name of the repository"""
-
-    organization_id: str = FieldInfo(alias="organizationId")
-    """Organization ID that owns this repository"""
-
-    updated_at: datetime = FieldInfo(alias="updatedAt")
-    """Timestamp when the repository record was last updated"""
-
-    branch: Optional[str] = None
-    """Default branch name"""
 
     description: Optional[str] = None
-    """Repository description"""
 
-    integration: Optional[CodeRepositoryIntegration] = None
-    """Associated integration details"""
+    enabled_at: Optional[datetime] = FieldInfo(alias="enabledAt", default=None)
 
-    url: Optional[str] = None
-    """Repository URL"""
+    id: str
+
+    name: str
+
+    owner: Optional[str] = None
+
+    provider: ItemProvider
+
+    target_branch: Optional[str] = FieldInfo(alias="targetBranch", default=None)
+
+    updated_at: datetime = FieldInfo(alias="updatedAt")
+
+    url: str
 
 
 class RepositoryListResponse(BaseModel):
-    code_repositories: List[CodeRepository] = FieldInfo(alias="codeRepositories")
-    """Array of enabled code repositories for the organization"""
+    items: List[Item]
+
+    next_cursor: Optional[str] = FieldInfo(alias="nextCursor", default=None)

@@ -20,6 +20,8 @@ jobs:
           python-version: "3.11"
       - run: python -m pip install --upgrade build
       - run: python -m build
+      # Build alone does not import the package; catch import-time errors such as circular imports.
+      - run: python -m pip install dist/*.whl && python -c "import tembo"
       # Verification only, never auto-fix: the SDK is generated formatted, so a diff here means
       # either hand-edited custom code or a regenerate that was not committed. ruff is pinned to
       # the release that produced these bytes, since a formatter minor can change them.

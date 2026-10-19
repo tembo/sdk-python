@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/tembo/sdk-python/compare/v0.2.0...v0.3.0) (2026-10-19)
+
+
+### Features
+
+* **api:** initial SDK generation ([b356bfb](https://github.com/tembo/sdk-python/commit/b356bfbc4f5b4218bc0290955c74c86aac68e9d4))
+
+
+### Bug Fixes
+
+* **types:** break TipTapNode circular import ([692a44e](https://github.com/tembo/sdk-python/commit/692a44e5b4c4c13a22676a0db206bce3a252238b))
+* **types:** break TipTapNode circular import ([fafebb9](https://github.com/tembo/sdk-python/commit/fafebb93930acba8f39c39ba08c4a5be82020e60))
+
 ## 0.2.0 (2026-01-05)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/tembo/sdk-python/compare/v0.1.0...v0.2.0)
