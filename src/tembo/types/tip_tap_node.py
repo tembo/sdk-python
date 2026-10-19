@@ -22,3 +22,24 @@ TipTapNode: TypeAlias = Union[
     TipTapCodeBlockNode,
     TipTapContentNode,
 ]
+
+# The node modules reference TipTapNode recursively. Importing it back at the bottom of
+# each module made a circular import, so bind it here after the union is defined.
+from . import tip_tap_image_node as _tip_tap_image_node
+from . import tip_tap_mention_node as _tip_tap_mention_node
+from . import tip_tap_heading_node as _tip_tap_heading_node
+from . import tip_tap_ordered_list_node as _tip_tap_ordered_list_node
+from . import tip_tap_task_item_node as _tip_tap_task_item_node
+from . import tip_tap_code_block_node as _tip_tap_code_block_node
+from . import tip_tap_content_node as _tip_tap_content_node
+
+for _module in (
+    _tip_tap_image_node,
+    _tip_tap_mention_node,
+    _tip_tap_heading_node,
+    _tip_tap_ordered_list_node,
+    _tip_tap_task_item_node,
+    _tip_tap_code_block_node,
+    _tip_tap_content_node,
+):
+    _module.TipTapNode = TipTapNode  # type: ignore[attr-defined]

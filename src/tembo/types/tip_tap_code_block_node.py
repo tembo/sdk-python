@@ -58,6 +58,3 @@ class TipTapCodeBlockNode(BaseModel):
 
     else:
         __pydantic_extra__: Dict[str, object]
-
-
-from .tip_tap_node import TipTapNode
