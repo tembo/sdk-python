@@ -1,12 +1,221 @@
-# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+# File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 from __future__ import annotations
 
-from .task_list_params import TaskListParams as TaskListParams
-from .task_create_params import TaskCreateParams as TaskCreateParams
-from .task_list_response import TaskListResponse as TaskListResponse
-from .task_search_params import TaskSearchParams as TaskSearchParams
-from .me_retrieve_response import MeRetrieveResponse as MeRetrieveResponse
-from .task_create_response import TaskCreateResponse as TaskCreateResponse
-from .task_search_response import TaskSearchResponse as TaskSearchResponse
+from . import (
+    tip_tap_content_node,
+    tip_tap_image_node,
+    tip_tap_mention_node,
+    tip_tap_heading_node,
+    tip_tap_ordered_list_node,
+    tip_tap_task_item_node,
+    tip_tap_code_block_node,
+)
+from .. import _compat
+
+from .tip_tap_document import TipTapDocument as TipTapDocument
+from .tip_tap_node import TipTapNode as TipTapNode
+from .tip_tap_link_mark import TipTapLinkMark as TipTapLinkMark
+from .tip_tap_mark import TipTapMark as TipTapMark
+from .tip_tap_extension_attributes import TipTapExtensionAttributes as TipTapExtensionAttributes
+from .tip_tap_image_attributes import TipTapImageAttributes as TipTapImageAttributes
+from .tip_tap_mention_attributes import TipTapMentionAttributes as TipTapMentionAttributes
+from .tip_tap_content_node import TipTapContentNode as TipTapContentNode
+from .agent_options_input import AgentOptionsInput as AgentOptionsInput
+from .session_event_data import SessionEventData as SessionEventData
+from .agent_state import AgentState as AgentState
+from .tip_tap_image_node import TipTapImageNode as TipTapImageNode
+from .tip_tap_mention_node import TipTapMentionNode as TipTapMentionNode
+from .tip_tap_heading_node import TipTapHeadingNode as TipTapHeadingNode
+from .tip_tap_ordered_list_node import TipTapOrderedListNode as TipTapOrderedListNode
+from .tip_tap_task_item_node import TipTapTaskItemNode as TipTapTaskItemNode
+from .tip_tap_code_block_node import TipTapCodeBlockNode as TipTapCodeBlockNode
+from .agent_options_input_param import AgentOptionsInputParam as AgentOptionsInputParam
+from .tip_tap_document_param import TipTapDocumentParam as TipTapDocumentParam
+from .tip_tap_image_node_param import TipTapImageNodeParam as TipTapImageNodeParam
+from .tip_tap_link_mark_param import TipTapLinkMarkParam as TipTapLinkMarkParam
+from .tip_tap_mark_param import TipTapMarkParam as TipTapMarkParam
+from .tip_tap_image_attributes_param import TipTapImageAttributesParam as TipTapImageAttributesParam
+from .tip_tap_node_param import TipTapNodeParam as TipTapNodeParam
+from .tip_tap_mention_node_param import TipTapMentionNodeParam as TipTapMentionNodeParam
+from .tip_tap_mention_attributes_param import TipTapMentionAttributesParam as TipTapMentionAttributesParam
+from .tip_tap_heading_node_param import TipTapHeadingNodeParam as TipTapHeadingNodeParam
+from .tip_tap_ordered_list_node_param import TipTapOrderedListNodeParam as TipTapOrderedListNodeParam
+from .tip_tap_task_item_node_param import TipTapTaskItemNodeParam as TipTapTaskItemNodeParam
+from .tip_tap_code_block_node_param import TipTapCodeBlockNodeParam as TipTapCodeBlockNodeParam
+from .tip_tap_content_node_param import TipTapContentNodeParam as TipTapContentNodeParam
+from .session_document_node_param import SessionDocumentNodeParam as SessionDocumentNodeParam
+from .api_key_list_response import APIKeyListResponse as APIKeyListResponse
+from .api_key_list_params import APIKeyListParams as APIKeyListParams
+from .api_key_create_response import APIKeyCreateResponse as APIKeyCreateResponse
+from .api_key_create_params import APIKeyCreateParams as APIKeyCreateParams
+from .api_key_retrieve_response import APIKeyRetrieveResponse as APIKeyRetrieveResponse
+from .api_key_update_response import APIKeyUpdateResponse as APIKeyUpdateResponse
+from .api_key_update_params import APIKeyUpdateParams as APIKeyUpdateParams
+from .api_key_delete_response import APIKeyDeleteResponse as APIKeyDeleteResponse
+from .skill_list_response import SkillListResponse as SkillListResponse
+from .skill_list_params import SkillListParams as SkillListParams
+from .skill_create_response import SkillCreateResponse as SkillCreateResponse
+from .skill_create_params import SkillCreateParams as SkillCreateParams
+from .skill_retrieve_response import SkillRetrieveResponse as SkillRetrieveResponse
+from .skill_update_response import SkillUpdateResponse as SkillUpdateResponse
+from .skill_update_params import SkillUpdateParams as SkillUpdateParams
+from .skill_delete_response import SkillDeleteResponse as SkillDeleteResponse
+from .insight_retrieve_response import InsightRetrieveResponse as InsightRetrieveResponse
+from .insight_retrieve_params import InsightRetrieveParams as InsightRetrieveParams
+from .insight_update_response import InsightUpdateResponse as InsightUpdateResponse
+from .insight_update_params import InsightUpdateParams as InsightUpdateParams
+from .insight_list_members_response import InsightListMembersResponse as InsightListMembersResponse
+from .insight_list_members_params import InsightListMembersParams as InsightListMembersParams
+from .insight_list_repositories_response import InsightListRepositoriesResponse as InsightListRepositoriesResponse
+from .insight_list_repositories_params import InsightListRepositoriesParams as InsightListRepositoriesParams
+from .organization_create_response import OrganizationCreateResponse as OrganizationCreateResponse
+from .organization_create_params import OrganizationCreateParams as OrganizationCreateParams
+from .organization_retrieve_response import OrganizationRetrieveResponse as OrganizationRetrieveResponse
+from .organization_update_response import OrganizationUpdateResponse as OrganizationUpdateResponse
+from .organization_update_params import OrganizationUpdateParams as OrganizationUpdateParams
+from .organization_delete_response import OrganizationDeleteResponse as OrganizationDeleteResponse
+from .mcp_connection_list_response import McpConnectionListResponse as McpConnectionListResponse
+from .mcp_connection_list_params import McpConnectionListParams as McpConnectionListParams
+from .mcp_connection_create_response import McpConnectionCreateResponse as McpConnectionCreateResponse
+from .mcp_connection_create_params import McpConnectionCreateParams as McpConnectionCreateParams
+from .mcp_connection_retrieve_response import McpConnectionRetrieveResponse as McpConnectionRetrieveResponse
+from .mcp_connection_update_response import McpConnectionUpdateResponse as McpConnectionUpdateResponse
+from .mcp_connection_update_params import McpConnectionUpdateParams as McpConnectionUpdateParams
+from .mcp_connection_delete_response import McpConnectionDeleteResponse as McpConnectionDeleteResponse
+from .mcp_connection_authorize_response import McpConnectionAuthorizeResponse as McpConnectionAuthorizeResponse
+from .mcp_connection_test_response import McpConnectionTestResponse as McpConnectionTestResponse
+from .artifact_list_response import ArtifactListResponse as ArtifactListResponse
+from .artifact_list_params import ArtifactListParams as ArtifactListParams
+from .artifact_create_response import ArtifactCreateResponse as ArtifactCreateResponse
+from .artifact_create_params import ArtifactCreateParams as ArtifactCreateParams
+from .artifact_retrieve_response import ArtifactRetrieveResponse as ArtifactRetrieveResponse
+from .artifact_delete_response import ArtifactDeleteResponse as ArtifactDeleteResponse
+from .message_list_response import MessageListResponse as MessageListResponse
+from .message_list_params import MessageListParams as MessageListParams
+from .message_create_response import MessageCreateResponse as MessageCreateResponse
+from .message_create_params import MessageCreateParams as MessageCreateParams
+from .message_retrieve_response import MessageRetrieveResponse as MessageRetrieveResponse
+from .message_update_response import MessageUpdateResponse as MessageUpdateResponse
+from .message_update_params import MessageUpdateParams as MessageUpdateParams
+from .message_delete_response import MessageDeleteResponse as MessageDeleteResponse
+from .model_list_response import ModelListResponse as ModelListResponse
+from .model_list_params import ModelListParams as ModelListParams
+from .model_update_response import ModelUpdateResponse as ModelUpdateResponse
+from .model_update_params import ModelUpdateParams as ModelUpdateParams
+from .runtime_list_response import RuntimeListResponse as RuntimeListResponse
+from .runtime_list_params import RuntimeListParams as RuntimeListParams
+from .user_me_response import UserMeResponse as UserMeResponse
+from .user_retrieve_response import UserRetrieveResponse as UserRetrieveResponse
+from .user_delete_response import UserDeleteResponse as UserDeleteResponse
+from .user_delete_params import UserDeleteParams as UserDeleteParams
+from .session_list_response import SessionListResponse as SessionListResponse
+from .session_list_params import SessionListParams as SessionListParams
+from .session_create_response import SessionCreateResponse as SessionCreateResponse
+from .session_create_params import SessionCreateParams as SessionCreateParams
+from .session_retrieve_response import SessionRetrieveResponse as SessionRetrieveResponse
+from .session_update_response import SessionUpdateResponse as SessionUpdateResponse
+from .session_update_params import SessionUpdateParams as SessionUpdateParams
+from .session_delete_response import SessionDeleteResponse as SessionDeleteResponse
+from .session_fork_response import SessionForkResponse as SessionForkResponse
+from .session_fork_params import SessionForkParams as SessionForkParams
+from .session_stop_response import SessionStopResponse as SessionStopResponse
+from .session_stop_params import SessionStopParams as SessionStopParams
+from .session_list_events_response import SessionListEventsResponse as SessionListEventsResponse
+from .session_list_events_params import SessionListEventsParams as SessionListEventsParams
+from .project_update_defaults_response import ProjectUpdateDefaultsResponse as ProjectUpdateDefaultsResponse
+from .project_update_defaults_params import ProjectUpdateDefaultsParams as ProjectUpdateDefaultsParams
+from .project_list_response import ProjectListResponse as ProjectListResponse
+from .project_list_params import ProjectListParams as ProjectListParams
+from .project_create_response import ProjectCreateResponse as ProjectCreateResponse
+from .project_create_params import ProjectCreateParams as ProjectCreateParams
+from .project_retrieve_response import ProjectRetrieveResponse as ProjectRetrieveResponse
+from .project_update_response import ProjectUpdateResponse as ProjectUpdateResponse
+from .project_update_params import ProjectUpdateParams as ProjectUpdateParams
+from .project_delete_response import ProjectDeleteResponse as ProjectDeleteResponse
+from .project_duplicate_response import ProjectDuplicateResponse as ProjectDuplicateResponse
+from .pin_list_response import PinListResponse as PinListResponse
+from .pin_list_params import PinListParams as PinListParams
+from .pin_create_response import PinCreateResponse as PinCreateResponse
+from .pin_create_params import PinCreateParams as PinCreateParams
+from .pin_update_response import PinUpdateResponse as PinUpdateResponse
+from .pin_update_params import PinUpdateParams as PinUpdateParams
+from .pin_delete_response import PinDeleteResponse as PinDeleteResponse
+from .pull_request_list_response import PullRequestListResponse as PullRequestListResponse
+from .pull_request_list_params import PullRequestListParams as PullRequestListParams
+from .pull_request_retrieve_response import PullRequestRetrieveResponse as PullRequestRetrieveResponse
+from .agent_list_response import AgentListResponse as AgentListResponse
+from .agent_list_params import AgentListParams as AgentListParams
+from .agent_create_response import AgentCreateResponse as AgentCreateResponse
+from .agent_create_params import AgentCreateParams as AgentCreateParams
+from .agent_retrieve_response import AgentRetrieveResponse as AgentRetrieveResponse
+from .agent_update_response import AgentUpdateResponse as AgentUpdateResponse
+from .agent_update_params import AgentUpdateParams as AgentUpdateParams
+from .agent_delete_response import AgentDeleteResponse as AgentDeleteResponse
 from .repository_list_response import RepositoryListResponse as RepositoryListResponse
+from .repository_list_params import RepositoryListParams as RepositoryListParams
+from .repository_retrieve_response import RepositoryRetrieveResponse as RepositoryRetrieveResponse
+from .repository_update_response import RepositoryUpdateResponse as RepositoryUpdateResponse
+from .repository_update_params import RepositoryUpdateParams as RepositoryUpdateParams
+from .integration_list_response import IntegrationListResponse as IntegrationListResponse
+from .integration_list_params import IntegrationListParams as IntegrationListParams
+from .integration_create_response import IntegrationCreateResponse as IntegrationCreateResponse
+from .integration_create_params import IntegrationCreateParams as IntegrationCreateParams
+from .integration_retrieve_response import IntegrationRetrieveResponse as IntegrationRetrieveResponse
+from .integration_update_response import IntegrationUpdateResponse as IntegrationUpdateResponse
+from .integration_update_params import IntegrationUpdateParams as IntegrationUpdateParams
+from .integration_delete_response import IntegrationDeleteResponse as IntegrationDeleteResponse
+from .integration_authorize_response import IntegrationAuthorizeResponse as IntegrationAuthorizeResponse
+from .integration_authorize_params import IntegrationAuthorizeParams as IntegrationAuthorizeParams
+from .integration_test_response import IntegrationTestResponse as IntegrationTestResponse
+from .integration_sync_response import IntegrationSyncResponse as IntegrationSyncResponse
+from .integration_sync_params import IntegrationSyncParams as IntegrationSyncParams
+from .integration_sync_all_response import IntegrationSyncAllResponse as IntegrationSyncAllResponse
+from .integration_sync_all_params import IntegrationSyncAllParams as IntegrationSyncAllParams
+from .integration_retrieve_sync_status_response import (
+    IntegrationRetrieveSyncStatusResponse as IntegrationRetrieveSyncStatusResponse,
+)
+from .integration_retrieve_rate_limit_response import (
+    IntegrationRetrieveRateLimitResponse as IntegrationRetrieveRateLimitResponse,
+)
+from .integration_list_sentry_environments_response import (
+    IntegrationListSentryEnvironmentsResponse as IntegrationListSentryEnvironmentsResponse,
+)
+from .integration_list_sentry_environments_params import (
+    IntegrationListSentryEnvironmentsParams as IntegrationListSentryEnvironmentsParams,
+)
+from .integration_list_slack_channels_response import (
+    IntegrationListSlackChannelsResponse as IntegrationListSlackChannelsResponse,
+)
+from .integration_list_slack_channels_params import (
+    IntegrationListSlackChannelsParams as IntegrationListSlackChannelsParams,
+)
+from .billing_retrieve_response import BillingRetrieveResponse as BillingRetrieveResponse
+from .billing_list_usage_response import BillingListUsageResponse as BillingListUsageResponse
+from .billing_list_usage_params import BillingListUsageParams as BillingListUsageParams
+from .live_authorize_response import LiveAuthorizeResponse as LiveAuthorizeResponse
+from .live_connect_params import LiveConnectParams as LiveConnectParams
+from .websocket_connection_options import WebSocketConnectionOptions as WebSocketConnectionOptions
+from .websocket_reconnection import (
+    ReconnectingEvent as ReconnectingEvent,
+    ReconnectingOverrides as ReconnectingOverrides,
+)
+
+# Rebuild the models that carry forward references only after every module is imported, so the
+# names their annotations mention are all bound by the time the model schema is built.
+if _compat.PYDANTIC_V1:
+    tip_tap_content_node.TipTapContentNode.update_forward_refs()  # type: ignore
+    tip_tap_image_node.TipTapImageNode.update_forward_refs()  # type: ignore
+    tip_tap_mention_node.TipTapMentionNode.update_forward_refs()  # type: ignore
+    tip_tap_heading_node.TipTapHeadingNode.update_forward_refs()  # type: ignore
+    tip_tap_ordered_list_node.TipTapOrderedListNode.update_forward_refs()  # type: ignore
+    tip_tap_task_item_node.TipTapTaskItemNode.update_forward_refs()  # type: ignore
+    tip_tap_code_block_node.TipTapCodeBlockNode.update_forward_refs()  # type: ignore
+else:
+    tip_tap_content_node.TipTapContentNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_image_node.TipTapImageNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_mention_node.TipTapMentionNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_heading_node.TipTapHeadingNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_ordered_list_node.TipTapOrderedListNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_task_item_node.TipTapTaskItemNode.model_rebuild(_parent_namespace_depth=0)
+    tip_tap_code_block_node.TipTapCodeBlockNode.model_rebuild(_parent_namespace_depth=0)

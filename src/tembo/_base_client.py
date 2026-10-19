@@ -9,13 +9,16 @@ import asyncio
 import inspect
 import logging
 import platform
+import warnings
 import email.utils
 from types import TracebackType
 from random import random
+from dataclasses import field, dataclass
 from typing import (
     TYPE_CHECKING,
     Any,
     Dict,
+    List,
     Type,
     Union,
     Generic,
@@ -51,16 +54,18 @@ from ._types import (
     ResponseT,
     AnyMapping,
     PostParser,
+    BinaryTypes,
     RequestFiles,
     HttpxSendArgs,
     RequestOptions,
+    AsyncBinaryTypes,
     HttpxRequestFiles,
     ModelBuilderProtocol,
     not_given,
 )
 from ._utils import is_dict, is_list, asyncify, is_given, lru_cache, is_mapping
 from ._compat import PYDANTIC_V1, model_copy, model_dump
-from ._models import GenericModel, FinalRequestOptions, validate_type, construct_type
+from ._models import GenericModel, SecurityOptions, FinalRequestOptions, validate_type, construct_type
 from ._response import (
     APIResponse,
     BaseAPIResponse,
@@ -83,6 +88,7 @@ from ._exceptions import (
     APIConnectionError,
     APIResponseValidationError,
 )
+from ._utils._json import openapi_dumps
 
 log: logging.Logger = logging.getLogger(__name__)
 
@@ -111,10 +117,38 @@ else:
         HTTPX_DEFAULT_TIMEOUT = Timeout(5.0)
 
 
+@dataclass
+class CursorPageConfig:
+    """Per-operation cursor pagination descriptor baked into a page by the generated list method.
+
+    The Python view of the shared, language-neutral descriptor: where the items array lives, how to
+    read the next cursor, which request param carries it, and on which carrier (query vs body).
+    Driving extraction from this config — rather than typed `items`/`next_cursor` model fields — lets
+    one page class serve every cursor scheme, including `cursor_id` (cursor read from the last item)
+    and body-carried cursors.
+    """
+
+    # Body path to the items array (e.g. ["items"], ["data"]).
+    items_path: List[str] = field(default_factory=list)
+    # "field" (a top-level response field) or "item" (a field on the last item — `cursor_id`).
+    cursor_kind: str = "field"
+    # Path to the cursor value: from the body root when cursor_kind is "field", or from the last item.
+    cursor_path: List[str] = field(default_factory=list)
+    # Request param wire name that carries the cursor.
+    cursor_param: str = "cursor"
+    # "query" or "body": the carrier the cursor param rides on the next request.
+    cursor_location: str = "query"
+    # Keep paginating across an empty page when set.
+    continue_on_empty_items: bool = False
+    # Body path to the scheme's `has_more` boolean. Only an explicit False stops pagination;
+    # a missing or non-boolean value falls back to cursor-presence semantics.
+    has_more_path: List[str] = field(default_factory=list)
+
+
 class PageInfo:
     """Stores the necessary information to build the request to retrieve the next page.
 
-    Either `url` or `params` must be set.
+    Exactly one of `url`, `params` (query carrier), or `json` (body carrier) must be set.
     """
 
     url: URL | NotGiven
@@ -176,6 +210,10 @@ class BasePage(GenericModel, Generic[_T]):
 
     _options: FinalRequestOptions = PrivateAttr()
     _model: Type[_T] = PrivateAttr()
+    # Per-operation cursor descriptor; set by the paginated method via _set_private_attributes and
+    # carried forward across pages so every page extracts items/cursor identically. None for pages
+    # that predate metadata-driven pagination.
+    _cursor_config: Optional[CursorPageConfig] = PrivateAttr(None)
 
     def has_next_page(self) -> bool:
         items = self._get_page_items()
@@ -231,6 +269,7 @@ class BaseSyncPage(BasePage[_T], Generic[_T]):
         client: SyncAPIClient,
         model: Type[_T],
         options: FinalRequestOptions,
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> None:
         if (not PYDANTIC_V1) and getattr(self, "__pydantic_private__", None) is None:
             self.__pydantic_private__ = {}
@@ -238,6 +277,7 @@ class BaseSyncPage(BasePage[_T], Generic[_T]):
         self._model = model
         self._client = client
         self._options = options
+        self._cursor_config = cursor_config
 
     # Pydantic uses a custom `__iter__` method to support casting BaseModels
     # to dictionaries. e.g. dict(model).
@@ -269,7 +309,10 @@ class BaseSyncPage(BasePage[_T], Generic[_T]):
             )
 
         options = self._info_to_options(info)
-        return self._client._request_api_list(self._model, page=self.__class__, options=options)
+        # Carry the cursor descriptor forward so the next page extracts items/cursor identically.
+        return self._client._request_api_list(
+            self._model, page=self.__class__, options=options, cursor_config=self._cursor_config
+        )
 
 
 class AsyncPaginator(Generic[_T, AsyncPageT]):
@@ -279,11 +322,13 @@ class AsyncPaginator(Generic[_T, AsyncPageT]):
         options: FinalRequestOptions,
         page_cls: Type[AsyncPageT],
         model: Type[_T],
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> None:
         self._model = model
         self._client = client
         self._options = options
         self._page_cls = page_cls
+        self._cursor_config = cursor_config
 
     def __await__(self) -> Generator[Any, None, AsyncPageT]:
         return self._get_page().__await__()
@@ -294,6 +339,7 @@ class AsyncPaginator(Generic[_T, AsyncPageT]):
                 model=self._model,
                 options=self._options,
                 client=self._client,
+                cursor_config=self._cursor_config,
             )
             return resp
 
@@ -319,6 +365,7 @@ class BaseAsyncPage(BasePage[_T], Generic[_T]):
         model: Type[_T],
         client: AsyncAPIClient,
         options: FinalRequestOptions,
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> None:
         if (not PYDANTIC_V1) and getattr(self, "__pydantic_private__", None) is None:
             self.__pydantic_private__ = {}
@@ -326,6 +373,7 @@ class BaseAsyncPage(BasePage[_T], Generic[_T]):
         self._model = model
         self._client = client
         self._options = options
+        self._cursor_config = cursor_config
 
     async def __aiter__(self) -> AsyncIterator[_T]:
         async for page in self.iter_pages():
@@ -349,7 +397,10 @@ class BaseAsyncPage(BasePage[_T], Generic[_T]):
             )
 
         options = self._info_to_options(info)
-        return await self._client._request_api_list(self._model, page=self.__class__, options=options)
+        # Carry the cursor descriptor forward so the next page extracts items/cursor identically.
+        return await self._client._request_api_list(
+            self._model, page=self.__class__, options=options, cursor_config=self._cursor_config
+        )
 
 
 _HttpxClientT = TypeVar("_HttpxClientT", bound=Union[httpx.Client, httpx.AsyncClient])
@@ -428,10 +479,41 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
     ) -> _exceptions.APIStatusError:
         raise NotImplementedError()
 
-    def _build_headers(self, options: FinalRequestOptions, *, retries_taken: int = 0) -> httpx.Headers:
+    def _auth_query(
+        self,
+        security: SecurityOptions,  # noqa: ARG002
+    ) -> dict[str, str]:
+        return {}
+
+    def _auth_cookies(
+        self,
+        security: SecurityOptions,  # noqa: ARG002
+    ) -> dict[str, str]:
+        return {}
+
+    def _custom_auth(
+        self,
+        security: SecurityOptions,  # noqa: ARG002
+    ) -> httpx.Auth | None:
+        # Single hook for custom httpx auth on both the sync and async request paths. It defaults to
+        # the legacy public `custom_auth` property so subclasses that already override that property
+        # keep applying identically on both paths; override `_custom_auth` itself to layer
+        # per-operation, security-aware auth on top.
+        return self.custom_auth
+
+    def _build_headers(
+        self,
+        options: FinalRequestOptions,
+        *,
+        params: Query,
+        cookies: Mapping[str, str],
+        retries_taken: int = 0,
+    ) -> httpx.Headers:
         custom_headers = options.headers or {}
+        # Auth headers are folded into `default_headers` (matching the reference SDKs), so
+        # merging `default_headers` here already applies the configured credentials.
         headers_dict = _merge_mappings(self.default_headers, custom_headers)
-        self._validate_headers(headers_dict, custom_headers)
+        self._validate_headers(headers_dict, custom_headers, params, cookies)
 
         # headers are case-insensitive while dictionaries are not.
         headers = httpx.Headers(headers_dict)
@@ -443,14 +525,14 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         # Don't set these headers if they were already set or removed by the caller. We check
         # `custom_headers`, which can contain `Omit()`, instead of `headers` to account for the removal case.
         lower_custom_headers = [header.lower() for header in custom_headers]
-        if "x-stainless-retry-count" not in lower_custom_headers:
-            headers["x-stainless-retry-count"] = str(retries_taken)
-        if "x-stainless-read-timeout" not in lower_custom_headers:
+        if "x-scalar-retry-count" not in lower_custom_headers:
+            headers["x-scalar-retry-count"] = str(retries_taken)
+        if "x-scalar-read-timeout" not in lower_custom_headers:
             timeout = self.timeout if isinstance(options.timeout, NotGiven) else options.timeout
             if isinstance(timeout, Timeout):
                 timeout = timeout.read
             if timeout is not None:
-                headers["x-stainless-read-timeout"] = str(timeout)
+                headers["x-scalar-read-timeout"] = str(timeout)
 
         return headers
 
@@ -477,8 +559,19 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         retries_taken: int = 0,
     ) -> httpx.Request:
         if log.isEnabledFor(logging.DEBUG):
-            log.debug("Request options: %s", model_dump(options, exclude_unset=True))
-
+            log.debug(
+                "Request options: %s",
+                model_dump(
+                    options,
+                    exclude_unset=True,
+                    # Pydantic v1 can't dump every type we support in content, so we exclude it for now.
+                    exclude={
+                        "content",
+                    }
+                    if PYDANTIC_V1
+                    else {},
+                ),
+            )
         kwargs: dict[str, Any] = {}
 
         json_data = options.json_data
@@ -490,8 +583,9 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
             else:
                 raise RuntimeError(f"Unexpected JSON data type, {type(json_data)}, cannot merge with `extra_body`")
 
-        headers = self._build_headers(options, retries_taken=retries_taken)
-        params = _merge_mappings(self.default_query, options.params)
+        params = _merge_mappings({**self._auth_query(options.security), **self.default_query}, options.params)
+        cookies = self._auth_cookies(options.security)
+        headers = self._build_headers(options, retries_taken=retries_taken, params=params, cookies=cookies)
         content_type = headers.get("Content-Type")
         files = options.files
 
@@ -525,6 +619,10 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
                 files = cast(HttpxRequestFiles, ForceMultipartDict())
 
         prepared_url = self._prepare_url(options.url)
+        # preserve hard-coded query params from the url
+        if params and prepared_url.query:
+            params = {**dict(prepared_url.params.items()), **params}
+            prepared_url = prepared_url.copy_with(raw_path=prepared_url.raw_path.split(b"?", 1)[0])
         if "_" in prepared_url.host:
             # work around https://github.com/encode/httpx/discussions/2880
             kwargs["extensions"] = {"sni_hostname": prepared_url.host.replace("_", "-")}
@@ -532,10 +630,18 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         is_body_allowed = options.method.lower() != "get"
 
         if is_body_allowed:
-            if isinstance(json_data, bytes):
+            if options.content is not None and json_data is not None:
+                raise TypeError("Passing both `content` and `json_data` is not supported")
+            if options.content is not None and files is not None:
+                raise TypeError("Passing both `content` and `files` is not supported")
+            if options.content is not None:
+                kwargs["content"] = options.content
+            elif isinstance(json_data, bytes):
                 kwargs["content"] = json_data
-            else:
-                kwargs["json"] = json_data if is_given(json_data) else None
+            elif not files:
+                # Don't set content when JSON is sent as multipart/form-data,
+                # since httpx's content param overrides other body arguments
+                kwargs["content"] = openapi_dumps(json_data) if is_given(json_data) and json_data is not None else None
             kwargs["files"] = files
         else:
             headers.pop("Content-Type", None)
@@ -552,6 +658,7 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
             # so that passing a `TypedDict` doesn't cause an error.
             # https://github.com/microsoft/pyright/issues/3526#event-6715453066
             params=self.qs.stringify(cast(Mapping[str, Any], params)) if params else None,
+            cookies=cookies or None,
             **kwargs,
         )
 
@@ -662,8 +769,10 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         self,
         headers: Headers,  # noqa: ARG002
         custom_headers: Headers,  # noqa: ARG002
+        params: Query,  # noqa: ARG002
+        cookies: Mapping[str, str],  # noqa: ARG002
     ) -> None:
-        """Validate the given default headers and custom headers.
+        """Validate merged auth-bearing headers, query params, and cookies.
 
         Does nothing by default.
         """
@@ -781,7 +890,7 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         return False
 
     def _idempotency_key(self) -> str:
-        return f"stainless-python-retry-{uuid.uuid4()}"
+        return f"scalar-python-retry-{uuid.uuid4()}"
 
 
 class _DefaultHttpxClient(httpx.Client):
@@ -830,6 +939,7 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         custom_headers: Mapping[str, str] | None = None,
         custom_query: Mapping[str, object] | None = None,
         _strict_response_validation: bool,
+        **kwargs: Any,
     ) -> None:
         if not is_given(timeout):
             # if the user passed in a custom http client with a non-default
@@ -863,6 +973,8 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
             base_url=base_url,
             # cast to a valid type because mypy doesn't understand our type narrowing
             timeout=cast(Timeout, timeout),
+            # Used by generated `with_options(_extra_kwargs=...)` for HTTPX client configuration.
+            **kwargs,
         )
 
     def is_closed(self) -> bool:
@@ -967,8 +1079,9 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
             self._prepare_request(request)
 
             kwargs: HttpxSendArgs = {}
-            if self.custom_auth is not None:
-                kwargs["auth"] = self.custom_auth
+            custom_auth = self._custom_auth(options.security)
+            if custom_auth is not None:
+                kwargs["auth"] = custom_auth
 
             if options.follow_redirects is not None:
                 kwargs["follow_redirects"] = options.follow_redirects
@@ -1128,12 +1241,14 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         model: Type[object],
         page: Type[SyncPageT],
         options: FinalRequestOptions,
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> SyncPageT:
         def _parser(resp: SyncPageT) -> SyncPageT:
             resp._set_private_attributes(
                 client=self,
                 model=model,
                 options=options,
+                cursor_config=cursor_config,
             )
             return resp
 
@@ -1194,6 +1309,7 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         options: RequestOptions = {},
         files: RequestFiles | None = None,
         stream: Literal[False] = False,
@@ -1206,6 +1322,7 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         options: RequestOptions = {},
         files: RequestFiles | None = None,
         stream: Literal[True],
@@ -1219,6 +1336,7 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         options: RequestOptions = {},
         files: RequestFiles | None = None,
         stream: bool,
@@ -1231,13 +1349,25 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         options: RequestOptions = {},
         files: RequestFiles | None = None,
         stream: bool = False,
         stream_cls: type[_StreamT] | None = None,
     ) -> ResponseT | _StreamT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="post", url=path, json_data=body, files=to_httpx_files(files), **options
+            method="post", url=path, json_data=body, content=content, files=to_httpx_files(files), **options
         )
         return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
 
@@ -1247,11 +1377,23 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="patch", url=path, json_data=body, files=to_httpx_files(files), **options
+            method="patch", url=path, json_data=body, content=content, files=to_httpx_files(files), **options
         )
         return self.request(cast_to, opts)
 
@@ -1261,11 +1403,23 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="put", url=path, json_data=body, files=to_httpx_files(files), **options
+            method="put", url=path, json_data=body, content=content, files=to_httpx_files(files), **options
         )
         return self.request(cast_to, opts)
 
@@ -1275,9 +1429,19 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: BinaryTypes | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
-        opts = FinalRequestOptions.construct(method="delete", url=path, json_data=body, **options)
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+        opts = FinalRequestOptions.construct(method="delete", url=path, json_data=body, content=content, **options)
         return self.request(cast_to, opts)
 
     def get_api_list(
@@ -1287,11 +1451,15 @@ class SyncAPIClient(BaseClient[httpx.Client, Stream[Any]]):
         model: Type[object],
         page: Type[SyncPageT],
         body: Body | None = None,
+        files: RequestFiles | None = None,
         options: RequestOptions = {},
         method: str = "get",
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> SyncPageT:
-        opts = FinalRequestOptions.construct(method=method, url=path, json_data=body, **options)
-        return self._request_api_list(model, page, opts)
+        opts = FinalRequestOptions.construct(
+            method=method, url=path, json_data=body, files=to_httpx_files(files), **options
+        )
+        return self._request_api_list(model, page, opts, cursor_config=cursor_config)
 
 
 class _DefaultAsyncHttpxClient(httpx.AsyncClient):
@@ -1363,6 +1531,7 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         http_client: httpx.AsyncClient | None = None,
         custom_headers: Mapping[str, str] | None = None,
         custom_query: Mapping[str, object] | None = None,
+        **kwargs: Any,
     ) -> None:
         if not is_given(timeout):
             # if the user passed in a custom http client with a non-default
@@ -1396,6 +1565,8 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
             base_url=base_url,
             # cast to a valid type because mypy doesn't understand our type narrowing
             timeout=cast(Timeout, timeout),
+            # Used by generated `with_options(_extra_kwargs=...)` for HTTPX client configuration.
+            **kwargs,
         )
 
     def is_closed(self) -> bool:
@@ -1502,8 +1673,9 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
             await self._prepare_request(request)
 
             kwargs: HttpxSendArgs = {}
-            if self.custom_auth is not None:
-                kwargs["auth"] = self.custom_auth
+            custom_auth = self._custom_auth(options.security)
+            if custom_auth is not None:
+                kwargs["auth"] = custom_auth
 
             if options.follow_redirects is not None:
                 kwargs["follow_redirects"] = options.follow_redirects
@@ -1663,8 +1835,9 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         model: Type[_T],
         page: Type[AsyncPageT],
         options: FinalRequestOptions,
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> AsyncPaginator[_T, AsyncPageT]:
-        return AsyncPaginator(client=self, options=options, page_cls=page, model=model)
+        return AsyncPaginator(client=self, options=options, page_cls=page, model=model, cursor_config=cursor_config)
 
     @overload
     async def get(
@@ -1717,6 +1890,7 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
         stream: Literal[False] = False,
@@ -1729,6 +1903,7 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
         stream: Literal[True],
@@ -1742,6 +1917,7 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
         stream: bool,
@@ -1754,13 +1930,25 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
         stream: bool = False,
         stream_cls: type[_AsyncStreamT] | None = None,
     ) -> ResponseT | _AsyncStreamT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="post", url=path, json_data=body, files=await async_to_httpx_files(files), **options
+            method="post", url=path, json_data=body, content=content, files=await async_to_httpx_files(files), **options
         )
         return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
 
@@ -1770,11 +1958,28 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="patch", url=path, json_data=body, files=await async_to_httpx_files(files), **options
+            method="patch",
+            url=path,
+            json_data=body,
+            content=content,
+            files=await async_to_httpx_files(files),
+            **options,
         )
         return await self.request(cast_to, opts)
 
@@ -1784,11 +1989,23 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         files: RequestFiles | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if files is not None and content is not None:
+            raise TypeError("Passing both `files` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         opts = FinalRequestOptions.construct(
-            method="put", url=path, json_data=body, files=await async_to_httpx_files(files), **options
+            method="put", url=path, json_data=body, content=content, files=await async_to_httpx_files(files), **options
         )
         return await self.request(cast_to, opts)
 
@@ -1798,9 +2015,19 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         *,
         cast_to: Type[ResponseT],
         body: Body | None = None,
+        content: AsyncBinaryTypes | None = None,
         options: RequestOptions = {},
     ) -> ResponseT:
-        opts = FinalRequestOptions.construct(method="delete", url=path, json_data=body, **options)
+        if body is not None and content is not None:
+            raise TypeError("Passing both `body` and `content` is not supported")
+        if isinstance(body, bytes):
+            warnings.warn(
+                "Passing raw bytes as `body` is deprecated and will be removed in a future version. "
+                "Please pass raw bytes via the `content` parameter instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+        opts = FinalRequestOptions.construct(method="delete", url=path, json_data=body, content=content, **options)
         return await self.request(cast_to, opts)
 
     def get_api_list(
@@ -1810,11 +2037,15 @@ class AsyncAPIClient(BaseClient[httpx.AsyncClient, AsyncStream[Any]]):
         model: Type[_T],
         page: Type[AsyncPageT],
         body: Body | None = None,
+        files: RequestFiles | None = None,
         options: RequestOptions = {},
         method: str = "get",
+        cursor_config: Optional[CursorPageConfig] = None,
     ) -> AsyncPaginator[_T, AsyncPageT]:
-        opts = FinalRequestOptions.construct(method=method, url=path, json_data=body, **options)
-        return self._request_api_list(model, page, opts)
+        opts = FinalRequestOptions.construct(
+            method=method, url=path, json_data=body, files=to_httpx_files(files), **options
+        )
+        return self._request_api_list(model, page, opts, cursor_config=cursor_config)
 
 
 def make_request_options(
@@ -1826,6 +2057,7 @@ def make_request_options(
     idempotency_key: str | None = None,
     timeout: float | httpx.Timeout | None | NotGiven = not_given,
     post_parser: PostParser | NotGiven = not_given,
+    security: SecurityOptions | None = None,
 ) -> RequestOptions:
     """Create a dict of type RequestOptions without keys of NotGiven values."""
     options: RequestOptions = {}
@@ -1850,6 +2082,9 @@ def make_request_options(
     if is_given(post_parser):
         # internal
         options["post_parser"] = post_parser  # type: ignore
+
+    if security is not None:
+        options["security"] = security
 
     return options
 
@@ -1928,12 +2163,12 @@ def get_platform() -> Platform:
 @lru_cache(maxsize=None)
 def platform_headers(version: str, *, platform: Platform | None) -> Dict[str, str]:
     return {
-        "X-Stainless-Lang": "python",
-        "X-Stainless-Package-Version": version,
-        "X-Stainless-OS": str(platform or get_platform()),
-        "X-Stainless-Arch": str(get_architecture()),
-        "X-Stainless-Runtime": get_python_runtime(),
-        "X-Stainless-Runtime-Version": get_python_version(),
+        "X-Scalar-Lang": "python",
+        "X-Scalar-Package-Version": version,
+        "X-Scalar-OS": str(platform or get_platform()),
+        "X-Scalar-Arch": str(get_architecture()),
+        "X-Scalar-Runtime": get_python_runtime(),
+        "X-Scalar-Runtime-Version": get_python_version(),
     }
 
 

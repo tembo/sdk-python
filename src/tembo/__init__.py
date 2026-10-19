@@ -1,11 +1,11 @@
-# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+# File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import typing as _t
 
 from . import types
 from ._types import NOT_GIVEN, Omit, NoneType, NotGiven, Transport, ProxiesTypes, omit, not_given
 from ._utils import file_from_path
-from ._client import Tembo, Client, Stream, Timeout, Transport, AsyncTembo, AsyncClient, AsyncStream, RequestOptions
+from ._client import Client, Stream, Tembo, Timeout, Transport, AsyncClient, AsyncStream, AsyncTembo, RequestOptions
 from ._models import BaseModel
 from ._version import __title__, __version__
 from ._response import APIResponse as APIResponse, AsyncAPIResponse as AsyncAPIResponse
@@ -24,10 +24,13 @@ from ._exceptions import (
     InternalServerError,
     PermissionDeniedError,
     UnprocessableEntityError,
+    WebSocketConnectionClosedError,
+    WebSocketQueueFullError,
     APIResponseValidationError,
 )
 from ._base_client import DefaultHttpxClient, DefaultAioHttpClient, DefaultAsyncHttpxClient
 from ._utils._logs import setup_logging as _setup_logging
+from .types.websocket_reconnection import ReconnectingEvent, ReconnectingOverrides
 
 __all__ = [
     "types",
@@ -71,6 +74,10 @@ __all__ = [
     "DefaultHttpxClient",
     "DefaultAsyncHttpxClient",
     "DefaultAioHttpClient",
+    "ReconnectingEvent",
+    "ReconnectingOverrides",
+    "WebSocketQueueFullError",
+    "WebSocketConnectionClosedError",
 ]
 
 if not _t.TYPE_CHECKING:
@@ -78,15 +85,11 @@ if not _t.TYPE_CHECKING:
 
 _setup_logging()
 
-# Update the __module__ attribute for exported symbols so that
-# error messages point to this module instead of the module
-# it was originally defined in, e.g.
-# tembo._exceptions.NotFoundError -> tembo.NotFoundError
 __locals = locals()
-for __name in __all__:
-    if not __name.startswith("__"):
+__module_name = __name__
+for __export_name in __all__:
+    if not __export_name.startswith("__"):
         try:
-            __locals[__name].__module__ = "tembo"
+            __locals[__export_name].__module__ = __module_name
         except (TypeError, AttributeError):
-            # Some of our exported symbols are builtins which we can't set attributes for.
             pass
