@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/tembo/sdk-python/compare/v0.3.0...v0.4.0) (2026-10-21)
+
+
+### Features
+
+* **api:** add operation sessions.inputs.list (+3 more changes) ([388c5f4](https://github.com/tembo/sdk-python/commit/388c5f4809a80a985a41cf4f7ad5a4fdcefbedce))
+* **api:** update SDK surface (2 changes) ([5a169ec](https://github.com/tembo/sdk-python/commit/5a169ec1541810a30e8f778148b80b593e6c62d2))
+
 ## [0.3.0](https://github.com/tembo/sdk-python/compare/v0.2.0...v0.3.0) (2026-10-19)
 
 
