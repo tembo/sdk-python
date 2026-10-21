@@ -36,6 +36,30 @@ from .diffs import (
     DiffsResourceWithStreamingResponse,
     AsyncDiffsResourceWithStreamingResponse,
 )
+from .inputs import (
+    InputsResource,
+    AsyncInputsResource,
+    InputsResourceWithRawResponse,
+    AsyncInputsResourceWithRawResponse,
+    InputsResourceWithStreamingResponse,
+    AsyncInputsResourceWithStreamingResponse,
+)
+from .queue import (
+    QueueResource,
+    AsyncQueueResource,
+    QueueResourceWithRawResponse,
+    AsyncQueueResourceWithRawResponse,
+    QueueResourceWithStreamingResponse,
+    AsyncQueueResourceWithStreamingResponse,
+)
+from .commands import (
+    CommandsResource,
+    AsyncCommandsResource,
+    CommandsResourceWithRawResponse,
+    AsyncCommandsResourceWithRawResponse,
+    CommandsResourceWithStreamingResponse,
+    AsyncCommandsResourceWithStreamingResponse,
+)
 from ...types.session_list_response import SessionListResponse
 from ...types import (
     session_list_params,
@@ -64,6 +88,18 @@ class SessionsResource(SyncAPIResource):
     @cached_property
     def diffs(self) -> DiffsResource:
         return DiffsResource(self._client)
+
+    @cached_property
+    def inputs(self) -> InputsResource:
+        return InputsResource(self._client)
+
+    @cached_property
+    def queue(self) -> QueueResource:
+        return QueueResource(self._client)
+
+    @cached_property
+    def commands(self) -> CommandsResource:
+        return CommandsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> SessionsResourceWithRawResponse:
@@ -622,6 +658,18 @@ class AsyncSessionsResource(AsyncAPIResource):
     @cached_property
     def diffs(self) -> AsyncDiffsResource:
         return AsyncDiffsResource(self._client)
+
+    @cached_property
+    def inputs(self) -> AsyncInputsResource:
+        return AsyncInputsResource(self._client)
+
+    @cached_property
+    def queue(self) -> AsyncQueueResource:
+        return AsyncQueueResource(self._client)
+
+    @cached_property
+    def commands(self) -> AsyncCommandsResource:
+        return AsyncCommandsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncSessionsResourceWithRawResponse:
@@ -1211,6 +1259,18 @@ class SessionsResourceWithRawResponse:
     def diffs(self) -> DiffsResourceWithRawResponse:
         return DiffsResourceWithRawResponse(self._sessions.diffs)
 
+    @cached_property
+    def inputs(self) -> InputsResourceWithRawResponse:
+        return InputsResourceWithRawResponse(self._sessions.inputs)
+
+    @cached_property
+    def queue(self) -> QueueResourceWithRawResponse:
+        return QueueResourceWithRawResponse(self._sessions.queue)
+
+    @cached_property
+    def commands(self) -> CommandsResourceWithRawResponse:
+        return CommandsResourceWithRawResponse(self._sessions.commands)
+
 
 class AsyncSessionsResourceWithRawResponse:
     def __init__(self, sessions: AsyncSessionsResource) -> None:
@@ -1248,6 +1308,18 @@ class AsyncSessionsResourceWithRawResponse:
     @cached_property
     def diffs(self) -> AsyncDiffsResourceWithRawResponse:
         return AsyncDiffsResourceWithRawResponse(self._sessions.diffs)
+
+    @cached_property
+    def inputs(self) -> AsyncInputsResourceWithRawResponse:
+        return AsyncInputsResourceWithRawResponse(self._sessions.inputs)
+
+    @cached_property
+    def queue(self) -> AsyncQueueResourceWithRawResponse:
+        return AsyncQueueResourceWithRawResponse(self._sessions.queue)
+
+    @cached_property
+    def commands(self) -> AsyncCommandsResourceWithRawResponse:
+        return AsyncCommandsResourceWithRawResponse(self._sessions.commands)
 
 
 class SessionsResourceWithStreamingResponse:
@@ -1287,6 +1359,18 @@ class SessionsResourceWithStreamingResponse:
     def diffs(self) -> DiffsResourceWithStreamingResponse:
         return DiffsResourceWithStreamingResponse(self._sessions.diffs)
 
+    @cached_property
+    def inputs(self) -> InputsResourceWithStreamingResponse:
+        return InputsResourceWithStreamingResponse(self._sessions.inputs)
+
+    @cached_property
+    def queue(self) -> QueueResourceWithStreamingResponse:
+        return QueueResourceWithStreamingResponse(self._sessions.queue)
+
+    @cached_property
+    def commands(self) -> CommandsResourceWithStreamingResponse:
+        return CommandsResourceWithStreamingResponse(self._sessions.commands)
+
 
 class AsyncSessionsResourceWithStreamingResponse:
     def __init__(self, sessions: AsyncSessionsResource) -> None:
@@ -1324,3 +1408,15 @@ class AsyncSessionsResourceWithStreamingResponse:
     @cached_property
     def diffs(self) -> AsyncDiffsResourceWithStreamingResponse:
         return AsyncDiffsResourceWithStreamingResponse(self._sessions.diffs)
+
+    @cached_property
+    def inputs(self) -> AsyncInputsResourceWithStreamingResponse:
+        return AsyncInputsResourceWithStreamingResponse(self._sessions.inputs)
+
+    @cached_property
+    def queue(self) -> AsyncQueueResourceWithStreamingResponse:
+        return AsyncQueueResourceWithStreamingResponse(self._sessions.queue)
+
+    @cached_property
+    def commands(self) -> AsyncCommandsResourceWithStreamingResponse:
+        return AsyncCommandsResourceWithStreamingResponse(self._sessions.commands)

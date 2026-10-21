@@ -104,6 +104,13 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
+  - [`Sessions Inputs`](#sessions-inputs)
+    - [List session inputs](#list-session-inputs)
+    - [Update a session input](#update-a-session-input)
+  - [`Sessions Queue`](#sessions-queue)
+    - [Update a session queue](#update-a-session-queue)
+  - [`Sessions Commands`](#sessions-commands)
+    - [List session commands](#list-session-commands)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [List projects](#list-projects)
@@ -1439,6 +1446,73 @@ Retrieve one recorded session diff and its content.
 diff = client.sessions.diffs.retrieve(
     session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     diff_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+)
+```
+
+### `Sessions Inputs`
+
+#### List session inputs
+
+List pending questions for the active session agent.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`InputListResponse`](./src/tembo/types/sessions/input_list_response.py) |
+
+```python
+input = client.sessions.inputs.list(
+    session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+)
+```
+
+#### Update a session input
+
+Answer a pending session question.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`InputUpdateParams`](./src/tembo/types/sessions/input_update_params.py) |
+| Response | [`InputUpdateResponse`](./src/tembo/types/sessions/input_update_response.py) |
+
+```python
+input = client.sessions.inputs.update(
+    session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    input_id="inputId",
+    answers={},
+)
+```
+
+### `Sessions Queue`
+
+#### Update a session queue
+
+Replace the order of messages waiting in a session queue.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`QueueUpdateParams`](./src/tembo/types/sessions/queue_update_params.py) |
+| Response | [`QueueUpdateResponse`](./src/tembo/types/sessions/queue_update_response.py) |
+
+```python
+queue = client.sessions.queue.update(
+    session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    message_ids=["7c9e6679-7425-40de-944b-e07fc1f90ae7"],
+)
+```
+
+### `Sessions Commands`
+
+#### List session commands
+
+List slash commands available to the session runtime.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`CommandListResponse`](./src/tembo/types/sessions/command_list_response.py) |
+
+```python
+command = client.sessions.commands.list(
+    session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
 )
 ```
 
