@@ -175,6 +175,9 @@ from .integration_sync_all_params import IntegrationSyncAllParams as Integration
 from .integration_retrieve_sync_status_response import (
     IntegrationRetrieveSyncStatusResponse as IntegrationRetrieveSyncStatusResponse,
 )
+from .integration_retrieve_sync_status_params import (
+    IntegrationRetrieveSyncStatusParams as IntegrationRetrieveSyncStatusParams,
+)
 from .integration_retrieve_rate_limit_response import (
     IntegrationRetrieveRateLimitResponse as IntegrationRetrieveRateLimitResponse,
 )

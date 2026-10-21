@@ -1785,19 +1785,25 @@ def _smoke_case_206() -> None:
 
 
 def _smoke_case_207() -> None:
-    integration = client.integrations.retrieve_rate_limit(
+    integration = client.integrations.retrieve_sync_status(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
 def _smoke_case_208() -> None:
+    integration = client.integrations.retrieve_rate_limit(
+        integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    )
+
+
+def _smoke_case_209() -> None:
     integration = client.integrations.list_sentry_environments(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_209() -> None:
+def _smoke_case_210() -> None:
     integration = client.integrations.list_sentry_environments(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -1805,14 +1811,14 @@ def _smoke_case_209() -> None:
     )
 
 
-def _smoke_case_210() -> None:
+def _smoke_case_211() -> None:
     integration = client.integrations.list_slack_channels(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_211() -> None:
+def _smoke_case_212() -> None:
     integration = client.integrations.list_slack_channels(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -1821,13 +1827,13 @@ def _smoke_case_211() -> None:
     )
 
 
-def _smoke_case_212() -> None:
+def _smoke_case_213() -> None:
     provider = client.integrations.providers.list(
         limit=50,
     )
 
 
-def _smoke_case_213() -> None:
+def _smoke_case_214() -> None:
     provider = client.integrations.providers.list(
         cursor="cursor",
         limit=50,
@@ -1835,7 +1841,7 @@ def _smoke_case_213() -> None:
     )
 
 
-def _smoke_case_214() -> None:
+def _smoke_case_215() -> None:
     provider = client.integrations.providers.discover_snyk_organizations(
         client_id="x",
         client_secret="x",
@@ -1843,7 +1849,7 @@ def _smoke_case_214() -> None:
     )
 
 
-def _smoke_case_215() -> None:
+def _smoke_case_216() -> None:
     provider = client.integrations.providers.discover_snyk_organizations(
         client_id="x",
         client_secret="x",
@@ -1852,27 +1858,27 @@ def _smoke_case_215() -> None:
     )
 
 
-def _smoke_case_216() -> None:
+def _smoke_case_217() -> None:
     trigger = client.integrations.triggers.list(
         limit=50,
     )
 
 
-def _smoke_case_217() -> None:
+def _smoke_case_218() -> None:
     trigger = client.integrations.triggers.list(
         cursor="cursor",
         limit=50,
     )
 
 
-def _smoke_case_218() -> None:
+def _smoke_case_219() -> None:
     trigger = client.integrations.triggers.retrieve(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
     )
 
 
-def _smoke_case_219() -> None:
+def _smoke_case_220() -> None:
     trigger = client.integrations.triggers.list_filter_options(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
@@ -1881,7 +1887,7 @@ def _smoke_case_219() -> None:
     )
 
 
-def _smoke_case_220() -> None:
+def _smoke_case_221() -> None:
     trigger = client.integrations.triggers.list_filter_options(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
@@ -1892,17 +1898,17 @@ def _smoke_case_220() -> None:
     )
 
 
-def _smoke_case_221() -> None:
+def _smoke_case_222() -> None:
     billing = client.billing.retrieve()
 
 
-def _smoke_case_222() -> None:
+def _smoke_case_223() -> None:
     billing = client.billing.list_usage(
         limit=50,
     )
 
 
-def _smoke_case_223() -> None:
+def _smoke_case_224() -> None:
     billing = client.billing.list_usage(
         cursor="cursor",
         limit=50,
@@ -1910,11 +1916,11 @@ def _smoke_case_223() -> None:
     )
 
 
-def _smoke_case_224() -> None:
+def _smoke_case_225() -> None:
     live = client.live.authorize()
 
 
-def _smoke_case_225() -> None:
+def _smoke_case_226() -> None:
     def _probe() -> None:
         with client.live.connect() as socket:
             try:
@@ -3294,135 +3300,143 @@ cases: list[SmokeCase] = [
         "operation": "retrieveSyncStatus",
         "method": "GET",
         "path": "/v1/integrations/sync/status",
+        "label": "required params",
         "run": _smoke_case_206,
+    },
+    {
+        "operation": "retrieveSyncStatus",
+        "method": "GET",
+        "path": "/v1/integrations/sync/status",
+        "label": "all params",
+        "run": _smoke_case_207,
     },
     {
         "operation": "retrieveRateLimit",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/rate-limit",
-        "run": _smoke_case_207,
-    },
-    {
-        "operation": "listSentryEnvironments",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/sentry-environments",
-        "label": "required params",
         "run": _smoke_case_208,
     },
     {
         "operation": "listSentryEnvironments",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/sentry-environments",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_209,
     },
     {
-        "operation": "listSlackChannels",
+        "operation": "listSentryEnvironments",
         "method": "GET",
-        "path": "/v1/integrations/{integrationId}/slack-channels",
-        "label": "required params",
+        "path": "/v1/integrations/{integrationId}/sentry-environments",
+        "label": "all params",
         "run": _smoke_case_210,
     },
     {
         "operation": "listSlackChannels",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/slack-channels",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_211,
     },
     {
-        "operation": "list",
+        "operation": "listSlackChannels",
         "method": "GET",
-        "path": "/v1/integrations/providers",
-        "label": "required params",
+        "path": "/v1/integrations/{integrationId}/slack-channels",
+        "label": "all params",
         "run": _smoke_case_212,
     },
     {
         "operation": "list",
         "method": "GET",
         "path": "/v1/integrations/providers",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_213,
     },
     {
-        "operation": "discoverSnykOrganizations",
-        "method": "POST",
-        "path": "/v1/integrations/providers/snyk/organizations",
-        "label": "required params",
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/integrations/providers",
+        "label": "all params",
         "run": _smoke_case_214,
     },
     {
         "operation": "discoverSnykOrganizations",
         "method": "POST",
         "path": "/v1/integrations/providers/snyk/organizations",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_215,
     },
     {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/integrations/triggers",
-        "label": "required params",
+        "operation": "discoverSnykOrganizations",
+        "method": "POST",
+        "path": "/v1/integrations/providers/snyk/organizations",
+        "label": "all params",
         "run": _smoke_case_216,
     },
     {
         "operation": "list",
         "method": "GET",
         "path": "/v1/integrations/triggers",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_217,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/integrations/triggers",
+        "label": "all params",
+        "run": _smoke_case_218,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/triggers/{triggerName}",
-        "run": _smoke_case_218,
-    },
-    {
-        "operation": "listFilterOptions",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
-        "label": "required params",
         "run": _smoke_case_219,
     },
     {
         "operation": "listFilterOptions",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_220,
+    },
+    {
+        "operation": "listFilterOptions",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
+        "label": "all params",
+        "run": _smoke_case_221,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/billing",
-        "run": _smoke_case_221,
-    },
-    {
-        "operation": "listUsage",
-        "method": "GET",
-        "path": "/v1/billing/usage",
-        "label": "required params",
         "run": _smoke_case_222,
     },
     {
         "operation": "listUsage",
         "method": "GET",
         "path": "/v1/billing/usage",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_223,
+    },
+    {
+        "operation": "listUsage",
+        "method": "GET",
+        "path": "/v1/billing/usage",
+        "label": "all params",
+        "run": _smoke_case_224,
     },
     {
         "operation": "authorize",
         "method": "POST",
         "path": "/v1/live",
-        "run": _smoke_case_224,
+        "run": _smoke_case_225,
     },
     {
         "operation": "connect",
         "method": "GET",
         "path": "/v1/live",
-        "run": _smoke_case_225,
+        "run": _smoke_case_226,
     },
 ]
 

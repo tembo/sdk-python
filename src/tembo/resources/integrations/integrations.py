@@ -44,6 +44,7 @@ from ...types import (
     integration_authorize_params,
     integration_sync_params,
     integration_sync_all_params,
+    integration_retrieve_sync_status_params,
     integration_list_sentry_environments_params,
     integration_list_slack_channels_params,
 )
@@ -774,6 +775,7 @@ class IntegrationsResource(SyncAPIResource):
     def retrieve_sync_status(
         self,
         *,
+        integration_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -782,16 +784,17 @@ class IntegrationsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationRetrieveSyncStatusResponse:
         """
-        Count active sync jobs for integrations with enabled repositories.
+        Count active sync jobs for an integration or eligible integrations.
 
         Args:
+            integration_id: Query parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
             timeout: Override the client-level default timeout for this request, in seconds.
 
         Returns:
-            IntegrationRetrieveSyncStatusResponse: Retrieve eligible integration sync status
+            IntegrationRetrieveSyncStatusResponse: Retrieve integration sync status
 
         Example:
             ```python
@@ -801,7 +804,14 @@ class IntegrationsResource(SyncAPIResource):
         return self._get(
             "/v1/integrations/sync/status",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"integration_id": integration_id},
+                    integration_retrieve_sync_status_params.IntegrationRetrieveSyncStatusParams,
+                ),
             ),
             cast_to=IntegrationRetrieveSyncStatusResponse,
         )
@@ -1667,6 +1677,7 @@ class AsyncIntegrationsResource(AsyncAPIResource):
     async def retrieve_sync_status(
         self,
         *,
+        integration_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1675,16 +1686,17 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationRetrieveSyncStatusResponse:
         """
-        Count active sync jobs for integrations with enabled repositories.
+        Count active sync jobs for an integration or eligible integrations.
 
         Args:
+            integration_id: Query parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
             timeout: Override the client-level default timeout for this request, in seconds.
 
         Returns:
-            IntegrationRetrieveSyncStatusResponse: Retrieve eligible integration sync status
+            IntegrationRetrieveSyncStatusResponse: Retrieve integration sync status
 
         Example:
             ```python
@@ -1694,7 +1706,14 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         return await self._get(
             "/v1/integrations/sync/status",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"integration_id": integration_id},
+                    integration_retrieve_sync_status_params.IntegrationRetrieveSyncStatusParams,
+                ),
             ),
             cast_to=IntegrationRetrieveSyncStatusResponse,
         )

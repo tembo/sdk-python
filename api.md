@@ -183,7 +183,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Test an integration](#test-an-integration)
   - [Sync an integration](#sync-an-integration)
   - [Sync eligible integrations](#sync-eligible-integrations)
-  - [Retrieve eligible integration sync status](#retrieve-eligible-integration-sync-status)
+  - [Retrieve integration sync status](#retrieve-integration-sync-status)
   - [Retrieve an integration rate limit](#retrieve-an-integration-rate-limit)
   - [List Sentry environments](#list-sentry-environments)
   - [List Slack channels](#list-slack-channels)
@@ -2449,12 +2449,13 @@ Queue integration and pull-request sync jobs for integrations with enabled repos
 integration = client.integrations.sync_all()
 ```
 
-### Retrieve eligible integration sync status
+### Retrieve integration sync status
 
-Count active sync jobs for integrations with enabled repositories.
+Count active sync jobs for an integration or eligible integrations.
 
 | Direction | Type |
 | --- | --- |
+| Request | [`IntegrationRetrieveSyncStatusParams`](./src/tembo/types/integration_retrieve_sync_status_params.py) |
 | Response | [`IntegrationRetrieveSyncStatusResponse`](./src/tembo/types/integration_retrieve_sync_status_response.py) |
 
 ```python
