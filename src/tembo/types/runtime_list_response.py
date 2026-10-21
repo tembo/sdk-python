@@ -96,6 +96,9 @@ class ItemCompatibleModel(BaseModel):
 
     provider: str
 
+    inference_source: Optional[str] = FieldInfo(alias="inferenceSource", default=None)
+    """Selected subscription, API provider, or CLI API billing source for this runtime and model."""
+
     is_default: bool = FieldInfo(alias="isDefault")
 
     is_platform_default: bool = FieldInfo(alias="isPlatformDefault")

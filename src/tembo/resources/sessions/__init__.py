@@ -24,6 +24,30 @@ from .diffs import (
     DiffsResourceWithStreamingResponse,
     AsyncDiffsResourceWithStreamingResponse,
 )
+from .inputs import (
+    InputsResource,
+    AsyncInputsResource,
+    InputsResourceWithRawResponse,
+    AsyncInputsResourceWithRawResponse,
+    InputsResourceWithStreamingResponse,
+    AsyncInputsResourceWithStreamingResponse,
+)
+from .queue import (
+    QueueResource,
+    AsyncQueueResource,
+    QueueResourceWithRawResponse,
+    AsyncQueueResourceWithRawResponse,
+    QueueResourceWithStreamingResponse,
+    AsyncQueueResourceWithStreamingResponse,
+)
+from .commands import (
+    CommandsResource,
+    AsyncCommandsResource,
+    CommandsResourceWithRawResponse,
+    AsyncCommandsResourceWithRawResponse,
+    CommandsResourceWithStreamingResponse,
+    AsyncCommandsResourceWithStreamingResponse,
+)
 
 __all__ = [
     "SessionsResource",
@@ -44,4 +68,22 @@ __all__ = [
     "AsyncDiffsResourceWithRawResponse",
     "DiffsResourceWithStreamingResponse",
     "AsyncDiffsResourceWithStreamingResponse",
+    "InputsResource",
+    "AsyncInputsResource",
+    "InputsResourceWithRawResponse",
+    "AsyncInputsResourceWithRawResponse",
+    "InputsResourceWithStreamingResponse",
+    "AsyncInputsResourceWithStreamingResponse",
+    "QueueResource",
+    "AsyncQueueResource",
+    "QueueResourceWithRawResponse",
+    "AsyncQueueResourceWithRawResponse",
+    "QueueResourceWithStreamingResponse",
+    "AsyncQueueResourceWithStreamingResponse",
+    "CommandsResource",
+    "AsyncCommandsResource",
+    "CommandsResourceWithRawResponse",
+    "AsyncCommandsResourceWithRawResponse",
+    "CommandsResourceWithStreamingResponse",
+    "AsyncCommandsResourceWithStreamingResponse",
 ]

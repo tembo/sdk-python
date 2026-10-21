@@ -1,6 +1,6 @@
 [project]
 name = "tembo-sdk-python"
-version = "0.3.0" # x-release-please-version
+version = "0.4.0" # x-release-please-version
 description = "Manage agents, sessions, repositories, and organization resources with the Tembo API."
 readme = "README.md"
 license = "Apache-2.0"
