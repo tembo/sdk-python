@@ -130,6 +130,9 @@ class ItemRunCapabilities(BaseModel):
 
     supports_goals: bool = FieldInfo(alias="supportsGoals")
 
+    ultracode_models: List[str] = FieldInfo(alias="ultracodeModels")
+    """Models that support ultracode workflow orchestration."""
+
 
 class Item(BaseModel):
     name: Literal["claudeCode", "codex", "opencode", "cursor", "amp", "fx", "pi"]
