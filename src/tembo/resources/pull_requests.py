@@ -50,6 +50,7 @@ class PullRequestsResource(SyncAPIResource):
         has_tembo_session: bool | Omit = omit,
         include_authors: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        include_stacks: bool | Omit = omit,
         repository_ids: SequenceNotStr[str] | Omit = omit,
         reviewer_ids: SequenceNotStr[str] | Omit = omit,
         merged_after: Union[str, datetime] | Omit = omit,
@@ -79,6 +80,7 @@ class PullRequestsResource(SyncAPIResource):
             has_tembo_session: When true, only return pull requests with a linked Tembo session.
             include_authors: Request author filter options. Public responses do not include organization-wide author options.
             include_total: Include the total count of matching pull requests.
+            include_stacks: Include each open pull request's position in its stack of dependent pull requests. Public responses do not include stacks.
             repository_ids: Filter by repository IDs, supplied as a comma-separated list.
             reviewer_ids: Filter by assigned reviewer identifiers, supplied as a comma-separated list.
             merged_after: Only pull requests merged after this ISO 8601 timestamp.
@@ -121,6 +123,7 @@ class PullRequestsResource(SyncAPIResource):
                         "has_tembo_session": has_tembo_session,
                         "include_authors": include_authors,
                         "include_total": include_total,
+                        "include_stacks": include_stacks,
                         "repository_ids": repository_ids,
                         "reviewer_ids": reviewer_ids,
                         "merged_after": merged_after,
@@ -200,6 +203,7 @@ class AsyncPullRequestsResource(AsyncAPIResource):
         has_tembo_session: bool | Omit = omit,
         include_authors: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        include_stacks: bool | Omit = omit,
         repository_ids: SequenceNotStr[str] | Omit = omit,
         reviewer_ids: SequenceNotStr[str] | Omit = omit,
         merged_after: Union[str, datetime] | Omit = omit,
@@ -229,6 +233,7 @@ class AsyncPullRequestsResource(AsyncAPIResource):
             has_tembo_session: When true, only return pull requests with a linked Tembo session.
             include_authors: Request author filter options. Public responses do not include organization-wide author options.
             include_total: Include the total count of matching pull requests.
+            include_stacks: Include each open pull request's position in its stack of dependent pull requests. Public responses do not include stacks.
             repository_ids: Filter by repository IDs, supplied as a comma-separated list.
             reviewer_ids: Filter by assigned reviewer identifiers, supplied as a comma-separated list.
             merged_after: Only pull requests merged after this ISO 8601 timestamp.
@@ -271,6 +276,7 @@ class AsyncPullRequestsResource(AsyncAPIResource):
                         "has_tembo_session": has_tembo_session,
                         "include_authors": include_authors,
                         "include_total": include_total,
+                        "include_stacks": include_stacks,
                         "repository_ids": repository_ids,
                         "reviewer_ids": reviewer_ids,
                         "merged_after": merged_after,

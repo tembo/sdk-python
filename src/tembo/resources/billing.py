@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import httpx
 
+from typing import Union
+from datetime import datetime
+from .._types import SequenceNotStr
+
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from .._utils import maybe_transform, async_maybe_transform
 from .._compat import cached_property
@@ -72,6 +76,10 @@ class BillingResource(SyncAPIResource):
         cursor: str | Omit = omit,
         limit: int | Omit = omit,
         session_id: str | Omit = omit,
+        created_after: Union[str, datetime] | Omit = omit,
+        created_before: Union[str, datetime] | Omit = omit,
+        created_by: SequenceNotStr[str] | Omit = omit,
+        models: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -86,6 +94,10 @@ class BillingResource(SyncAPIResource):
             cursor: Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
             session_id: Filter billing usage to this session.
+            created_after: Only sessions created at or after this ISO 8601 timestamp.
+            created_before: Only sessions created before this ISO 8601 timestamp.
+            created_by: Filter by creator IDs, supplied as a comma-separated list.
+            models: Filter by model names, supplied as a comma-separated list.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -109,7 +121,15 @@ class BillingResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=maybe_transform(
-                    {"cursor": cursor, "limit": limit, "session_id": session_id},
+                    {
+                        "cursor": cursor,
+                        "limit": limit,
+                        "session_id": session_id,
+                        "created_after": created_after,
+                        "created_before": created_before,
+                        "created_by": created_by,
+                        "models": models,
+                    },
                     billing_list_usage_params.BillingListUsageParams,
                 ),
             ),
@@ -167,6 +187,10 @@ class AsyncBillingResource(AsyncAPIResource):
         cursor: str | Omit = omit,
         limit: int | Omit = omit,
         session_id: str | Omit = omit,
+        created_after: Union[str, datetime] | Omit = omit,
+        created_before: Union[str, datetime] | Omit = omit,
+        created_by: SequenceNotStr[str] | Omit = omit,
+        models: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -181,6 +205,10 @@ class AsyncBillingResource(AsyncAPIResource):
             cursor: Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
             session_id: Filter billing usage to this session.
+            created_after: Only sessions created at or after this ISO 8601 timestamp.
+            created_before: Only sessions created before this ISO 8601 timestamp.
+            created_by: Filter by creator IDs, supplied as a comma-separated list.
+            models: Filter by model names, supplied as a comma-separated list.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -204,7 +232,15 @@ class AsyncBillingResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=await async_maybe_transform(
-                    {"cursor": cursor, "limit": limit, "session_id": session_id},
+                    {
+                        "cursor": cursor,
+                        "limit": limit,
+                        "session_id": session_id,
+                        "created_after": created_after,
+                        "created_before": created_before,
+                        "created_by": created_by,
+                        "models": models,
+                    },
                     billing_list_usage_params.BillingListUsageParams,
                 ),
             ),
