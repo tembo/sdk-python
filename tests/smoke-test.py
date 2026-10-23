@@ -586,7 +586,7 @@ def _smoke_case_67() -> None:
         mcp_servers=["x"],
         pull_request_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
-        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}},
+        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}, "ultracode": False},
         delivery_mode="queue",
         rich_content={
             "type": "doc",
@@ -866,7 +866,7 @@ def _smoke_case_96() -> None:
         sandbox_size="nano",
         target_branch="main",
         visibility="private",
-        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}},
+        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}, "ultracode": False},
         branch_name="x",
         code_repository_ids=["123e4567-e89b-12d3-a456-426614174000"],
         description="Fix the authentication bug in the login component",
@@ -895,7 +895,7 @@ def _smoke_case_99() -> None:
     session = client.sessions.update(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         agent="x",
-        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}},
+        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}, "ultracode": False},
         base_branch="x",
         branch_name="x",
         description="x",
@@ -1361,6 +1361,7 @@ def _smoke_case_157() -> None:
         has_tembo_session=True,
         include_authors=True,
         include_total=True,
+        include_stacks=True,
         repository_ids=["repository_id"],
         reviewer_ids=["reviewer_id"],
         merged_after="2024-01-01T00:00:00.000Z",
@@ -1410,7 +1411,7 @@ def _smoke_case_162() -> None:
         },
         mcp_servers=["x"],
         agent="x",
-        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}},
+        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}, "ultracode": False},
         sandbox_size="nano",
         project_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         artifact_type="PullRequest",
@@ -1446,7 +1447,7 @@ def _smoke_case_165() -> None:
         },
         mcp_servers=["x"],
         agent="x",
-        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}},
+        agent_options={"reasoning_level": "x", "mode": "normal", "speed": "normal", "goal": {}, "ultracode": False},
         user_state={},
         sandbox_size="nano",
         project_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1940,6 +1941,10 @@ def _smoke_case_228() -> None:
         cursor="cursor",
         limit=50,
         session_id="session_id",
+        created_after="2024-01-01T00:00:00.000Z",
+        created_before="2024-01-01T00:00:00.000Z",
+        created_by=["created_by"],
+        models=["model"],
     )
 
 

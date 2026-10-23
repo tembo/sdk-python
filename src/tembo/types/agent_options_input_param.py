@@ -27,5 +27,8 @@ class Variant(TypedDict, total=False):
 
     goal: VariantGoal
 
+    ultracode: bool
+    """Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model."""
+
 
 AgentOptionsInputParam: TypeAlias = Union[Variant, Dict[str, object]]

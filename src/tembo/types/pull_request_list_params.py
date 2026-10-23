@@ -46,6 +46,9 @@ class PullRequestListParams(TypedDict, total=False):
     include_total: Annotated[bool, PropertyInfo(alias="includeTotal")]
     """Include the total count of matching pull requests."""
 
+    include_stacks: Annotated[bool, PropertyInfo(alias="includeStacks")]
+    """Include each open pull request's position in its stack of dependent pull requests. Public responses do not include stacks."""
+
     repository_ids: Annotated[SequenceNotStr[str], PropertyInfo(alias="repositoryIds")]
     """Filter by repository IDs, supplied as a comma-separated list."""
 

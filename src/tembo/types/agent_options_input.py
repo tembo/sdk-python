@@ -29,6 +29,9 @@ class AgentOptionsInput2(BaseModel):
 
     goal: Optional[AgentOptionsInput2Goal] = None
 
+    ultracode: Optional[bool] = None
+    """Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model."""
+
     if TYPE_CHECKING:
         # Some versions of Pydantic <2.8.0 have a bug and don’t allow assigning a
         # value to this field, so for compatibility we avoid doing it at runtime.

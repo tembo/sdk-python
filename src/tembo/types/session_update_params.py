@@ -93,6 +93,9 @@ class AgentOptions(TypedDict, total=False):
 
     goal: AgentOptionsGoal
 
+    ultracode: bool
+    """Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model."""
+
 
 from .session_document_node_param import SessionDocumentNodeParam
 from .tip_tap_document_param import TipTapDocumentParam

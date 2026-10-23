@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from typing import Union
+from datetime import datetime
 from typing_extensions import Annotated, TypedDict
+from .._types import SequenceNotStr
 
 from .._utils import PropertyInfo
 
@@ -18,3 +21,15 @@ class BillingListUsageParams(TypedDict, total=False):
 
     session_id: Annotated[str, PropertyInfo(alias="sessionId")]
     """Filter billing usage to this session."""
+
+    created_after: Annotated[Union[str, datetime], PropertyInfo(alias="createdAfter", format="iso8601")]
+    """Only sessions created at or after this ISO 8601 timestamp."""
+
+    created_before: Annotated[Union[str, datetime], PropertyInfo(alias="createdBefore", format="iso8601")]
+    """Only sessions created before this ISO 8601 timestamp."""
+
+    created_by: Annotated[SequenceNotStr[str], PropertyInfo(alias="createdBy")]
+    """Filter by creator IDs, supplied as a comma-separated list."""
+
+    models: SequenceNotStr[str]
+    """Filter by model names, supplied as a comma-separated list."""
