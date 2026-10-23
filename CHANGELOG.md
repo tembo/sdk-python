@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/tembo/sdk-python/compare/v0.4.0...v0.5.0) (2026-10-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `agent_options_input` shape changed.
+
+### Features
+
+* **api:** update schema agent_options_input (+7 more changes) ([1284046](https://github.com/tembo/sdk-python/commit/1284046585d20374b6f94c05393ed468bf45a5b4))
+
 ## [0.4.0](https://github.com/tembo/sdk-python/compare/v0.3.0...v0.4.0) (2026-10-21)
 
 
