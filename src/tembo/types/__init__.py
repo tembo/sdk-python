@@ -107,8 +107,6 @@ from .runtime_list_response import RuntimeListResponse as RuntimeListResponse
 from .runtime_list_params import RuntimeListParams as RuntimeListParams
 from .user_me_response import UserMeResponse as UserMeResponse
 from .user_retrieve_response import UserRetrieveResponse as UserRetrieveResponse
-from .user_delete_response import UserDeleteResponse as UserDeleteResponse
-from .user_delete_params import UserDeleteParams as UserDeleteParams
 from .session_list_response import SessionListResponse as SessionListResponse
 from .session_list_params import SessionListParams as SessionListParams
 from .session_create_response import SessionCreateResponse as SessionCreateResponse

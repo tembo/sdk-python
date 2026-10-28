@@ -2,17 +2,38 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List, Optional, Union
 from datetime import datetime
+from typing_extensions import Literal, TypeAlias
 
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["BillingListUsageResponse", "Item"]
+__all__ = ["BillingListUsageResponse", "Item", "Item2", "Item3"]
 
 
-class Item(BaseModel):
+class Item3(BaseModel):
+    id: str
+
+    virtual_machine_id: str = FieldInfo(alias="virtualMachineId")
+
+    started_at: datetime = FieldInfo(alias="startedAt")
+
+    ended_at: Optional[datetime] = FieldInfo(alias="endedAt", default=None)
+
+    runtime_ms: float = FieldInfo(alias="runtimeMs")
+
+    cpu: float
+
+    memory_mb: float = FieldInfo(alias="memoryMb")
+
+    compute_credits: float = FieldInfo(alias="computeCredits")
+
+    type: Literal["warm-pool"]
+
+
+class Item2(BaseModel):
     agent: Optional[str] = None
 
     id: str
@@ -28,6 +49,11 @@ class Item(BaseModel):
     compute_credits: float = FieldInfo(alias="computeCredits")
 
     total_credits: float = FieldInfo(alias="totalCredits")
+
+    type: Literal["session"]
+
+
+Item: TypeAlias = Union[Item2, Item3]
 
 
 class BillingListUsageResponse(BaseModel):

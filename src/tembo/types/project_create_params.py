@@ -2,24 +2,26 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
-from typing_extensions import Annotated, Literal, Required, TypedDict
+from typing import List, Optional, Union
+from typing_extensions import Annotated, Literal, Required, TypeAlias, TypedDict
 from .._types import SequenceNotStr
 
 from .._utils import PropertyInfo
 
-__all__ = ["ProjectCreateParams", "Schedule"]
+__all__ = [
+    "ProjectCreateParams",
+    "Schedule",
+    "ResourceSettings",
+    "ResourceSettings2",
+    "ResourceSettings2Allocation",
+    "ResourceSettings3",
+    "ResourceSettings3Allocation",
+]
 
 
 class ProjectCreateParams(TypedDict, total=False):
     description: Optional[str]
     """Short project description, or null to clear it."""
-
-    include_deps: Annotated[bool, PropertyInfo(alias="includeDeps")]
-    """Include project dependencies when building the environment. Defaults to true on creation."""
-
-    include_skills: Annotated[bool, PropertyInfo(alias="includeSkills")]
-    """Include skills in the project environment. Defaults to true on creation."""
 
     name: Required[str]
     """Project display name."""
@@ -62,6 +64,12 @@ class ProjectCreateParams(TypedDict, total=False):
     ]
     """Project display icon."""
 
+    include_deps: Annotated[bool, PropertyInfo(alias="includeDeps")]
+    """Deprecated and ignored. Project builds always install dependencies."""
+
+    include_skills: Annotated[bool, PropertyInfo(alias="includeSkills")]
+    """Deprecated and ignored. Project builds always include skills."""
+
     onboarding_default: Annotated[bool, PropertyInfo(alias="onboardingDefault")]
     """Make this project the onboarding default for the organization."""
 
@@ -71,8 +79,49 @@ class ProjectCreateParams(TypedDict, total=False):
     schedule: Schedule
     """Recurring schedule for rebuilding the project environment."""
 
-    sizes: Required[List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]]]
+    sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]]
     """Workspace VM sizes to build for this project."""
+
+    resource_settings: Annotated[ResourceSettings, PropertyInfo(alias="resourceSettings")]
+
+
+class ResourceSettings3Allocation(TypedDict, total=False):
+    cpu_min: Annotated[int, PropertyInfo(alias="cpuMin")]
+
+    cpu_max: Annotated[int, PropertyInfo(alias="cpuMax")]
+
+    memory_min_mb: Required[Annotated[int, PropertyInfo(alias="memoryMinMb")]]
+
+    memory_max_mb: Required[Annotated[int, PropertyInfo(alias="memoryMaxMb")]]
+
+    disk_size_gb: Required[Annotated[int, PropertyInfo(alias="diskSizeGb")]]
+
+
+class ResourceSettings3(TypedDict, total=False):
+    automatic_sizing: Required[Annotated[Literal[False], PropertyInfo(alias="automaticSizing")]]
+
+    allocation: ResourceSettings3Allocation
+
+
+class ResourceSettings2Allocation(TypedDict, total=False):
+    cpu_min: Annotated[int, PropertyInfo(alias="cpuMin")]
+
+    cpu_max: Annotated[int, PropertyInfo(alias="cpuMax")]
+
+    memory_min_mb: Required[Annotated[int, PropertyInfo(alias="memoryMinMb")]]
+
+    memory_max_mb: Required[Annotated[int, PropertyInfo(alias="memoryMaxMb")]]
+
+    disk_size_gb: Required[Annotated[int, PropertyInfo(alias="diskSizeGb")]]
+
+
+class ResourceSettings2(TypedDict, total=False):
+    automatic_sizing: Required[Annotated[Literal[True], PropertyInfo(alias="automaticSizing")]]
+
+    allocation: ResourceSettings2Allocation
+
+
+ResourceSettings: TypeAlias = Union[ResourceSettings2, ResourceSettings3]
 
 
 class Schedule(TypedDict, total=False):

@@ -236,6 +236,7 @@ class SessionsResource(SyncAPIResource):
         rich_content: session_create_params.RichContent | Omit = omit,
         pull_request_id: str | Omit = omit,
         queue_right_away: bool | Omit = omit,
+        automatic_sizing: bool | Omit = omit,
         session_mode: Literal["chat", "terminal"] | Omit = omit,
         startup_agent: Literal["claudeCode", "codex", "opencode", "pi", "amp", "cursor"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -264,6 +265,7 @@ class SessionsResource(SyncAPIResource):
             rich_content: Optional rich-text representation of the initial task. Provide description separately.
             pull_request_id: Pull request to associate with the session. Requires richContent.
             queue_right_away: Whether to queue the initial task immediately instead of only creating the session.
+            automatic_sizing: Size the VM automatically. Only for sessions created without a project (projectId "tembo").
             session_mode: Whether to create a chat session or a terminal session.
             startup_agent: Coding agent to start in a terminal session.
             extra_headers: Send extra headers with the request.
@@ -307,6 +309,7 @@ class SessionsResource(SyncAPIResource):
                     "rich_content": rich_content,
                     "pull_request_id": pull_request_id,
                     "queue_right_away": queue_right_away,
+                    "automatic_sizing": automatic_sizing,
                     "session_mode": session_mode,
                     "startup_agent": startup_agent,
                 },
@@ -363,6 +366,7 @@ class SessionsResource(SyncAPIResource):
         self,
         session_id: str,
         *,
+        memory_mb: int | Omit = omit,
         agent: Optional[str] | Omit = omit,
         agent_options: session_update_params.AgentOptions | Omit = omit,
         base_branch: Optional[str] | Omit = omit,
@@ -386,10 +390,11 @@ class SessionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SessionUpdateResponse:
         """
-        Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
+        Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
 
         Args:
             session_id: Path parameter.
+            memory_mb: Request in-place memory growth for a running adaptive sandbox, within project limits. Submit separately from other session changes. Returns the session while the resize runs asynchronously; sandbox metrics report its progress.
             agent: Change the agent and model key. Null clears the session override.
             agent_options: Change agent-specific runtime options, such as reasoning effort.
             base_branch: Change the starting Git branch. Null clears the session override.
@@ -425,6 +430,7 @@ class SessionsResource(SyncAPIResource):
             path_template("/v1/sessions/{sessionId}", **{"sessionId": session_id}),
             body=maybe_transform(
                 {
+                    "memory_mb": memory_mb,
                     "agent": agent,
                     "agent_options": agent_options,
                     "base_branch": base_branch,
@@ -806,6 +812,7 @@ class AsyncSessionsResource(AsyncAPIResource):
         rich_content: session_create_params.RichContent | Omit = omit,
         pull_request_id: str | Omit = omit,
         queue_right_away: bool | Omit = omit,
+        automatic_sizing: bool | Omit = omit,
         session_mode: Literal["chat", "terminal"] | Omit = omit,
         startup_agent: Literal["claudeCode", "codex", "opencode", "pi", "amp", "cursor"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -834,6 +841,7 @@ class AsyncSessionsResource(AsyncAPIResource):
             rich_content: Optional rich-text representation of the initial task. Provide description separately.
             pull_request_id: Pull request to associate with the session. Requires richContent.
             queue_right_away: Whether to queue the initial task immediately instead of only creating the session.
+            automatic_sizing: Size the VM automatically. Only for sessions created without a project (projectId "tembo").
             session_mode: Whether to create a chat session or a terminal session.
             startup_agent: Coding agent to start in a terminal session.
             extra_headers: Send extra headers with the request.
@@ -877,6 +885,7 @@ class AsyncSessionsResource(AsyncAPIResource):
                     "rich_content": rich_content,
                     "pull_request_id": pull_request_id,
                     "queue_right_away": queue_right_away,
+                    "automatic_sizing": automatic_sizing,
                     "session_mode": session_mode,
                     "startup_agent": startup_agent,
                 },
@@ -933,6 +942,7 @@ class AsyncSessionsResource(AsyncAPIResource):
         self,
         session_id: str,
         *,
+        memory_mb: int | Omit = omit,
         agent: Optional[str] | Omit = omit,
         agent_options: session_update_params.AgentOptions | Omit = omit,
         base_branch: Optional[str] | Omit = omit,
@@ -956,10 +966,11 @@ class AsyncSessionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SessionUpdateResponse:
         """
-        Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
+        Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
 
         Args:
             session_id: Path parameter.
+            memory_mb: Request in-place memory growth for a running adaptive sandbox, within project limits. Submit separately from other session changes. Returns the session while the resize runs asynchronously; sandbox metrics report its progress.
             agent: Change the agent and model key. Null clears the session override.
             agent_options: Change agent-specific runtime options, such as reasoning effort.
             base_branch: Change the starting Git branch. Null clears the session override.
@@ -995,6 +1006,7 @@ class AsyncSessionsResource(AsyncAPIResource):
             path_template("/v1/sessions/{sessionId}", **{"sessionId": session_id}),
             body=await async_maybe_transform(
                 {
+                    "memory_mb": memory_mb,
                     "agent": agent,
                     "agent_options": agent_options,
                     "base_branch": base_branch,

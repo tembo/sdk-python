@@ -2,15 +2,74 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List, Optional, Union
 from datetime import datetime
-from typing_extensions import Literal
+from typing_extensions import Literal, TypeAlias
 
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["ProjectCreateResponse", "Project", "ProjectActiveSnapshot"]
+__all__ = [
+    "ProjectCreateResponse",
+    "Project",
+    "ProjectActiveSnapshot",
+    "ProjectResourceSettings",
+    "ProjectResourceSettings2",
+    "ProjectResourceSettings2Allocation",
+    "ProjectResourceSettings3",
+    "ProjectResourceSettings3Allocation",
+    "ProjectWarmPoolSchedule",
+]
+
+
+class ProjectWarmPoolSchedule(BaseModel):
+    timezone: str
+
+    days: List[int]
+
+    start_time: str = FieldInfo(alias="startTime")
+
+    end_time: str = FieldInfo(alias="endTime")
+
+
+class ProjectResourceSettings3Allocation(BaseModel):
+    cpu_min: Optional[int] = FieldInfo(alias="cpuMin", default=None)
+
+    cpu_max: Optional[int] = FieldInfo(alias="cpuMax", default=None)
+
+    memory_min_mb: int = FieldInfo(alias="memoryMinMb")
+
+    memory_max_mb: int = FieldInfo(alias="memoryMaxMb")
+
+    disk_size_gb: int = FieldInfo(alias="diskSizeGb")
+
+
+class ProjectResourceSettings3(BaseModel):
+    automatic_sizing: Literal[False] = FieldInfo(alias="automaticSizing")
+
+    allocation: Optional[ProjectResourceSettings3Allocation] = None
+
+
+class ProjectResourceSettings2Allocation(BaseModel):
+    cpu_min: Optional[int] = FieldInfo(alias="cpuMin", default=None)
+
+    cpu_max: Optional[int] = FieldInfo(alias="cpuMax", default=None)
+
+    memory_min_mb: int = FieldInfo(alias="memoryMinMb")
+
+    memory_max_mb: int = FieldInfo(alias="memoryMaxMb")
+
+    disk_size_gb: int = FieldInfo(alias="diskSizeGb")
+
+
+class ProjectResourceSettings2(BaseModel):
+    automatic_sizing: Literal[True] = FieldInfo(alias="automaticSizing")
+
+    allocation: Optional[ProjectResourceSettings2Allocation] = None
+
+
+ProjectResourceSettings: TypeAlias = Union[ProjectResourceSettings2, ProjectResourceSettings3]
 
 
 class ProjectActiveSnapshot(BaseModel):
@@ -28,10 +87,6 @@ class Project(BaseModel):
 
     id: str
 
-    include_deps: bool = FieldInfo(alias="includeDeps")
-
-    include_skills: bool = FieldInfo(alias="includeSkills")
-
     name: str
 
     setup_script: Optional[str] = FieldInfo(alias="setupScript", default=None)
@@ -39,6 +94,8 @@ class Project(BaseModel):
     updated_at: datetime = FieldInfo(alias="updatedAt")
 
     active_snapshots: List[ProjectActiveSnapshot] = FieldInfo(alias="activeSnapshots")
+
+    resource_settings: Optional[ProjectResourceSettings] = FieldInfo(alias="resourceSettings", default=None)
 
     agent_instructions: Optional[str] = FieldInfo(alias="agentInstructions", default=None)
 
@@ -81,6 +138,8 @@ class Project(BaseModel):
     sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]]
 
     warm_pool_enabled: bool = FieldInfo(alias="warmPoolEnabled")
+
+    warm_pool_schedule: Optional[ProjectWarmPoolSchedule] = FieldInfo(alias="warmPoolSchedule", default=None)
 
 
 class ProjectCreateResponse(BaseModel):

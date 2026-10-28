@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Union
 from datetime import datetime
-from typing_extensions import Annotated, TypedDict
+from typing_extensions import Annotated, Literal, TypedDict
 from .._types import SequenceNotStr
 
 from .._utils import PropertyInfo
@@ -19,14 +19,17 @@ class BillingListUsageParams(TypedDict, total=False):
     limit: int
     """Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."""
 
+    type: Literal["all", "sessions", "warm-pool"]
+    """Usage types to include. Defaults to sessions for backwards compatibility."""
+
     session_id: Annotated[str, PropertyInfo(alias="sessionId")]
     """Filter billing usage to this session."""
 
     created_after: Annotated[Union[str, datetime], PropertyInfo(alias="createdAfter", format="iso8601")]
-    """Only sessions created at or after this ISO 8601 timestamp."""
+    """Include sessions created or warm pool runtime at or after this ISO 8601 timestamp."""
 
     created_before: Annotated[Union[str, datetime], PropertyInfo(alias="createdBefore", format="iso8601")]
-    """Only sessions created before this ISO 8601 timestamp."""
+    """Include sessions created or warm pool runtime before this ISO 8601 timestamp."""
 
     created_by: Annotated[SequenceNotStr[str], PropertyInfo(alias="createdBy")]
     """Filter by creator IDs, supplied as a comma-separated list."""
