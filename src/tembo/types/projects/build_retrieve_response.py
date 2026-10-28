@@ -28,15 +28,13 @@ class BuildRetrieveResponse(BaseModel):
 
     id: str
 
+    automatic_sizing: bool = FieldInfo(alias="automaticSizing")
+
     completed_at: Optional[datetime] = FieldInfo(alias="completedAt", default=None)
 
     duration_ms: Optional[int] = FieldInfo(alias="durationMs", default=None)
 
     failure: Optional[str] = None
-
-    include_deps: bool = FieldInfo(alias="includeDeps")
-
-    include_skills: bool = FieldInfo(alias="includeSkills")
 
     name: Optional[str] = None
 

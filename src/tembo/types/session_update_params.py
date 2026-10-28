@@ -12,6 +12,9 @@ __all__ = ["SessionUpdateParams", "AgentOptions", "AgentOptionsGoal", "RichConte
 
 
 class SessionUpdateParams(TypedDict, total=False):
+    memory_mb: Annotated[int, PropertyInfo(alias="memoryMb")]
+    """Request in-place memory growth for a running adaptive sandbox, within project limits. Submit separately from other session changes. Returns the session while the resize runs asynchronously; sandbox metrics report its progress."""
+
     agent: Optional[str]
     """Change the agent and model key. Null clears the session override."""
 

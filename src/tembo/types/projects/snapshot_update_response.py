@@ -24,19 +24,19 @@ class SnapshotUpdateResponse(BaseModel):
 
     updated_at: datetime = FieldInfo(alias="updatedAt")
 
+    automatic_sizing: bool = FieldInfo(alias="automaticSizing")
+
     build_duration_ms: Optional[float] = FieldInfo(alias="buildDurationMs", default=None)
 
     built_at: Optional[datetime] = FieldInfo(alias="builtAt", default=None)
 
     cpu: Optional[int] = None
 
+    disk_size_gb: Optional[float] = FieldInfo(alias="diskSizeGb", default=None)
+
     has_setup_script: Optional[bool] = FieldInfo(alias="hasSetupScript", default=None)
 
-    includes_deps: Optional[bool] = FieldInfo(alias="includesDeps", default=None)
-
     includes_repos: Optional[bool] = FieldInfo(alias="includesRepos", default=None)
-
-    includes_skills: Optional[bool] = FieldInfo(alias="includesSkills", default=None)
 
     is_kvm: Optional[bool] = FieldInfo(alias="isKvm", default=None)
 

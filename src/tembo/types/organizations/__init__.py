@@ -26,5 +26,3 @@ from .setting_validate_credentials_response import (
 )
 from .setting_validate_credentials_params import SettingValidateCredentialsParams as SettingValidateCredentialsParams
 from .subscription_retrieve_response import SubscriptionRetrieveResponse as SubscriptionRetrieveResponse
-from .subscription_reset_response import SubscriptionResetResponse as SubscriptionResetResponse
-from .subscription_reset_params import SubscriptionResetParams as SubscriptionResetParams

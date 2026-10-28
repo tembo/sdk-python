@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ..._utils import path_template, maybe_transform, async_maybe_transform
+from ..._types import Body, Query, Headers, NotGiven, not_given
+from ..._utils import path_template
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -49,8 +49,6 @@ from .profile_picture import (
 )
 from ...types.user_me_response import UserMeResponse
 from ...types.user_retrieve_response import UserRetrieveResponse
-from ...types.user_delete_response import UserDeleteResponse
-from ...types import user_delete_params
 
 __all__ = ["UsersResource", "AsyncUsersResource"]
 
@@ -156,53 +154,6 @@ class UsersResource(SyncAPIResource):
             cast_to=UserRetrieveResponse,
         )
 
-    def delete(
-        self,
-        user_id: str,
-        *,
-        deletion_questionnaire: user_delete_params.DeletionQuestionnaire | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UserDeleteResponse:
-        """
-        Queue permanent deletion of your user account.
-
-        Args:
-            user_id: Path parameter.
-            deletion_questionnaire: Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied.
-            extra_headers: Send extra headers with the request.
-            extra_query: Send extra query parameters with the request.
-            extra_body: Send extra JSON properties with the request.
-            timeout: Override the client-level default timeout for this request, in seconds.
-
-        Returns:
-            UserDeleteResponse: Delete a user
-
-        Example:
-            ```python
-            user = client.users.delete(
-                user_id="userId",
-            )
-            ```
-        """
-        if user_id is None or (isinstance(user_id, str) and not user_id):
-            raise ValueError(f"Expected a non-empty value for `user_id` but received {user_id!r}")
-        return self._delete(
-            path_template("/v1/users/{userId}", **{"userId": user_id}),
-            body=maybe_transform(
-                {"deletion_questionnaire": deletion_questionnaire},
-                user_delete_params.UserDeleteParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=UserDeleteResponse,
-        )
-
 
 class AsyncUsersResource(AsyncAPIResource):
     @cached_property
@@ -305,53 +256,6 @@ class AsyncUsersResource(AsyncAPIResource):
             cast_to=UserRetrieveResponse,
         )
 
-    async def delete(
-        self,
-        user_id: str,
-        *,
-        deletion_questionnaire: user_delete_params.DeletionQuestionnaire | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> UserDeleteResponse:
-        """
-        Queue permanent deletion of your user account.
-
-        Args:
-            user_id: Path parameter.
-            deletion_questionnaire: Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied.
-            extra_headers: Send extra headers with the request.
-            extra_query: Send extra query parameters with the request.
-            extra_body: Send extra JSON properties with the request.
-            timeout: Override the client-level default timeout for this request, in seconds.
-
-        Returns:
-            UserDeleteResponse: Delete a user
-
-        Example:
-            ```python
-            user = await client.users.delete(
-                user_id="userId",
-            )
-            ```
-        """
-        if user_id is None or (isinstance(user_id, str) and not user_id):
-            raise ValueError(f"Expected a non-empty value for `user_id` but received {user_id!r}")
-        return await self._delete(
-            path_template("/v1/users/{userId}", **{"userId": user_id}),
-            body=await async_maybe_transform(
-                {"deletion_questionnaire": deletion_questionnaire},
-                user_delete_params.UserDeleteParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=UserDeleteResponse,
-        )
-
 
 class UsersResourceWithRawResponse:
     def __init__(self, users: UsersResource) -> None:
@@ -362,9 +266,6 @@ class UsersResourceWithRawResponse:
         )
         self.retrieve = to_raw_response_wrapper(
             users.retrieve,
-        )
-        self.delete = to_raw_response_wrapper(
-            users.delete,
         )
 
     @cached_property
@@ -394,9 +295,6 @@ class AsyncUsersResourceWithRawResponse:
         self.retrieve = async_to_raw_response_wrapper(
             users.retrieve,
         )
-        self.delete = async_to_raw_response_wrapper(
-            users.delete,
-        )
 
     @cached_property
     def settings(self) -> AsyncSettingsResourceWithRawResponse:
@@ -425,9 +323,6 @@ class UsersResourceWithStreamingResponse:
         self.retrieve = to_streamed_response_wrapper(
             users.retrieve,
         )
-        self.delete = to_streamed_response_wrapper(
-            users.delete,
-        )
 
     @cached_property
     def settings(self) -> SettingsResourceWithStreamingResponse:
@@ -455,9 +350,6 @@ class AsyncUsersResourceWithStreamingResponse:
         )
         self.retrieve = async_to_streamed_response_wrapper(
             users.retrieve,
-        )
-        self.delete = async_to_streamed_response_wrapper(
-            users.delete,
         )
 
     @cached_property

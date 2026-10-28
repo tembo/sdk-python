@@ -6,6 +6,7 @@ import httpx
 
 from typing import Union
 from datetime import datetime
+from typing_extensions import Literal
 from .._types import SequenceNotStr
 
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
@@ -75,6 +76,7 @@ class BillingResource(SyncAPIResource):
         *,
         cursor: str | Omit = omit,
         limit: int | Omit = omit,
+        type: Literal["all", "sessions", "warm-pool"] | Omit = omit,
         session_id: str | Omit = omit,
         created_after: Union[str, datetime] | Omit = omit,
         created_before: Union[str, datetime] | Omit = omit,
@@ -88,14 +90,15 @@ class BillingResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> BillingListUsageResponse:
         """
-        List session usage with cursor pagination.
+        List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.
 
         Args:
             cursor: Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
+            type: Usage types to include. Defaults to sessions for backwards compatibility.
             session_id: Filter billing usage to this session.
-            created_after: Only sessions created at or after this ISO 8601 timestamp.
-            created_before: Only sessions created before this ISO 8601 timestamp.
+            created_after: Include sessions created or warm pool runtime at or after this ISO 8601 timestamp.
+            created_before: Include sessions created or warm pool runtime before this ISO 8601 timestamp.
             created_by: Filter by creator IDs, supplied as a comma-separated list.
             models: Filter by model names, supplied as a comma-separated list.
             extra_headers: Send extra headers with the request.
@@ -124,6 +127,7 @@ class BillingResource(SyncAPIResource):
                     {
                         "cursor": cursor,
                         "limit": limit,
+                        "type": type,
                         "session_id": session_id,
                         "created_after": created_after,
                         "created_before": created_before,
@@ -186,6 +190,7 @@ class AsyncBillingResource(AsyncAPIResource):
         *,
         cursor: str | Omit = omit,
         limit: int | Omit = omit,
+        type: Literal["all", "sessions", "warm-pool"] | Omit = omit,
         session_id: str | Omit = omit,
         created_after: Union[str, datetime] | Omit = omit,
         created_before: Union[str, datetime] | Omit = omit,
@@ -199,14 +204,15 @@ class AsyncBillingResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> BillingListUsageResponse:
         """
-        List session usage with cursor pagination.
+        List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.
 
         Args:
             cursor: Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
+            type: Usage types to include. Defaults to sessions for backwards compatibility.
             session_id: Filter billing usage to this session.
-            created_after: Only sessions created at or after this ISO 8601 timestamp.
-            created_before: Only sessions created before this ISO 8601 timestamp.
+            created_after: Include sessions created or warm pool runtime at or after this ISO 8601 timestamp.
+            created_before: Include sessions created or warm pool runtime before this ISO 8601 timestamp.
             created_by: Filter by creator IDs, supplied as a comma-separated list.
             models: Filter by model names, supplied as a comma-separated list.
             extra_headers: Send extra headers with the request.
@@ -235,6 +241,7 @@ class AsyncBillingResource(AsyncAPIResource):
                     {
                         "cursor": cursor,
                         "limit": limit,
+                        "type": type,
                         "session_id": session_id,
                         "created_after": created_after,
                         "created_before": created_before,

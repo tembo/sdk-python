@@ -34,6 +34,8 @@ class Item(BaseModel):
 
     asset_id: Optional[str] = FieldInfo(alias="assetId", default=None)
 
+    asset_url: Optional[str] = FieldInfo(alias="assetUrl", default=None)
+
     category: Optional[
         Literal[
             "code_walkthrough",

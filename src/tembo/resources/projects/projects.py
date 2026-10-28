@@ -193,8 +193,6 @@ class ProjectsResource(SyncAPIResource):
         self,
         *,
         description: Optional[str] | Omit = omit,
-        include_deps: bool | Omit = omit,
-        include_skills: bool | Omit = omit,
         name: str,
         setup_script: Optional[str] | Omit = omit,
         code_repository_ids: Optional[SequenceNotStr[str]] | Omit = omit,
@@ -225,10 +223,13 @@ class ProjectsResource(SyncAPIResource):
             "package",
         ]
         | Omit = omit,
+        include_deps: bool | Omit = omit,
+        include_skills: bool | Omit = omit,
         onboarding_default: bool | Omit = omit,
         run_now: bool | Omit = omit,
         schedule: project_create_params.Schedule | Omit = omit,
-        sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]],
+        sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
+        resource_settings: project_create_params.ResourceSettings | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -241,18 +242,19 @@ class ProjectsResource(SyncAPIResource):
 
         Args:
             description: Short project description, or null to clear it.
-            include_deps: Include project dependencies when building the environment. Defaults to true on creation.
-            include_skills: Include skills in the project environment. Defaults to true on creation.
             name: Project display name.
             setup_script: Setup script to run while building the environment, or null to clear it.
             code_repository_ids: Repository IDs included in the project environment. On update, replaces the repository selection.
             agent_instructions: Instructions supplied to agents using this project, or null to clear them.
             color: Project display color.
             icon: Project display icon.
+            include_deps: Deprecated and ignored. Project builds always install dependencies.
+            include_skills: Deprecated and ignored. Project builds always include skills.
             onboarding_default: Make this project the onboarding default for the organization.
             run_now: Queue initial snapshot builds immediately when a build host is available. Defaults to false.
             schedule: Recurring schedule for rebuilding the project environment.
             sizes: Workspace VM sizes to build for this project.
+            resource_settings: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -265,7 +267,8 @@ class ProjectsResource(SyncAPIResource):
             ```python
             project = client.projects.create(
                 name="x",
-                sizes=["nano"],
+                sizes=["medium"],
+                resource_settings={"automaticSizing": False},
             )
             ```
         """
@@ -274,18 +277,19 @@ class ProjectsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "description": description,
-                    "include_deps": include_deps,
-                    "include_skills": include_skills,
                     "name": name,
                     "setup_script": setup_script,
                     "code_repository_ids": code_repository_ids,
                     "agent_instructions": agent_instructions,
                     "color": color,
                     "icon": icon,
+                    "include_deps": include_deps,
+                    "include_skills": include_skills,
                     "onboarding_default": onboarding_default,
                     "run_now": run_now,
                     "schedule": schedule,
                     "sizes": sizes,
+                    "resource_settings": resource_settings,
                 },
                 project_create_params.ProjectCreateParams,
             ),
@@ -341,8 +345,6 @@ class ProjectsResource(SyncAPIResource):
         project_id: str,
         *,
         description: Optional[str] | Omit = omit,
-        include_deps: bool | Omit = omit,
-        include_skills: bool | Omit = omit,
         name: str | Omit = omit,
         setup_script: Optional[str] | Omit = omit,
         code_repository_ids: Optional[SequenceNotStr[str]] | Omit = omit,
@@ -373,10 +375,14 @@ class ProjectsResource(SyncAPIResource):
             "package",
         ]
         | Omit = omit,
+        include_deps: bool | Omit = omit,
+        include_skills: bool | Omit = omit,
+        resource_settings: project_update_params.ResourceSettings | Omit = omit,
         default_for_sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
         environment_variables: Dict[str, str] | Omit = omit,
         schedule: project_update_params.Schedule | Omit = omit,
         sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
+        warm_pool_schedule: Optional[project_update_params.WarmPoolSchedule] | Omit = omit,
         warm_pool_enabled: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -391,18 +397,20 @@ class ProjectsResource(SyncAPIResource):
         Args:
             project_id: Path parameter.
             description: Short project description, or null to clear it.
-            include_deps: Include project dependencies when building the environment. Defaults to true on creation.
-            include_skills: Include skills in the project environment. Defaults to true on creation.
             name: Project display name.
             setup_script: Setup script to run while building the environment, or null to clear it.
             code_repository_ids: Repository IDs included in the project environment. On update, replaces the repository selection.
             agent_instructions: Instructions supplied to agents using this project, or null to clear them.
             color: Project display color.
             icon: Project display icon.
+            include_deps: Deprecated and ignored. Project builds always install dependencies.
+            include_skills: Deprecated and ignored. Project builds always include skills.
+            resource_settings: Body parameter.
             default_for_sizes: VM sizes for which this project is the organization default. An empty array removes its default assignments.
             environment_variables: Replace the complete environment-variable map. Use createProjectEnvironmentVariables to add or replace individual keys instead.
             schedule: Change the project build schedule, including enabling or pausing it.
             sizes: Replace the workspace VM sizes built for this project.
+            warm_pool_schedule: Weekly availability for prewarmed VMs. Null means always on; days use 0=Sunday. Overnight windows end the following day.
             warm_pool_enabled: Enable or disable prewarmed VMs for this project.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -416,6 +424,7 @@ class ProjectsResource(SyncAPIResource):
             ```python
             project = client.projects.update(
                 project_id="projectId",
+                resource_settings={"automaticSizing": False},
             )
             ```
         """
@@ -426,18 +435,20 @@ class ProjectsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "description": description,
-                    "include_deps": include_deps,
-                    "include_skills": include_skills,
                     "name": name,
                     "setup_script": setup_script,
                     "code_repository_ids": code_repository_ids,
                     "agent_instructions": agent_instructions,
                     "color": color,
                     "icon": icon,
+                    "include_deps": include_deps,
+                    "include_skills": include_skills,
+                    "resource_settings": resource_settings,
                     "default_for_sizes": default_for_sizes,
                     "environment_variables": environment_variables,
                     "schedule": schedule,
                     "sizes": sizes,
+                    "warm_pool_schedule": warm_pool_schedule,
                     "warm_pool_enabled": warm_pool_enabled,
                 },
                 project_update_params.ProjectUpdateParams,
@@ -661,8 +672,6 @@ class AsyncProjectsResource(AsyncAPIResource):
         self,
         *,
         description: Optional[str] | Omit = omit,
-        include_deps: bool | Omit = omit,
-        include_skills: bool | Omit = omit,
         name: str,
         setup_script: Optional[str] | Omit = omit,
         code_repository_ids: Optional[SequenceNotStr[str]] | Omit = omit,
@@ -693,10 +702,13 @@ class AsyncProjectsResource(AsyncAPIResource):
             "package",
         ]
         | Omit = omit,
+        include_deps: bool | Omit = omit,
+        include_skills: bool | Omit = omit,
         onboarding_default: bool | Omit = omit,
         run_now: bool | Omit = omit,
         schedule: project_create_params.Schedule | Omit = omit,
-        sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]],
+        sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
+        resource_settings: project_create_params.ResourceSettings | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -709,18 +721,19 @@ class AsyncProjectsResource(AsyncAPIResource):
 
         Args:
             description: Short project description, or null to clear it.
-            include_deps: Include project dependencies when building the environment. Defaults to true on creation.
-            include_skills: Include skills in the project environment. Defaults to true on creation.
             name: Project display name.
             setup_script: Setup script to run while building the environment, or null to clear it.
             code_repository_ids: Repository IDs included in the project environment. On update, replaces the repository selection.
             agent_instructions: Instructions supplied to agents using this project, or null to clear them.
             color: Project display color.
             icon: Project display icon.
+            include_deps: Deprecated and ignored. Project builds always install dependencies.
+            include_skills: Deprecated and ignored. Project builds always include skills.
             onboarding_default: Make this project the onboarding default for the organization.
             run_now: Queue initial snapshot builds immediately when a build host is available. Defaults to false.
             schedule: Recurring schedule for rebuilding the project environment.
             sizes: Workspace VM sizes to build for this project.
+            resource_settings: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -733,7 +746,8 @@ class AsyncProjectsResource(AsyncAPIResource):
             ```python
             project = await client.projects.create(
                 name="x",
-                sizes=["nano"],
+                sizes=["medium"],
+                resource_settings={"automaticSizing": False},
             )
             ```
         """
@@ -742,18 +756,19 @@ class AsyncProjectsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "description": description,
-                    "include_deps": include_deps,
-                    "include_skills": include_skills,
                     "name": name,
                     "setup_script": setup_script,
                     "code_repository_ids": code_repository_ids,
                     "agent_instructions": agent_instructions,
                     "color": color,
                     "icon": icon,
+                    "include_deps": include_deps,
+                    "include_skills": include_skills,
                     "onboarding_default": onboarding_default,
                     "run_now": run_now,
                     "schedule": schedule,
                     "sizes": sizes,
+                    "resource_settings": resource_settings,
                 },
                 project_create_params.ProjectCreateParams,
             ),
@@ -809,8 +824,6 @@ class AsyncProjectsResource(AsyncAPIResource):
         project_id: str,
         *,
         description: Optional[str] | Omit = omit,
-        include_deps: bool | Omit = omit,
-        include_skills: bool | Omit = omit,
         name: str | Omit = omit,
         setup_script: Optional[str] | Omit = omit,
         code_repository_ids: Optional[SequenceNotStr[str]] | Omit = omit,
@@ -841,10 +854,14 @@ class AsyncProjectsResource(AsyncAPIResource):
             "package",
         ]
         | Omit = omit,
+        include_deps: bool | Omit = omit,
+        include_skills: bool | Omit = omit,
+        resource_settings: project_update_params.ResourceSettings | Omit = omit,
         default_for_sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
         environment_variables: Dict[str, str] | Omit = omit,
         schedule: project_update_params.Schedule | Omit = omit,
         sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]] | Omit = omit,
+        warm_pool_schedule: Optional[project_update_params.WarmPoolSchedule] | Omit = omit,
         warm_pool_enabled: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -859,18 +876,20 @@ class AsyncProjectsResource(AsyncAPIResource):
         Args:
             project_id: Path parameter.
             description: Short project description, or null to clear it.
-            include_deps: Include project dependencies when building the environment. Defaults to true on creation.
-            include_skills: Include skills in the project environment. Defaults to true on creation.
             name: Project display name.
             setup_script: Setup script to run while building the environment, or null to clear it.
             code_repository_ids: Repository IDs included in the project environment. On update, replaces the repository selection.
             agent_instructions: Instructions supplied to agents using this project, or null to clear them.
             color: Project display color.
             icon: Project display icon.
+            include_deps: Deprecated and ignored. Project builds always install dependencies.
+            include_skills: Deprecated and ignored. Project builds always include skills.
+            resource_settings: Body parameter.
             default_for_sizes: VM sizes for which this project is the organization default. An empty array removes its default assignments.
             environment_variables: Replace the complete environment-variable map. Use createProjectEnvironmentVariables to add or replace individual keys instead.
             schedule: Change the project build schedule, including enabling or pausing it.
             sizes: Replace the workspace VM sizes built for this project.
+            warm_pool_schedule: Weekly availability for prewarmed VMs. Null means always on; days use 0=Sunday. Overnight windows end the following day.
             warm_pool_enabled: Enable or disable prewarmed VMs for this project.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -884,6 +903,7 @@ class AsyncProjectsResource(AsyncAPIResource):
             ```python
             project = await client.projects.update(
                 project_id="projectId",
+                resource_settings={"automaticSizing": False},
             )
             ```
         """
@@ -894,18 +914,20 @@ class AsyncProjectsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "description": description,
-                    "include_deps": include_deps,
-                    "include_skills": include_skills,
                     "name": name,
                     "setup_script": setup_script,
                     "code_repository_ids": code_repository_ids,
                     "agent_instructions": agent_instructions,
                     "color": color,
                     "icon": icon,
+                    "include_deps": include_deps,
+                    "include_skills": include_skills,
+                    "resource_settings": resource_settings,
                     "default_for_sizes": default_for_sizes,
                     "environment_variables": environment_variables,
                     "schedule": schedule,
                     "sizes": sizes,
+                    "warm_pool_schedule": warm_pool_schedule,
                     "warm_pool_enabled": warm_pool_enabled,
                 },
                 project_update_params.ProjectUpdateParams,
