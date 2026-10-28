@@ -39,6 +39,14 @@ from .subscriptions import (
     SubscriptionsResourceWithStreamingResponse,
     AsyncSubscriptionsResourceWithStreamingResponse,
 )
+from .environment_variables import (
+    EnvironmentVariablesResource,
+    AsyncEnvironmentVariablesResource,
+    EnvironmentVariablesResourceWithRawResponse,
+    AsyncEnvironmentVariablesResourceWithRawResponse,
+    EnvironmentVariablesResourceWithStreamingResponse,
+    AsyncEnvironmentVariablesResourceWithStreamingResponse,
+)
 from .profile_picture import (
     ProfilePictureResource,
     AsyncProfilePictureResource,
@@ -65,6 +73,10 @@ class UsersResource(SyncAPIResource):
     @cached_property
     def subscriptions(self) -> SubscriptionsResource:
         return SubscriptionsResource(self._client)
+
+    @cached_property
+    def environment_variables(self) -> EnvironmentVariablesResource:
+        return EnvironmentVariablesResource(self._client)
 
     @cached_property
     def profile_picture(self) -> ProfilePictureResource:
@@ -167,6 +179,10 @@ class AsyncUsersResource(AsyncAPIResource):
     @cached_property
     def subscriptions(self) -> AsyncSubscriptionsResource:
         return AsyncSubscriptionsResource(self._client)
+
+    @cached_property
+    def environment_variables(self) -> AsyncEnvironmentVariablesResource:
+        return AsyncEnvironmentVariablesResource(self._client)
 
     @cached_property
     def profile_picture(self) -> AsyncProfilePictureResource:
@@ -281,6 +297,10 @@ class UsersResourceWithRawResponse:
         return SubscriptionsResourceWithRawResponse(self._users.subscriptions)
 
     @cached_property
+    def environment_variables(self) -> EnvironmentVariablesResourceWithRawResponse:
+        return EnvironmentVariablesResourceWithRawResponse(self._users.environment_variables)
+
+    @cached_property
     def profile_picture(self) -> ProfilePictureResourceWithRawResponse:
         return ProfilePictureResourceWithRawResponse(self._users.profile_picture)
 
@@ -307,6 +327,10 @@ class AsyncUsersResourceWithRawResponse:
     @cached_property
     def subscriptions(self) -> AsyncSubscriptionsResourceWithRawResponse:
         return AsyncSubscriptionsResourceWithRawResponse(self._users.subscriptions)
+
+    @cached_property
+    def environment_variables(self) -> AsyncEnvironmentVariablesResourceWithRawResponse:
+        return AsyncEnvironmentVariablesResourceWithRawResponse(self._users.environment_variables)
 
     @cached_property
     def profile_picture(self) -> AsyncProfilePictureResourceWithRawResponse:
@@ -337,6 +361,10 @@ class UsersResourceWithStreamingResponse:
         return SubscriptionsResourceWithStreamingResponse(self._users.subscriptions)
 
     @cached_property
+    def environment_variables(self) -> EnvironmentVariablesResourceWithStreamingResponse:
+        return EnvironmentVariablesResourceWithStreamingResponse(self._users.environment_variables)
+
+    @cached_property
     def profile_picture(self) -> ProfilePictureResourceWithStreamingResponse:
         return ProfilePictureResourceWithStreamingResponse(self._users.profile_picture)
 
@@ -363,6 +391,10 @@ class AsyncUsersResourceWithStreamingResponse:
     @cached_property
     def subscriptions(self) -> AsyncSubscriptionsResourceWithStreamingResponse:
         return AsyncSubscriptionsResourceWithStreamingResponse(self._users.subscriptions)
+
+    @cached_property
+    def environment_variables(self) -> AsyncEnvironmentVariablesResourceWithStreamingResponse:
+        return AsyncEnvironmentVariablesResourceWithStreamingResponse(self._users.environment_variables)
 
     @cached_property
     def profile_picture(self) -> AsyncProfilePictureResourceWithStreamingResponse:
