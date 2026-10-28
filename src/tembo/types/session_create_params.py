@@ -59,6 +59,9 @@ class SessionCreateParams(TypedDict, total=False):
     queue_right_away: Annotated[bool, PropertyInfo(alias="queueRightAway")]
     """Whether to queue the initial task immediately instead of only creating the session."""
 
+    automatic_sizing: Annotated[bool, PropertyInfo(alias="automaticSizing")]
+    """Size the VM automatically. Only for sessions created without a project (projectId "tembo")."""
+
     session_mode: Annotated[Literal["chat", "terminal"], PropertyInfo(alias="sessionMode")]
     """Whether to create a chat session or a terminal session."""
 

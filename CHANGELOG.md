@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/tembo/sdk-python/compare/v0.5.0...v0.6.0) (2026-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Removed operation `organizations.subscriptions.reset` (`POST /v1/organizations/{organizationId}/subscriptions/reset`).
+    - Removed operation `users.delete` (`DELETE /v1/users/{userId}`).
+    - Removed operation `users.subscriptions.reset` (`POST /v1/users/{userId}/subscriptions/reset`).
+
+### Features
+
+* **api:** update SDK surface (10 changes) ([c77633b](https://github.com/tembo/sdk-python/commit/c77633b90e182d6d7b0d279410d6b82e436872ca))
+* **api:** update SDK surface (3 changes) ([aecec17](https://github.com/tembo/sdk-python/commit/aecec170fe9b4bc13722dadbdbc08e9b662b2f90))
+
 ## [0.5.0](https://github.com/tembo/sdk-python/compare/v0.4.0...v0.5.0) (2026-10-23)
 
 

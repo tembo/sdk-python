@@ -47,7 +47,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Validate organization provider credentials](#validate-organization-provider-credentials)
   - [`Organizations Subscriptions`](#organizations-subscriptions)
     - [Retrieve organization subscriptions](#retrieve-organization-subscriptions)
-    - [Reset organization subscription usage](#reset-organization-subscription-usage)
 - [`McpConnections`](#mcpconnections)
   - [List MCP connections](#list-mcp-connections)
   - [Create an MCP connection](#create-an-mcp-connection)
@@ -75,7 +74,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Users`](#users)
   - [Retrieve the current user](#retrieve-the-current-user)
   - [Retrieve a user](#retrieve-a-user)
-  - [Delete a user](#delete-a-user)
   - [`Users Settings`](#users-settings)
     - [Retrieve user settings](#retrieve-user-settings)
     - [Update user settings](#update-user-settings)
@@ -84,7 +82,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
     - [Retrieve user subscriptions](#retrieve-user-subscriptions)
-    - [Reset user subscription usage](#reset-user-subscription-usage)
+  - [`Users EnvironmentVariables`](#users-environmentvariables)
+    - [List personal environment variables](#list-personal-environment-variables)
+    - [Create a personal environment variable](#create-a-personal-environment-variable)
+    - [Delete a personal environment variable](#delete-a-personal-environment-variable)
   - [`Users ProfilePicture`](#users-profilepicture)
     - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
     - [Update your profile picture](#update-your-profile-picture)
@@ -757,23 +758,6 @@ subscription = client.organizations.subscriptions.retrieve(
 )
 ```
 
-#### Reset organization subscription usage
-
-Redeem an earned ChatGPT rate-limit reset.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`SubscriptionResetParams`](./src/tembo/types/organizations/subscription_reset_params.py) |
-| Response | [`SubscriptionResetResponse`](./src/tembo/types/organizations/subscription_reset_response.py) |
-
-```python
-subscription = client.organizations.subscriptions.reset(
-    organization_id="organizationId",
-    idempotency_key="7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    provider="chatgpt",
-)
-```
-
 ## `McpConnections`
 
 ### List MCP connections
@@ -1097,21 +1081,6 @@ user = client.users.retrieve(
 )
 ```
 
-### Delete a user
-
-Queue permanent deletion of your user account.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`UserDeleteParams`](./src/tembo/types/user_delete_params.py) |
-| Response | [`UserDeleteResponse`](./src/tembo/types/user_delete_response.py) |
-
-```python
-user = client.users.delete(
-    user_id="userId",
-)
-```
-
 ### `Users Settings`
 
 #### Retrieve user settings
@@ -1192,20 +1161,51 @@ subscription = client.users.subscriptions.retrieve(
 )
 ```
 
-#### Reset user subscription usage
+### `Users EnvironmentVariables`
 
-Redeem an earned ChatGPT rate-limit reset.
+#### List personal environment variables
+
+List your personal environment variables in the current organization. Values are never returned.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SubscriptionResetParams`](./src/tembo/types/users/subscription_reset_params.py) |
-| Response | [`SubscriptionResetResponse`](./src/tembo/types/users/subscription_reset_response.py) |
+| Response | [`EnvironmentVariableListResponse`](./src/tembo/types/users/environment_variable_list_response.py) |
 
 ```python
-subscription = client.users.subscriptions.reset(
+environment_variable = client.users.environment_variables.list(
     user_id="userId",
-    idempotency_key="7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    provider="chatgpt",
+)
+```
+
+#### Create a personal environment variable
+
+Store an encrypted environment variable that is injected into every session you start in the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`EnvironmentVariableCreateParams`](./src/tembo/types/users/environment_variable_create_params.py) |
+| Response | [`EnvironmentVariableCreateResponse`](./src/tembo/types/users/environment_variable_create_response.py) |
+
+```python
+environment_variable = client.users.environment_variables.create(
+    user_id="userId",
+    key="x",
+    value="x",
+)
+```
+
+#### Delete a personal environment variable
+
+Permanently delete a personal environment variable. Sessions started afterwards no longer receive it.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`EnvironmentVariableDeleteResponse`](./src/tembo/types/users/environment_variable_delete_response.py) |
+
+```python
+environment_variable = client.users.environment_variables.delete(
+    user_id="userId",
+    environment_variable_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
 )
 ```
 
@@ -1310,7 +1310,7 @@ session = client.sessions.retrieve(
 
 ### Update a session
 
-Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
+Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
 
 | Direction | Type |
 | --- | --- |
@@ -1561,7 +1561,8 @@ Create a reusable project environment.
 ```python
 project = client.projects.create(
     name="x",
-    sizes=["nano"],
+    sizes=["medium"],
+    resource_settings={"automaticSizing": False},
 )
 ```
 
@@ -1591,6 +1592,7 @@ Update project repositories, setup script, agent instructions, environment varia
 ```python
 project = client.projects.update(
     project_id="projectId",
+    resource_settings={"automaticSizing": False},
 )
 ```
 
@@ -2682,7 +2684,7 @@ billing = client.billing.retrieve()
 
 ### List billing usage
 
-List session usage with cursor pagination.
+List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.
 
 | Direction | Type |
 | --- | --- |

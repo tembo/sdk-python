@@ -2,24 +2,27 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
-from typing_extensions import Annotated, Literal, TypedDict
+from typing import Dict, Iterable, List, Optional, Union
+from typing_extensions import Annotated, Literal, Required, TypeAlias, TypedDict
 from .._types import SequenceNotStr
 
 from .._utils import PropertyInfo
 
-__all__ = ["ProjectUpdateParams", "Schedule"]
+__all__ = [
+    "ProjectUpdateParams",
+    "ResourceSettings",
+    "ResourceSettings2",
+    "ResourceSettings2Allocation",
+    "ResourceSettings3",
+    "ResourceSettings3Allocation",
+    "Schedule",
+    "WarmPoolSchedule",
+]
 
 
 class ProjectUpdateParams(TypedDict, total=False):
     description: Optional[str]
     """Short project description, or null to clear it."""
-
-    include_deps: Annotated[bool, PropertyInfo(alias="includeDeps")]
-    """Include project dependencies when building the environment. Defaults to true on creation."""
-
-    include_skills: Annotated[bool, PropertyInfo(alias="includeSkills")]
-    """Include skills in the project environment. Defaults to true on creation."""
 
     name: str
     """Project display name."""
@@ -62,6 +65,14 @@ class ProjectUpdateParams(TypedDict, total=False):
     ]
     """Project display icon."""
 
+    include_deps: Annotated[bool, PropertyInfo(alias="includeDeps")]
+    """Deprecated and ignored. Project builds always install dependencies."""
+
+    include_skills: Annotated[bool, PropertyInfo(alias="includeSkills")]
+    """Deprecated and ignored. Project builds always include skills."""
+
+    resource_settings: Annotated[ResourceSettings, PropertyInfo(alias="resourceSettings")]
+
     default_for_sizes: Annotated[
         List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]], PropertyInfo(alias="defaultForSizes")
     ]
@@ -76,8 +87,21 @@ class ProjectUpdateParams(TypedDict, total=False):
     sizes: List[Literal["nano", "micro", "medium", "large", "xl", "xxl", "ultra"]]
     """Replace the workspace VM sizes built for this project."""
 
+    warm_pool_schedule: Annotated[Optional[WarmPoolSchedule], PropertyInfo(alias="warmPoolSchedule")]
+    """Weekly availability for prewarmed VMs. Null means always on; days use 0=Sunday. Overnight windows end the following day."""
+
     warm_pool_enabled: Annotated[bool, PropertyInfo(alias="warmPoolEnabled")]
     """Enable or disable prewarmed VMs for this project."""
+
+
+class WarmPoolSchedule(TypedDict, total=False):
+    timezone: Required[str]
+
+    days: Required[Iterable[int]]
+
+    start_time: Required[Annotated[str, PropertyInfo(alias="startTime")]]
+
+    end_time: Required[Annotated[str, PropertyInfo(alias="endTime")]]
 
 
 class Schedule(TypedDict, total=False):
@@ -89,3 +113,42 @@ class Schedule(TypedDict, total=False):
 
     timezone: Optional[str]
     """Timezone for the cron schedule, or null to clear it."""
+
+
+class ResourceSettings3Allocation(TypedDict, total=False):
+    cpu_min: Annotated[int, PropertyInfo(alias="cpuMin")]
+
+    cpu_max: Annotated[int, PropertyInfo(alias="cpuMax")]
+
+    memory_min_mb: Required[Annotated[int, PropertyInfo(alias="memoryMinMb")]]
+
+    memory_max_mb: Required[Annotated[int, PropertyInfo(alias="memoryMaxMb")]]
+
+    disk_size_gb: Required[Annotated[int, PropertyInfo(alias="diskSizeGb")]]
+
+
+class ResourceSettings3(TypedDict, total=False):
+    automatic_sizing: Required[Annotated[Literal[False], PropertyInfo(alias="automaticSizing")]]
+
+    allocation: ResourceSettings3Allocation
+
+
+class ResourceSettings2Allocation(TypedDict, total=False):
+    cpu_min: Annotated[int, PropertyInfo(alias="cpuMin")]
+
+    cpu_max: Annotated[int, PropertyInfo(alias="cpuMax")]
+
+    memory_min_mb: Required[Annotated[int, PropertyInfo(alias="memoryMinMb")]]
+
+    memory_max_mb: Required[Annotated[int, PropertyInfo(alias="memoryMaxMb")]]
+
+    disk_size_gb: Required[Annotated[int, PropertyInfo(alias="diskSizeGb")]]
+
+
+class ResourceSettings2(TypedDict, total=False):
+    automatic_sizing: Required[Annotated[Literal[True], PropertyInfo(alias="automaticSizing")]]
+
+    allocation: ResourceSettings2Allocation
+
+
+ResourceSettings: TypeAlias = Union[ResourceSettings2, ResourceSettings3]

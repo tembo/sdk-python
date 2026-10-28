@@ -226,6 +226,9 @@ class SessionUpdateResponse(BaseModel):
 
     artifacts: List[Artifact]
 
+    automatic_sizing: bool = FieldInfo(alias="automaticSizing")
+    """Whether the session VM is sized automatically."""
+
     description: Optional[str] = None
 
     diff_summary: Optional[DiffSummary] = FieldInfo(alias="diffSummary", default=None)
