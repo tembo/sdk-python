@@ -82,6 +82,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
     - [Retrieve user subscriptions](#retrieve-user-subscriptions)
+  - [`Users EnvironmentVariables`](#users-environmentvariables)
+    - [List personal environment variables](#list-personal-environment-variables)
+    - [Create a personal environment variable](#create-a-personal-environment-variable)
+    - [Delete a personal environment variable](#delete-a-personal-environment-variable)
   - [`Users ProfilePicture`](#users-profilepicture)
     - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
     - [Update your profile picture](#update-your-profile-picture)
@@ -1154,6 +1158,54 @@ Retrieve connection statuses and available ChatGPT and Claude usage. Provider us
 ```python
 subscription = client.users.subscriptions.retrieve(
     user_id="userId",
+)
+```
+
+### `Users EnvironmentVariables`
+
+#### List personal environment variables
+
+List your personal environment variables in the current organization. Values are never returned.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`EnvironmentVariableListResponse`](./src/tembo/types/users/environment_variable_list_response.py) |
+
+```python
+environment_variable = client.users.environment_variables.list(
+    user_id="userId",
+)
+```
+
+#### Create a personal environment variable
+
+Store an encrypted environment variable that is injected into every session you start in the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`EnvironmentVariableCreateParams`](./src/tembo/types/users/environment_variable_create_params.py) |
+| Response | [`EnvironmentVariableCreateResponse`](./src/tembo/types/users/environment_variable_create_response.py) |
+
+```python
+environment_variable = client.users.environment_variables.create(
+    user_id="userId",
+    key="x",
+    value="x",
+)
+```
+
+#### Delete a personal environment variable
+
+Permanently delete a personal environment variable. Sessions started afterwards no longer receive it.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`EnvironmentVariableDeleteResponse`](./src/tembo/types/users/environment_variable_delete_response.py) |
+
+```python
+environment_variable = client.users.environment_variables.delete(
+    user_id="userId",
+    environment_variable_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
 )
 ```
 

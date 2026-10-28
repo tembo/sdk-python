@@ -762,25 +762,46 @@ def _smoke_case_85() -> None:
 
 
 def _smoke_case_86() -> None:
-    client.users.profile_picture.retrieve(
+    environment_variable = client.users.environment_variables.list(
         user_id="userId",
     )
 
 
 def _smoke_case_87() -> None:
+    environment_variable = client.users.environment_variables.create(
+        user_id="userId",
+        key="x",
+        value="x",
+    )
+
+
+def _smoke_case_88() -> None:
+    environment_variable = client.users.environment_variables.delete(
+        user_id="userId",
+        environment_variable_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    )
+
+
+def _smoke_case_89() -> None:
+    client.users.profile_picture.retrieve(
+        user_id="userId",
+    )
+
+
+def _smoke_case_90() -> None:
     profile_picture = client.users.profile_picture.update(
         user_id="userId",
         file=b"file",
     )
 
 
-def _smoke_case_88() -> None:
+def _smoke_case_91() -> None:
     profile_picture = client.users.profile_picture.delete(
         user_id="userId",
     )
 
 
-def _smoke_case_89() -> None:
+def _smoke_case_92() -> None:
     session = client.sessions.list(
         limit=50,
         include_archived=True,
@@ -790,7 +811,7 @@ def _smoke_case_89() -> None:
     )
 
 
-def _smoke_case_90() -> None:
+def _smoke_case_93() -> None:
     session = client.sessions.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         created_by=["created_by"],
@@ -815,7 +836,7 @@ def _smoke_case_90() -> None:
     )
 
 
-def _smoke_case_91() -> None:
+def _smoke_case_94() -> None:
     session = client.sessions.create(
         agent="claudeCode:claude-fable-5-1",
         base_branch="main",
@@ -828,7 +849,7 @@ def _smoke_case_91() -> None:
     )
 
 
-def _smoke_case_92() -> None:
+def _smoke_case_95() -> None:
     session = client.sessions.create(
         agent="claudeCode:claude-fable-5-1",
         base_branch="main",
@@ -851,19 +872,19 @@ def _smoke_case_92() -> None:
     )
 
 
-def _smoke_case_93() -> None:
+def _smoke_case_96() -> None:
     session = client.sessions.retrieve(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_94() -> None:
+def _smoke_case_97() -> None:
     session = client.sessions.update(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_95() -> None:
+def _smoke_case_98() -> None:
     session = client.sessions.update(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         memory_mb=1024,
@@ -884,20 +905,20 @@ def _smoke_case_95() -> None:
     )
 
 
-def _smoke_case_96() -> None:
+def _smoke_case_99() -> None:
     session = client.sessions.delete(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_97() -> None:
+def _smoke_case_100() -> None:
     session = client.sessions.fork(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         queue_right_away=True,
     )
 
 
-def _smoke_case_98() -> None:
+def _smoke_case_101() -> None:
     session = client.sessions.fork(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         prompt="x",
@@ -906,27 +927,27 @@ def _smoke_case_98() -> None:
     )
 
 
-def _smoke_case_99() -> None:
+def _smoke_case_102() -> None:
     session = client.sessions.stop(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_100() -> None:
+def _smoke_case_103() -> None:
     session = client.sessions.stop(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cancel_queued=True,
     )
 
 
-def _smoke_case_101() -> None:
+def _smoke_case_104() -> None:
     session = client.sessions.list_events(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_102() -> None:
+def _smoke_case_105() -> None:
     session = client.sessions.list_events(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -936,14 +957,14 @@ def _smoke_case_102() -> None:
     )
 
 
-def _smoke_case_103() -> None:
+def _smoke_case_106() -> None:
     source = client.sessions.sources.list(
         limit=50,
         include_total=False,
     )
 
 
-def _smoke_case_104() -> None:
+def _smoke_case_107() -> None:
     source = client.sessions.sources.list(
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
@@ -956,20 +977,20 @@ def _smoke_case_104() -> None:
     )
 
 
-def _smoke_case_105() -> None:
+def _smoke_case_108() -> None:
     source = client.sessions.sources.retrieve(
         source_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_106() -> None:
+def _smoke_case_109() -> None:
     diff = client.sessions.diffs.list(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_107() -> None:
+def _smoke_case_110() -> None:
     diff = client.sessions.diffs.list(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -978,20 +999,20 @@ def _smoke_case_107() -> None:
     )
 
 
-def _smoke_case_108() -> None:
+def _smoke_case_111() -> None:
     diff = client.sessions.diffs.retrieve(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         diff_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_109() -> None:
+def _smoke_case_112() -> None:
     input = client.sessions.inputs.list(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_110() -> None:
+def _smoke_case_113() -> None:
     input = client.sessions.inputs.update(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         input_id="inputId",
@@ -999,33 +1020,33 @@ def _smoke_case_110() -> None:
     )
 
 
-def _smoke_case_111() -> None:
+def _smoke_case_114() -> None:
     queue = client.sessions.queue.update(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         message_ids=["7c9e6679-7425-40de-944b-e07fc1f90ae7"],
     )
 
 
-def _smoke_case_112() -> None:
+def _smoke_case_115() -> None:
     command = client.sessions.commands.list(
         session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_113() -> None:
+def _smoke_case_116() -> None:
     project = client.projects.update_defaults(
         project_id="x",
         sandbox_size="nano",
     )
 
 
-def _smoke_case_114() -> None:
+def _smoke_case_117() -> None:
     project = client.projects.list(
         limit=50,
     )
 
 
-def _smoke_case_115() -> None:
+def _smoke_case_118() -> None:
     project = client.projects.list(
         cursor="cursor",
         limit=50,
@@ -1034,7 +1055,7 @@ def _smoke_case_115() -> None:
     )
 
 
-def _smoke_case_116() -> None:
+def _smoke_case_119() -> None:
     project = client.projects.create(
         name="x",
         sizes=["medium"],
@@ -1042,7 +1063,7 @@ def _smoke_case_116() -> None:
     )
 
 
-def _smoke_case_117() -> None:
+def _smoke_case_120() -> None:
     project = client.projects.create(
         description="",
         name="x",
@@ -1061,20 +1082,20 @@ def _smoke_case_117() -> None:
     )
 
 
-def _smoke_case_118() -> None:
+def _smoke_case_121() -> None:
     project = client.projects.retrieve(
         project_id="projectId",
     )
 
 
-def _smoke_case_119() -> None:
+def _smoke_case_122() -> None:
     project = client.projects.update(
         project_id="projectId",
         resource_settings={"automaticSizing": False},
     )
 
 
-def _smoke_case_120() -> None:
+def _smoke_case_123() -> None:
     project = client.projects.update(
         project_id="projectId",
         description="",
@@ -1096,46 +1117,46 @@ def _smoke_case_120() -> None:
     )
 
 
-def _smoke_case_121() -> None:
+def _smoke_case_124() -> None:
     project = client.projects.delete(
         project_id="projectId",
     )
 
 
-def _smoke_case_122() -> None:
+def _smoke_case_125() -> None:
     project = client.projects.duplicate(
         project_id="projectId",
     )
 
 
-def _smoke_case_123() -> None:
+def _smoke_case_126() -> None:
     environment_variable = client.projects.environment_variables.list(
         project_id="projectId",
     )
 
 
-def _smoke_case_124() -> None:
+def _smoke_case_127() -> None:
     environment_variable = client.projects.environment_variables.create(
         project_id="projectId",
         secrets=[{"key": "", "value": "x"}],
     )
 
 
-def _smoke_case_125() -> None:
+def _smoke_case_128() -> None:
     environment_variable = client.projects.environment_variables.delete(
         project_id="projectId",
         key="key",
     )
 
 
-def _smoke_case_126() -> None:
+def _smoke_case_129() -> None:
     snapshot = client.projects.snapshots.list(
         project_id="projectId",
         limit=50,
     )
 
 
-def _smoke_case_127() -> None:
+def _smoke_case_130() -> None:
     snapshot = client.projects.snapshots.list(
         project_id="projectId",
         cursor="cursor",
@@ -1143,21 +1164,21 @@ def _smoke_case_127() -> None:
     )
 
 
-def _smoke_case_128() -> None:
+def _smoke_case_131() -> None:
     snapshot = client.projects.snapshots.retrieve(
         project_id="projectId",
         snapshot_id="snapshotId",
     )
 
 
-def _smoke_case_129() -> None:
+def _smoke_case_132() -> None:
     snapshot = client.projects.snapshots.update(
         project_id="projectId",
         snapshot_id="snapshotId",
     )
 
 
-def _smoke_case_130() -> None:
+def _smoke_case_133() -> None:
     snapshot = client.projects.snapshots.update(
         project_id="projectId",
         snapshot_id="snapshotId",
@@ -1166,21 +1187,21 @@ def _smoke_case_130() -> None:
     )
 
 
-def _smoke_case_131() -> None:
+def _smoke_case_134() -> None:
     snapshot = client.projects.snapshots.delete(
         project_id="projectId",
         snapshot_id="snapshotId",
     )
 
 
-def _smoke_case_132() -> None:
+def _smoke_case_135() -> None:
     build = client.projects.builds.list(
         project_id="projectId",
         limit=50,
     )
 
 
-def _smoke_case_133() -> None:
+def _smoke_case_136() -> None:
     build = client.projects.builds.list(
         project_id="projectId",
         cursor="cursor",
@@ -1188,13 +1209,13 @@ def _smoke_case_133() -> None:
     )
 
 
-def _smoke_case_134() -> None:
+def _smoke_case_137() -> None:
     build = client.projects.builds.create(
         project_id="projectId",
     )
 
 
-def _smoke_case_135() -> None:
+def _smoke_case_138() -> None:
     build = client.projects.builds.create(
         project_id="projectId",
         sizes=["nano"],
@@ -1202,28 +1223,28 @@ def _smoke_case_135() -> None:
     )
 
 
-def _smoke_case_136() -> None:
+def _smoke_case_139() -> None:
     build = client.projects.builds.retrieve(
         project_id="projectId",
         build_id="buildId",
     )
 
 
-def _smoke_case_137() -> None:
+def _smoke_case_140() -> None:
     build = client.projects.builds.cancel(
         project_id="projectId",
         build_id="buildId",
     )
 
 
-def _smoke_case_138() -> None:
+def _smoke_case_141() -> None:
     schedule = client.projects.schedules.list(
         project_id="projectId",
         limit=50,
     )
 
 
-def _smoke_case_139() -> None:
+def _smoke_case_142() -> None:
     schedule = client.projects.schedules.list(
         project_id="projectId",
         cursor="cursor",
@@ -1231,14 +1252,14 @@ def _smoke_case_139() -> None:
     )
 
 
-def _smoke_case_140() -> None:
+def _smoke_case_143() -> None:
     schedule = client.projects.schedules.create(
         project_id="projectId",
         cron="x",
     )
 
 
-def _smoke_case_141() -> None:
+def _smoke_case_144() -> None:
     schedule = client.projects.schedules.create(
         project_id="projectId",
         cron="x",
@@ -1246,21 +1267,21 @@ def _smoke_case_141() -> None:
     )
 
 
-def _smoke_case_142() -> None:
+def _smoke_case_145() -> None:
     schedule = client.projects.schedules.retrieve(
         project_id="projectId",
         schedule_id="scheduleId",
     )
 
 
-def _smoke_case_143() -> None:
+def _smoke_case_146() -> None:
     schedule = client.projects.schedules.update(
         project_id="projectId",
         schedule_id="scheduleId",
     )
 
 
-def _smoke_case_144() -> None:
+def _smoke_case_147() -> None:
     schedule = client.projects.schedules.update(
         project_id="projectId",
         schedule_id="scheduleId",
@@ -1270,34 +1291,34 @@ def _smoke_case_144() -> None:
     )
 
 
-def _smoke_case_145() -> None:
+def _smoke_case_148() -> None:
     schedule = client.projects.schedules.delete(
         project_id="projectId",
         schedule_id="scheduleId",
     )
 
 
-def _smoke_case_146() -> None:
+def _smoke_case_149() -> None:
     pin = client.pins.list(
         limit=50,
     )
 
 
-def _smoke_case_147() -> None:
+def _smoke_case_150() -> None:
     pin = client.pins.list(
         cursor="cursor",
         limit=50,
     )
 
 
-def _smoke_case_148() -> None:
+def _smoke_case_151() -> None:
     pin = client.pins.create(
         type="session",
         id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_149() -> None:
+def _smoke_case_152() -> None:
     pin = client.pins.create(
         type="session",
         id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1305,7 +1326,7 @@ def _smoke_case_149() -> None:
     )
 
 
-def _smoke_case_150() -> None:
+def _smoke_case_153() -> None:
     pin = client.pins.update(
         resource_type="session",
         resource_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1313,20 +1334,20 @@ def _smoke_case_150() -> None:
     )
 
 
-def _smoke_case_151() -> None:
+def _smoke_case_154() -> None:
     pin = client.pins.delete(
         resource_type="session",
         resource_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_152() -> None:
+def _smoke_case_155() -> None:
     pull_request = client.pull_requests.list(
         limit=50,
     )
 
 
-def _smoke_case_153() -> None:
+def _smoke_case_156() -> None:
     pull_request = client.pull_requests.list(
         author_ids=["author_id"],
         created_after="2024-01-01T00:00:00.000Z",
@@ -1350,19 +1371,19 @@ def _smoke_case_153() -> None:
     )
 
 
-def _smoke_case_154() -> None:
+def _smoke_case_157() -> None:
     pull_request = client.pull_requests.retrieve(
         pull_request_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_155() -> None:
+def _smoke_case_158() -> None:
     agent = client.agents.list(
         limit=50,
     )
 
 
-def _smoke_case_156() -> None:
+def _smoke_case_159() -> None:
     agent = client.agents.list(
         cursor="cursor",
         limit=50,
@@ -1376,11 +1397,11 @@ def _smoke_case_156() -> None:
     )
 
 
-def _smoke_case_157() -> None:
+def _smoke_case_160() -> None:
     agent = client.agents.create()
 
 
-def _smoke_case_158() -> None:
+def _smoke_case_161() -> None:
     agent = client.agents.create(
         name="x",
         instructions={
@@ -1401,19 +1422,19 @@ def _smoke_case_158() -> None:
     )
 
 
-def _smoke_case_159() -> None:
+def _smoke_case_162() -> None:
     agent = client.agents.retrieve(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_160() -> None:
+def _smoke_case_163() -> None:
     agent = client.agents.update(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_161() -> None:
+def _smoke_case_164() -> None:
     agent = client.agents.update(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         expected_updated_at="2024-01-01T00:00:00.000Z",
@@ -1438,39 +1459,39 @@ def _smoke_case_161() -> None:
     )
 
 
-def _smoke_case_162() -> None:
+def _smoke_case_165() -> None:
     agent = client.agents.delete(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_163() -> None:
+def _smoke_case_166() -> None:
     template = client.agents.templates.list(
         limit=50,
     )
 
 
-def _smoke_case_164() -> None:
+def _smoke_case_167() -> None:
     template = client.agents.templates.list(
         cursor="addTestCoverage",
         limit=50,
     )
 
 
-def _smoke_case_165() -> None:
+def _smoke_case_168() -> None:
     template = client.agents.templates.retrieve(
         template_name="templateName",
     )
 
 
-def _smoke_case_166() -> None:
+def _smoke_case_169() -> None:
     schedule = client.agents.schedules.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_167() -> None:
+def _smoke_case_170() -> None:
     schedule = client.agents.schedules.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1478,21 +1499,21 @@ def _smoke_case_167() -> None:
     )
 
 
-def _smoke_case_168() -> None:
+def _smoke_case_171() -> None:
     schedule = client.agents.schedules.create(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cron="x",
     )
 
 
-def _smoke_case_169() -> None:
+def _smoke_case_172() -> None:
     schedule = client.agents.schedules.retrieve(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         schedule_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_170() -> None:
+def _smoke_case_173() -> None:
     schedule = client.agents.schedules.update(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         schedule_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1500,21 +1521,21 @@ def _smoke_case_170() -> None:
     )
 
 
-def _smoke_case_171() -> None:
+def _smoke_case_174() -> None:
     schedule = client.agents.schedules.delete(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         schedule_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_172() -> None:
+def _smoke_case_175() -> None:
     trigger = client.agents.triggers.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_173() -> None:
+def _smoke_case_176() -> None:
     trigger = client.agents.triggers.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1522,14 +1543,14 @@ def _smoke_case_173() -> None:
     )
 
 
-def _smoke_case_174() -> None:
+def _smoke_case_177() -> None:
     trigger = client.agents.triggers.create(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         name="x",
     )
 
 
-def _smoke_case_175() -> None:
+def _smoke_case_178() -> None:
     trigger = client.agents.triggers.create(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         name="x",
@@ -1546,14 +1567,14 @@ def _smoke_case_175() -> None:
     )
 
 
-def _smoke_case_176() -> None:
+def _smoke_case_179() -> None:
     trigger = client.agents.triggers.retrieve(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_177() -> None:
+def _smoke_case_180() -> None:
     trigger = client.agents.triggers.update(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1561,7 +1582,7 @@ def _smoke_case_177() -> None:
     )
 
 
-def _smoke_case_178() -> None:
+def _smoke_case_181() -> None:
     trigger = client.agents.triggers.update(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1578,21 +1599,21 @@ def _smoke_case_178() -> None:
     )
 
 
-def _smoke_case_179() -> None:
+def _smoke_case_182() -> None:
     trigger = client.agents.triggers.delete(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_180() -> None:
+def _smoke_case_183() -> None:
     run = client.agents.runs.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_181() -> None:
+def _smoke_case_184() -> None:
     run = client.agents.runs.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -1600,34 +1621,34 @@ def _smoke_case_181() -> None:
     )
 
 
-def _smoke_case_182() -> None:
+def _smoke_case_185() -> None:
     run = client.agents.runs.create(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_183() -> None:
+def _smoke_case_186() -> None:
     run = client.agents.runs.create(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         body={},
     )
 
 
-def _smoke_case_184() -> None:
+def _smoke_case_187() -> None:
     run = client.agents.runs.retrieve(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         run_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_185() -> None:
+def _smoke_case_188() -> None:
     content_revision = client.agents.content_revisions.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_186() -> None:
+def _smoke_case_189() -> None:
     content_revision = client.agents.content_revisions.list(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -1635,14 +1656,14 @@ def _smoke_case_186() -> None:
     )
 
 
-def _smoke_case_187() -> None:
+def _smoke_case_190() -> None:
     content_revision = client.agents.content_revisions.retrieve(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         version=1,
     )
 
 
-def _smoke_case_188() -> None:
+def _smoke_case_191() -> None:
     content_revision = client.agents.content_revisions.restore(
         agent_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         version=1,
@@ -1650,7 +1671,7 @@ def _smoke_case_188() -> None:
     )
 
 
-def _smoke_case_189() -> None:
+def _smoke_case_192() -> None:
     repository = client.repositories.list(
         limit=50,
         enabled="all",
@@ -1659,7 +1680,7 @@ def _smoke_case_189() -> None:
     )
 
 
-def _smoke_case_190() -> None:
+def _smoke_case_193() -> None:
     repository = client.repositories.list(
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
@@ -1672,20 +1693,20 @@ def _smoke_case_190() -> None:
     )
 
 
-def _smoke_case_191() -> None:
+def _smoke_case_194() -> None:
     repository = client.repositories.retrieve(
         repository_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_192() -> None:
+def _smoke_case_195() -> None:
     repository = client.repositories.update(
         repository_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         enabled=False,
     )
 
 
-def _smoke_case_193() -> None:
+def _smoke_case_196() -> None:
     repository = client.repositories.update(
         repository_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         enabled=False,
@@ -1694,14 +1715,14 @@ def _smoke_case_193() -> None:
     )
 
 
-def _smoke_case_194() -> None:
+def _smoke_case_197() -> None:
     integration = client.integrations.list(
         limit=50,
         include_total=False,
     )
 
 
-def _smoke_case_195() -> None:
+def _smoke_case_198() -> None:
     integration = client.integrations.list(
         cursor="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
@@ -1716,7 +1737,7 @@ def _smoke_case_195() -> None:
     )
 
 
-def _smoke_case_196() -> None:
+def _smoke_case_199() -> None:
     integration = client.integrations.create(
         environment="x",
         role_arn="x",
@@ -1724,20 +1745,20 @@ def _smoke_case_196() -> None:
     )
 
 
-def _smoke_case_197() -> None:
+def _smoke_case_200() -> None:
     integration = client.integrations.retrieve(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_198() -> None:
+def _smoke_case_201() -> None:
     integration = client.integrations.update(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         settings={},
     )
 
 
-def _smoke_case_199() -> None:
+def _smoke_case_202() -> None:
     integration = client.integrations.update(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         settings={
@@ -1749,19 +1770,19 @@ def _smoke_case_199() -> None:
     )
 
 
-def _smoke_case_200() -> None:
+def _smoke_case_203() -> None:
     integration = client.integrations.delete(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_201() -> None:
+def _smoke_case_204() -> None:
     integration = client.integrations.authorize(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_202() -> None:
+def _smoke_case_205() -> None:
     integration = client.integrations.authorize(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         return_url="https://example.com",
@@ -1769,47 +1790,47 @@ def _smoke_case_202() -> None:
     )
 
 
-def _smoke_case_203() -> None:
+def _smoke_case_206() -> None:
     integration = client.integrations.test(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_204() -> None:
+def _smoke_case_207() -> None:
     integration = client.integrations.sync(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         mode="queued",
     )
 
 
-def _smoke_case_205() -> None:
+def _smoke_case_208() -> None:
     integration = client.integrations.sync_all()
 
 
-def _smoke_case_206() -> None:
+def _smoke_case_209() -> None:
     integration = client.integrations.retrieve_sync_status()
 
 
-def _smoke_case_207() -> None:
+def _smoke_case_210() -> None:
     integration = client.integrations.retrieve_sync_status(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_208() -> None:
+def _smoke_case_211() -> None:
     integration = client.integrations.retrieve_rate_limit(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     )
 
 
-def _smoke_case_209() -> None:
+def _smoke_case_212() -> None:
     integration = client.integrations.list_sentry_environments(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_210() -> None:
+def _smoke_case_213() -> None:
     integration = client.integrations.list_sentry_environments(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -1817,14 +1838,14 @@ def _smoke_case_210() -> None:
     )
 
 
-def _smoke_case_211() -> None:
+def _smoke_case_214() -> None:
     integration = client.integrations.list_slack_channels(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         limit=50,
     )
 
 
-def _smoke_case_212() -> None:
+def _smoke_case_215() -> None:
     integration = client.integrations.list_slack_channels(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         cursor="cursor",
@@ -1833,13 +1854,13 @@ def _smoke_case_212() -> None:
     )
 
 
-def _smoke_case_213() -> None:
+def _smoke_case_216() -> None:
     provider = client.integrations.providers.list(
         limit=50,
     )
 
 
-def _smoke_case_214() -> None:
+def _smoke_case_217() -> None:
     provider = client.integrations.providers.list(
         cursor="cursor",
         limit=50,
@@ -1847,7 +1868,7 @@ def _smoke_case_214() -> None:
     )
 
 
-def _smoke_case_215() -> None:
+def _smoke_case_218() -> None:
     provider = client.integrations.providers.discover_snyk_organizations(
         client_id="x",
         client_secret="x",
@@ -1855,7 +1876,7 @@ def _smoke_case_215() -> None:
     )
 
 
-def _smoke_case_216() -> None:
+def _smoke_case_219() -> None:
     provider = client.integrations.providers.discover_snyk_organizations(
         client_id="x",
         client_secret="x",
@@ -1864,27 +1885,27 @@ def _smoke_case_216() -> None:
     )
 
 
-def _smoke_case_217() -> None:
+def _smoke_case_220() -> None:
     trigger = client.integrations.triggers.list(
         limit=50,
     )
 
 
-def _smoke_case_218() -> None:
+def _smoke_case_221() -> None:
     trigger = client.integrations.triggers.list(
         cursor="cursor",
         limit=50,
     )
 
 
-def _smoke_case_219() -> None:
+def _smoke_case_222() -> None:
     trigger = client.integrations.triggers.retrieve(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
     )
 
 
-def _smoke_case_220() -> None:
+def _smoke_case_223() -> None:
     trigger = client.integrations.triggers.list_filter_options(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
@@ -1893,7 +1914,7 @@ def _smoke_case_220() -> None:
     )
 
 
-def _smoke_case_221() -> None:
+def _smoke_case_224() -> None:
     trigger = client.integrations.triggers.list_filter_options(
         integration_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         trigger_name="triggerName",
@@ -1904,17 +1925,17 @@ def _smoke_case_221() -> None:
     )
 
 
-def _smoke_case_222() -> None:
+def _smoke_case_225() -> None:
     billing = client.billing.retrieve()
 
 
-def _smoke_case_223() -> None:
+def _smoke_case_226() -> None:
     billing = client.billing.list_usage(
         limit=50,
     )
 
 
-def _smoke_case_224() -> None:
+def _smoke_case_227() -> None:
     billing = client.billing.list_usage(
         cursor="cursor",
         limit=50,
@@ -1927,11 +1948,11 @@ def _smoke_case_224() -> None:
     )
 
 
-def _smoke_case_225() -> None:
+def _smoke_case_228() -> None:
     live = client.live.authorize()
 
 
-def _smoke_case_226() -> None:
+def _smoke_case_229() -> None:
     def _probe() -> None:
         with client.live.connect() as socket:
             try:
@@ -2512,940 +2533,958 @@ cases: list[SmokeCase] = [
         "run": _smoke_case_85,
     },
     {
-        "operation": "retrieve",
+        "operation": "list",
         "method": "GET",
-        "path": "/v1/users/{userId}/profile-picture",
+        "path": "/v1/users/{userId}/environment-variables",
         "run": _smoke_case_86,
     },
     {
-        "operation": "update",
-        "method": "PUT",
-        "path": "/v1/users/{userId}/profile-picture",
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/users/{userId}/environment-variables",
         "run": _smoke_case_87,
     },
     {
         "operation": "delete",
         "method": "DELETE",
-        "path": "/v1/users/{userId}/profile-picture",
+        "path": "/v1/users/{userId}/environment-variables/{environmentVariableId}",
         "run": _smoke_case_88,
     },
     {
-        "operation": "list",
+        "operation": "retrieve",
         "method": "GET",
-        "path": "/v1/sessions",
-        "label": "required params",
+        "path": "/v1/users/{userId}/profile-picture",
         "run": _smoke_case_89,
     },
     {
+        "operation": "update",
+        "method": "PUT",
+        "path": "/v1/users/{userId}/profile-picture",
+        "run": _smoke_case_90,
+    },
+    {
+        "operation": "delete",
+        "method": "DELETE",
+        "path": "/v1/users/{userId}/profile-picture",
+        "run": _smoke_case_91,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/sessions",
+        "label": "required params",
+        "run": _smoke_case_92,
+    },
+    {
         "operation": "list",
         "method": "GET",
         "path": "/v1/sessions",
         "label": "all params",
-        "run": _smoke_case_90,
+        "run": _smoke_case_93,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/sessions",
         "label": "required params",
-        "run": _smoke_case_91,
+        "run": _smoke_case_94,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/sessions",
         "label": "all params",
-        "run": _smoke_case_92,
+        "run": _smoke_case_95,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/sessions/{sessionId}",
-        "run": _smoke_case_93,
+        "run": _smoke_case_96,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/sessions/{sessionId}",
         "label": "required params",
-        "run": _smoke_case_94,
+        "run": _smoke_case_97,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/sessions/{sessionId}",
         "label": "all params",
-        "run": _smoke_case_95,
+        "run": _smoke_case_98,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/sessions/{sessionId}",
-        "run": _smoke_case_96,
-    },
-    {
-        "operation": "fork",
-        "method": "POST",
-        "path": "/v1/sessions/{sessionId}/fork",
-        "label": "required params",
-        "run": _smoke_case_97,
-    },
-    {
-        "operation": "fork",
-        "method": "POST",
-        "path": "/v1/sessions/{sessionId}/fork",
-        "label": "all params",
-        "run": _smoke_case_98,
-    },
-    {
-        "operation": "stop",
-        "method": "POST",
-        "path": "/v1/sessions/{sessionId}/stop",
-        "label": "required params",
         "run": _smoke_case_99,
     },
     {
+        "operation": "fork",
+        "method": "POST",
+        "path": "/v1/sessions/{sessionId}/fork",
+        "label": "required params",
+        "run": _smoke_case_100,
+    },
+    {
+        "operation": "fork",
+        "method": "POST",
+        "path": "/v1/sessions/{sessionId}/fork",
+        "label": "all params",
+        "run": _smoke_case_101,
+    },
+    {
+        "operation": "stop",
+        "method": "POST",
+        "path": "/v1/sessions/{sessionId}/stop",
+        "label": "required params",
+        "run": _smoke_case_102,
+    },
+    {
         "operation": "stop",
         "method": "POST",
         "path": "/v1/sessions/{sessionId}/stop",
         "label": "all params",
-        "run": _smoke_case_100,
-    },
-    {
-        "operation": "listEvents",
-        "method": "GET",
-        "path": "/v1/sessions/{sessionId}/events",
-        "label": "required params",
-        "run": _smoke_case_101,
-    },
-    {
-        "operation": "listEvents",
-        "method": "GET",
-        "path": "/v1/sessions/{sessionId}/events",
-        "label": "all params",
-        "run": _smoke_case_102,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/sessions/sources",
-        "label": "required params",
         "run": _smoke_case_103,
     },
     {
-        "operation": "list",
+        "operation": "listEvents",
         "method": "GET",
-        "path": "/v1/sessions/sources",
-        "label": "all params",
+        "path": "/v1/sessions/{sessionId}/events",
+        "label": "required params",
         "run": _smoke_case_104,
     },
     {
-        "operation": "retrieve",
+        "operation": "listEvents",
         "method": "GET",
-        "path": "/v1/sessions/sources/{sourceId}",
+        "path": "/v1/sessions/{sessionId}/events",
+        "label": "all params",
         "run": _smoke_case_105,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/sessions/{sessionId}/diffs",
+        "path": "/v1/sessions/sources",
         "label": "required params",
         "run": _smoke_case_106,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/sessions/{sessionId}/diffs",
+        "path": "/v1/sessions/sources",
         "label": "all params",
         "run": _smoke_case_107,
     },
     {
         "operation": "retrieve",
         "method": "GET",
-        "path": "/v1/sessions/{sessionId}/diffs/{diffId}",
+        "path": "/v1/sessions/sources/{sourceId}",
         "run": _smoke_case_108,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/sessions/{sessionId}/inputs",
+        "path": "/v1/sessions/{sessionId}/diffs",
+        "label": "required params",
         "run": _smoke_case_109,
     },
     {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/sessions/{sessionId}/inputs/{inputId}",
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/sessions/{sessionId}/diffs",
+        "label": "all params",
         "run": _smoke_case_110,
     },
     {
-        "operation": "update",
-        "method": "PUT",
-        "path": "/v1/sessions/{sessionId}/queue",
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/sessions/{sessionId}/diffs/{diffId}",
         "run": _smoke_case_111,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/sessions/{sessionId}/commands",
+        "path": "/v1/sessions/{sessionId}/inputs",
         "run": _smoke_case_112,
     },
     {
-        "operation": "updateDefaults",
-        "method": "PUT",
-        "path": "/v1/projects/defaults",
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/sessions/{sessionId}/inputs/{inputId}",
         "run": _smoke_case_113,
     },
     {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects",
-        "label": "required params",
+        "operation": "update",
+        "method": "PUT",
+        "path": "/v1/sessions/{sessionId}/queue",
         "run": _smoke_case_114,
     },
     {
         "operation": "list",
         "method": "GET",
+        "path": "/v1/sessions/{sessionId}/commands",
+        "run": _smoke_case_115,
+    },
+    {
+        "operation": "updateDefaults",
+        "method": "PUT",
+        "path": "/v1/projects/defaults",
+        "run": _smoke_case_116,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/projects",
+        "label": "required params",
+        "run": _smoke_case_117,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
         "path": "/v1/projects",
         "label": "all params",
-        "run": _smoke_case_115,
+        "run": _smoke_case_118,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/projects",
         "label": "required params",
-        "run": _smoke_case_116,
+        "run": _smoke_case_119,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/projects",
         "label": "all params",
-        "run": _smoke_case_117,
+        "run": _smoke_case_120,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/projects/{projectId}",
-        "run": _smoke_case_118,
+        "run": _smoke_case_121,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/projects/{projectId}",
         "label": "required params",
-        "run": _smoke_case_119,
+        "run": _smoke_case_122,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/projects/{projectId}",
         "label": "all params",
-        "run": _smoke_case_120,
+        "run": _smoke_case_123,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/projects/{projectId}",
-        "run": _smoke_case_121,
+        "run": _smoke_case_124,
     },
     {
         "operation": "duplicate",
         "method": "POST",
         "path": "/v1/projects/{projectId}/duplicate",
-        "run": _smoke_case_122,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects/{projectId}/environment-variables",
-        "run": _smoke_case_123,
-    },
-    {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/projects/{projectId}/environment-variables",
-        "run": _smoke_case_124,
-    },
-    {
-        "operation": "delete",
-        "method": "DELETE",
-        "path": "/v1/projects/{projectId}/environment-variables/{key}",
         "run": _smoke_case_125,
     },
     {
         "operation": "list",
         "method": "GET",
+        "path": "/v1/projects/{projectId}/environment-variables",
+        "run": _smoke_case_126,
+    },
+    {
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/projects/{projectId}/environment-variables",
+        "run": _smoke_case_127,
+    },
+    {
+        "operation": "delete",
+        "method": "DELETE",
+        "path": "/v1/projects/{projectId}/environment-variables/{key}",
+        "run": _smoke_case_128,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
         "path": "/v1/projects/{projectId}/snapshots",
         "label": "required params",
-        "run": _smoke_case_126,
+        "run": _smoke_case_129,
     },
     {
         "operation": "list",
         "method": "GET",
         "path": "/v1/projects/{projectId}/snapshots",
         "label": "all params",
-        "run": _smoke_case_127,
+        "run": _smoke_case_130,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/projects/{projectId}/snapshots/{snapshotId}",
-        "run": _smoke_case_128,
+        "run": _smoke_case_131,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/projects/{projectId}/snapshots/{snapshotId}",
         "label": "required params",
-        "run": _smoke_case_129,
+        "run": _smoke_case_132,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/projects/{projectId}/snapshots/{snapshotId}",
         "label": "all params",
-        "run": _smoke_case_130,
+        "run": _smoke_case_133,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/projects/{projectId}/snapshots/{snapshotId}",
-        "run": _smoke_case_131,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects/{projectId}/builds",
-        "label": "required params",
-        "run": _smoke_case_132,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects/{projectId}/builds",
-        "label": "all params",
-        "run": _smoke_case_133,
-    },
-    {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/projects/{projectId}/builds",
-        "label": "required params",
         "run": _smoke_case_134,
     },
     {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/projects/{projectId}/builds",
+        "label": "required params",
+        "run": _smoke_case_135,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/projects/{projectId}/builds",
+        "label": "all params",
+        "run": _smoke_case_136,
+    },
+    {
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/projects/{projectId}/builds",
+        "label": "required params",
+        "run": _smoke_case_137,
+    },
+    {
         "operation": "create",
         "method": "POST",
         "path": "/v1/projects/{projectId}/builds",
         "label": "all params",
-        "run": _smoke_case_135,
+        "run": _smoke_case_138,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/projects/{projectId}/builds/{buildId}",
-        "run": _smoke_case_136,
+        "run": _smoke_case_139,
     },
     {
         "operation": "cancel",
         "method": "POST",
         "path": "/v1/projects/{projectId}/builds/{buildId}/cancel",
-        "run": _smoke_case_137,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects/{projectId}/schedules",
-        "label": "required params",
-        "run": _smoke_case_138,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/projects/{projectId}/schedules",
-        "label": "all params",
-        "run": _smoke_case_139,
-    },
-    {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/projects/{projectId}/schedules",
-        "label": "required params",
         "run": _smoke_case_140,
     },
     {
-        "operation": "create",
-        "method": "POST",
+        "operation": "list",
+        "method": "GET",
         "path": "/v1/projects/{projectId}/schedules",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_141,
     },
     {
-        "operation": "retrieve",
+        "operation": "list",
         "method": "GET",
-        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+        "path": "/v1/projects/{projectId}/schedules",
+        "label": "all params",
         "run": _smoke_case_142,
     },
     {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/projects/{projectId}/schedules",
         "label": "required params",
         "run": _smoke_case_143,
     },
     {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/projects/{projectId}/schedules",
         "label": "all params",
         "run": _smoke_case_144,
     },
     {
-        "operation": "delete",
-        "method": "DELETE",
+        "operation": "retrieve",
+        "method": "GET",
         "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
         "run": _smoke_case_145,
     },
     {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/pins",
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
         "label": "required params",
         "run": _smoke_case_146,
     },
     {
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+        "label": "all params",
+        "run": _smoke_case_147,
+    },
+    {
+        "operation": "delete",
+        "method": "DELETE",
+        "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+        "run": _smoke_case_148,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/pins",
+        "label": "required params",
+        "run": _smoke_case_149,
+    },
+    {
         "operation": "list",
         "method": "GET",
         "path": "/v1/pins",
         "label": "all params",
-        "run": _smoke_case_147,
+        "run": _smoke_case_150,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/pins",
         "label": "required params",
-        "run": _smoke_case_148,
+        "run": _smoke_case_151,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/pins",
         "label": "all params",
-        "run": _smoke_case_149,
+        "run": _smoke_case_152,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/pins/{resourceType}/{resourceId}",
-        "run": _smoke_case_150,
+        "run": _smoke_case_153,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/pins/{resourceType}/{resourceId}",
-        "run": _smoke_case_151,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/pull-requests",
-        "label": "required params",
-        "run": _smoke_case_152,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/pull-requests",
-        "label": "all params",
-        "run": _smoke_case_153,
-    },
-    {
-        "operation": "retrieve",
-        "method": "GET",
-        "path": "/v1/pull-requests/{pullRequestId}",
         "run": _smoke_case_154,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/agents",
+        "path": "/v1/pull-requests",
         "label": "required params",
         "run": _smoke_case_155,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/agents",
+        "path": "/v1/pull-requests",
         "label": "all params",
         "run": _smoke_case_156,
+    },
+    {
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/pull-requests/{pullRequestId}",
+        "run": _smoke_case_157,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/agents",
+        "label": "required params",
+        "run": _smoke_case_158,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/agents",
+        "label": "all params",
+        "run": _smoke_case_159,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/agents",
         "label": "required params",
-        "run": _smoke_case_157,
+        "run": _smoke_case_160,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/agents",
         "label": "all params",
-        "run": _smoke_case_158,
+        "run": _smoke_case_161,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/agents/{agentId}",
-        "run": _smoke_case_159,
+        "run": _smoke_case_162,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/agents/{agentId}",
         "label": "required params",
-        "run": _smoke_case_160,
+        "run": _smoke_case_163,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/agents/{agentId}",
         "label": "all params",
-        "run": _smoke_case_161,
+        "run": _smoke_case_164,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/agents/{agentId}",
-        "run": _smoke_case_162,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/templates",
-        "label": "required params",
-        "run": _smoke_case_163,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/templates",
-        "label": "all params",
-        "run": _smoke_case_164,
-    },
-    {
-        "operation": "retrieve",
-        "method": "GET",
-        "path": "/v1/agents/templates/{templateName}",
         "run": _smoke_case_165,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/schedules",
+        "path": "/v1/agents/templates",
         "label": "required params",
         "run": _smoke_case_166,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/schedules",
+        "path": "/v1/agents/templates",
         "label": "all params",
         "run": _smoke_case_167,
     },
     {
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/agents/templates/{templateName}",
+        "run": _smoke_case_168,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/agents/{agentId}/schedules",
+        "label": "required params",
+        "run": _smoke_case_169,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/agents/{agentId}/schedules",
+        "label": "all params",
+        "run": _smoke_case_170,
+    },
+    {
         "operation": "create",
         "method": "POST",
         "path": "/v1/agents/{agentId}/schedules",
-        "run": _smoke_case_168,
+        "run": _smoke_case_171,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/agents/{agentId}/schedules/{scheduleId}",
-        "run": _smoke_case_169,
+        "run": _smoke_case_172,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/agents/{agentId}/schedules/{scheduleId}",
-        "run": _smoke_case_170,
+        "run": _smoke_case_173,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/agents/{agentId}/schedules/{scheduleId}",
-        "run": _smoke_case_171,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/{agentId}/triggers",
-        "label": "required params",
-        "run": _smoke_case_172,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/{agentId}/triggers",
-        "label": "all params",
-        "run": _smoke_case_173,
-    },
-    {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/agents/{agentId}/triggers",
-        "label": "required params",
         "run": _smoke_case_174,
     },
     {
-        "operation": "create",
-        "method": "POST",
+        "operation": "list",
+        "method": "GET",
         "path": "/v1/agents/{agentId}/triggers",
-        "label": "all params",
+        "label": "required params",
         "run": _smoke_case_175,
     },
     {
-        "operation": "retrieve",
+        "operation": "list",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+        "path": "/v1/agents/{agentId}/triggers",
+        "label": "all params",
         "run": _smoke_case_176,
     },
     {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/agents/{agentId}/triggers",
         "label": "required params",
         "run": _smoke_case_177,
     },
     {
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/agents/{agentId}/triggers",
+        "label": "all params",
+        "run": _smoke_case_178,
+    },
+    {
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+        "run": _smoke_case_179,
+    },
+    {
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+        "label": "required params",
+        "run": _smoke_case_180,
+    },
+    {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/agents/{agentId}/triggers/{triggerId}",
         "label": "all params",
-        "run": _smoke_case_178,
+        "run": _smoke_case_181,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/agents/{agentId}/triggers/{triggerId}",
-        "run": _smoke_case_179,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/{agentId}/runs",
-        "label": "required params",
-        "run": _smoke_case_180,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/{agentId}/runs",
-        "label": "all params",
-        "run": _smoke_case_181,
-    },
-    {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/agents/{agentId}/runs",
-        "label": "required params",
         "run": _smoke_case_182,
     },
     {
-        "operation": "create",
-        "method": "POST",
-        "path": "/v1/agents/{agentId}/runs",
-        "label": "all params",
-        "run": _smoke_case_183,
-    },
-    {
-        "operation": "retrieve",
+        "operation": "list",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/runs/{runId}",
-        "run": _smoke_case_184,
+        "path": "/v1/agents/{agentId}/runs",
+        "label": "required params",
+        "run": _smoke_case_183,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/content-revisions",
+        "path": "/v1/agents/{agentId}/runs",
+        "label": "all params",
+        "run": _smoke_case_184,
+    },
+    {
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/agents/{agentId}/runs",
         "label": "required params",
         "run": _smoke_case_185,
     },
     {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/agents/{agentId}/content-revisions",
+        "operation": "create",
+        "method": "POST",
+        "path": "/v1/agents/{agentId}/runs",
         "label": "all params",
         "run": _smoke_case_186,
     },
     {
         "operation": "retrieve",
         "method": "GET",
-        "path": "/v1/agents/{agentId}/content-revisions/{version}",
+        "path": "/v1/agents/{agentId}/runs/{runId}",
         "run": _smoke_case_187,
     },
     {
-        "operation": "restore",
-        "method": "POST",
-        "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/agents/{agentId}/content-revisions",
+        "label": "required params",
         "run": _smoke_case_188,
     },
     {
         "operation": "list",
         "method": "GET",
+        "path": "/v1/agents/{agentId}/content-revisions",
+        "label": "all params",
+        "run": _smoke_case_189,
+    },
+    {
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/agents/{agentId}/content-revisions/{version}",
+        "run": _smoke_case_190,
+    },
+    {
+        "operation": "restore",
+        "method": "POST",
+        "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
+        "run": _smoke_case_191,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
         "path": "/v1/repositories",
         "label": "required params",
-        "run": _smoke_case_189,
+        "run": _smoke_case_192,
     },
     {
         "operation": "list",
         "method": "GET",
         "path": "/v1/repositories",
         "label": "all params",
-        "run": _smoke_case_190,
+        "run": _smoke_case_193,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/repositories/{repositoryId}",
-        "run": _smoke_case_191,
-    },
-    {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/repositories/{repositoryId}",
-        "label": "required params",
-        "run": _smoke_case_192,
-    },
-    {
-        "operation": "update",
-        "method": "PATCH",
-        "path": "/v1/repositories/{repositoryId}",
-        "label": "all params",
-        "run": _smoke_case_193,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/integrations",
-        "label": "required params",
         "run": _smoke_case_194,
     },
     {
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/repositories/{repositoryId}",
+        "label": "required params",
+        "run": _smoke_case_195,
+    },
+    {
+        "operation": "update",
+        "method": "PATCH",
+        "path": "/v1/repositories/{repositoryId}",
+        "label": "all params",
+        "run": _smoke_case_196,
+    },
+    {
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/integrations",
+        "label": "required params",
+        "run": _smoke_case_197,
+    },
+    {
         "operation": "list",
         "method": "GET",
         "path": "/v1/integrations",
         "label": "all params",
-        "run": _smoke_case_195,
+        "run": _smoke_case_198,
     },
     {
         "operation": "create",
         "method": "POST",
         "path": "/v1/integrations",
-        "run": _smoke_case_196,
+        "run": _smoke_case_199,
     },
     {
         "operation": "retrieve",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}",
-        "run": _smoke_case_197,
+        "run": _smoke_case_200,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/integrations/{integrationId}",
         "label": "required params",
-        "run": _smoke_case_198,
+        "run": _smoke_case_201,
     },
     {
         "operation": "update",
         "method": "PATCH",
         "path": "/v1/integrations/{integrationId}",
         "label": "all params",
-        "run": _smoke_case_199,
+        "run": _smoke_case_202,
     },
     {
         "operation": "delete",
         "method": "DELETE",
         "path": "/v1/integrations/{integrationId}",
-        "run": _smoke_case_200,
+        "run": _smoke_case_203,
     },
     {
         "operation": "authorize",
         "method": "POST",
         "path": "/v1/integrations/{integrationId}/authorize",
         "label": "required params",
-        "run": _smoke_case_201,
+        "run": _smoke_case_204,
     },
     {
         "operation": "authorize",
         "method": "POST",
         "path": "/v1/integrations/{integrationId}/authorize",
         "label": "all params",
-        "run": _smoke_case_202,
+        "run": _smoke_case_205,
     },
     {
         "operation": "test",
         "method": "POST",
         "path": "/v1/integrations/{integrationId}/test",
-        "run": _smoke_case_203,
+        "run": _smoke_case_206,
     },
     {
         "operation": "sync",
         "method": "POST",
         "path": "/v1/integrations/{integrationId}/sync",
-        "run": _smoke_case_204,
+        "run": _smoke_case_207,
     },
     {
         "operation": "syncAll",
         "method": "POST",
         "path": "/v1/integrations/sync",
-        "run": _smoke_case_205,
+        "run": _smoke_case_208,
     },
     {
         "operation": "retrieveSyncStatus",
         "method": "GET",
         "path": "/v1/integrations/sync/status",
         "label": "required params",
-        "run": _smoke_case_206,
+        "run": _smoke_case_209,
     },
     {
         "operation": "retrieveSyncStatus",
         "method": "GET",
         "path": "/v1/integrations/sync/status",
         "label": "all params",
-        "run": _smoke_case_207,
+        "run": _smoke_case_210,
     },
     {
         "operation": "retrieveRateLimit",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/rate-limit",
-        "run": _smoke_case_208,
-    },
-    {
-        "operation": "listSentryEnvironments",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/sentry-environments",
-        "label": "required params",
-        "run": _smoke_case_209,
-    },
-    {
-        "operation": "listSentryEnvironments",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/sentry-environments",
-        "label": "all params",
-        "run": _smoke_case_210,
-    },
-    {
-        "operation": "listSlackChannels",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/slack-channels",
-        "label": "required params",
         "run": _smoke_case_211,
     },
     {
+        "operation": "listSentryEnvironments",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/sentry-environments",
+        "label": "required params",
+        "run": _smoke_case_212,
+    },
+    {
+        "operation": "listSentryEnvironments",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/sentry-environments",
+        "label": "all params",
+        "run": _smoke_case_213,
+    },
+    {
+        "operation": "listSlackChannels",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/slack-channels",
+        "label": "required params",
+        "run": _smoke_case_214,
+    },
+    {
         "operation": "listSlackChannels",
         "method": "GET",
         "path": "/v1/integrations/{integrationId}/slack-channels",
         "label": "all params",
-        "run": _smoke_case_212,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/integrations/providers",
-        "label": "required params",
-        "run": _smoke_case_213,
-    },
-    {
-        "operation": "list",
-        "method": "GET",
-        "path": "/v1/integrations/providers",
-        "label": "all params",
-        "run": _smoke_case_214,
-    },
-    {
-        "operation": "discoverSnykOrganizations",
-        "method": "POST",
-        "path": "/v1/integrations/providers/snyk/organizations",
-        "label": "required params",
         "run": _smoke_case_215,
     },
     {
-        "operation": "discoverSnykOrganizations",
-        "method": "POST",
-        "path": "/v1/integrations/providers/snyk/organizations",
-        "label": "all params",
+        "operation": "list",
+        "method": "GET",
+        "path": "/v1/integrations/providers",
+        "label": "required params",
         "run": _smoke_case_216,
     },
     {
         "operation": "list",
         "method": "GET",
-        "path": "/v1/integrations/triggers",
-        "label": "required params",
+        "path": "/v1/integrations/providers",
+        "label": "all params",
         "run": _smoke_case_217,
+    },
+    {
+        "operation": "discoverSnykOrganizations",
+        "method": "POST",
+        "path": "/v1/integrations/providers/snyk/organizations",
+        "label": "required params",
+        "run": _smoke_case_218,
+    },
+    {
+        "operation": "discoverSnykOrganizations",
+        "method": "POST",
+        "path": "/v1/integrations/providers/snyk/organizations",
+        "label": "all params",
+        "run": _smoke_case_219,
     },
     {
         "operation": "list",
         "method": "GET",
         "path": "/v1/integrations/triggers",
-        "label": "all params",
-        "run": _smoke_case_218,
-    },
-    {
-        "operation": "retrieve",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}",
-        "run": _smoke_case_219,
-    },
-    {
-        "operation": "listFilterOptions",
-        "method": "GET",
-        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
         "label": "required params",
         "run": _smoke_case_220,
     },
     {
-        "operation": "listFilterOptions",
+        "operation": "list",
         "method": "GET",
-        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
+        "path": "/v1/integrations/triggers",
         "label": "all params",
         "run": _smoke_case_221,
     },
     {
         "operation": "retrieve",
         "method": "GET",
-        "path": "/v1/billing",
+        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}",
         "run": _smoke_case_222,
+    },
+    {
+        "operation": "listFilterOptions",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
+        "label": "required params",
+        "run": _smoke_case_223,
+    },
+    {
+        "operation": "listFilterOptions",
+        "method": "GET",
+        "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
+        "label": "all params",
+        "run": _smoke_case_224,
+    },
+    {
+        "operation": "retrieve",
+        "method": "GET",
+        "path": "/v1/billing",
+        "run": _smoke_case_225,
     },
     {
         "operation": "listUsage",
         "method": "GET",
         "path": "/v1/billing/usage",
         "label": "required params",
-        "run": _smoke_case_223,
+        "run": _smoke_case_226,
     },
     {
         "operation": "listUsage",
         "method": "GET",
         "path": "/v1/billing/usage",
         "label": "all params",
-        "run": _smoke_case_224,
+        "run": _smoke_case_227,
     },
     {
         "operation": "authorize",
         "method": "POST",
         "path": "/v1/live",
-        "run": _smoke_case_225,
+        "run": _smoke_case_228,
     },
     {
         "operation": "connect",
         "method": "GET",
         "path": "/v1/live",
-        "run": _smoke_case_226,
+        "run": _smoke_case_229,
     },
 ]
 
