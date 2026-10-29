@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/tembo/sdk-python/compare/v0.6.1...v0.7.0) (2026-10-29)
+
+
+### Features
+
+* **api:** add query param parentSessionId on sessions.list ([508ac63](https://github.com/tembo/sdk-python/commit/508ac638813660b277334ceaebf59d5d885ed6bc))
+
 ## [0.6.1](https://github.com/tembo/sdk-python/compare/v0.6.0...v0.6.1) (2026-10-29)
 
 
