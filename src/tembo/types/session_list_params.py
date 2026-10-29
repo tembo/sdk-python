@@ -43,6 +43,9 @@ class SessionListParams(TypedDict, total=False):
     include_total: Annotated[bool, PropertyInfo(alias="includeTotal")]
     """Include totalCount. Not supported with state=active."""
 
+    parent_session_id: Annotated[str, PropertyInfo(alias="parentSessionId")]
+    """Filter sessions created by this session."""
+
     participant: SequenceNotStr[str]
     """Filter by participant IDs, supplied as a comma-separated list."""
 

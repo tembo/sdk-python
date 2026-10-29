@@ -218,6 +218,9 @@ class PinCreateResponseResource(BaseModel):
 
     state: PinCreateResponseResourceState
 
+    is_unread: Optional[bool] = FieldInfo(alias="isUnread", default=None)
+    """Whether the latest turn finished after the caller last viewed the session."""
+
 
 class PinCreateResponse(BaseModel):
     type: Literal["session"]
