@@ -194,6 +194,7 @@ class ModelUpdateResponse(BaseModel):
         "claude-opus-4-5",
         "claude-4-5-haiku",
         "gpt-6.1-sol",
+        "gpt-6.1-terra",
         "gpt-6-astra",
         "gpt-6-sol",
         "gpt-6-luna",
