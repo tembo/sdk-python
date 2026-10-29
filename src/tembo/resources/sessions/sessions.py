@@ -122,6 +122,7 @@ class SessionsResource(SyncAPIResource):
         has_project: bool | Omit = omit,
         include_archived: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        parent_session_id: str | Omit = omit,
         participant: SequenceNotStr[str] | Omit = omit,
         pending_reviewer_keys: SequenceNotStr[str] | Omit = omit,
         project_ids: SequenceNotStr[str] | Omit = omit,
@@ -153,6 +154,7 @@ class SessionsResource(SyncAPIResource):
             has_project: Filter by whether a session has an assigned project.
             include_archived: Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions.
             include_total: Include totalCount. Not supported with state=active.
+            parent_session_id: Filter sessions created by this session.
             participant: Filter by participant IDs, supplied as a comma-separated list.
             pending_reviewer_keys: Filter by pending reviewer keys, supplied as a comma-separated list.
             project_ids: Filter by project IDs, supplied as a comma-separated list.
@@ -201,6 +203,7 @@ class SessionsResource(SyncAPIResource):
                         "has_project": has_project,
                         "include_archived": include_archived,
                         "include_total": include_total,
+                        "parent_session_id": parent_session_id,
                         "participant": participant,
                         "pending_reviewer_keys": pending_reviewer_keys,
                         "project_ids": project_ids,
@@ -698,6 +701,7 @@ class AsyncSessionsResource(AsyncAPIResource):
         has_project: bool | Omit = omit,
         include_archived: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        parent_session_id: str | Omit = omit,
         participant: SequenceNotStr[str] | Omit = omit,
         pending_reviewer_keys: SequenceNotStr[str] | Omit = omit,
         project_ids: SequenceNotStr[str] | Omit = omit,
@@ -729,6 +733,7 @@ class AsyncSessionsResource(AsyncAPIResource):
             has_project: Filter by whether a session has an assigned project.
             include_archived: Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions.
             include_total: Include totalCount. Not supported with state=active.
+            parent_session_id: Filter sessions created by this session.
             participant: Filter by participant IDs, supplied as a comma-separated list.
             pending_reviewer_keys: Filter by pending reviewer keys, supplied as a comma-separated list.
             project_ids: Filter by project IDs, supplied as a comma-separated list.
@@ -777,6 +782,7 @@ class AsyncSessionsResource(AsyncAPIResource):
                         "has_project": has_project,
                         "include_archived": include_archived,
                         "include_total": include_total,
+                        "parent_session_id": parent_session_id,
                         "participant": participant,
                         "pending_reviewer_keys": pending_reviewer_keys,
                         "project_ids": project_ids,
