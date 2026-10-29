@@ -208,6 +208,9 @@ class SessionCreateResponse(BaseModel):
 
     mode: Literal["normal", "planning"]
 
+    parent_session_id: Optional[str] = FieldInfo(alias="parentSessionId", default=None)
+    """The session whose agent created this session."""
+
     project_id: Optional[str] = FieldInfo(alias="projectId", default=None)
 
     sandbox_size: Optional[Literal["nano", "micro", "small", "medium", "large", "xl", "xxl", "ultra"]] = FieldInfo(

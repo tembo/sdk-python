@@ -216,6 +216,9 @@ class Resource2Resource(BaseModel):
 
     state: Resource2ResourceState
 
+    is_unread: Optional[bool] = FieldInfo(alias="isUnread", default=None)
+    """Whether the latest turn finished after the caller last viewed the session."""
+
 
 class Resource2(BaseModel):
     type: Literal["session"]
