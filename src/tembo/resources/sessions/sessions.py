@@ -510,7 +510,7 @@ class SessionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SessionForkResponse:
         """
-        Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.
+        Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context. The fork returns right away and its messages queue until its workspace finishes booting.
 
         Args:
             session_id: Path parameter.
@@ -1086,7 +1086,7 @@ class AsyncSessionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SessionForkResponse:
         """
-        Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.
+        Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context. The fork returns right away and its messages queue until its workspace finishes booting.
 
         Args:
             session_id: Path parameter.
