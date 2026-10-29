@@ -59,6 +59,9 @@ class Settings(BaseModel):
     experimental_mcp: bool = FieldInfo(alias="experimentalMcp")
     """Enable experimental MCP features for the organization."""
 
+    fallback_to_api_on_subscription_limit: bool = FieldInfo(alias="fallbackToApiOnSubscriptionLimit")
+    """Use the API key or Tembo inference when every connected subscription is out of usage."""
+
     feature_mention_author: bool = FieldInfo(alias="featureMentionAuthor")
     """Enable mentioning the author in supported integration responses."""
 
