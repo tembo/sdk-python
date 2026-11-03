@@ -197,6 +197,8 @@ class AppSidebarPreferences(TypedDict, total=False):
 
     show_archived_sessions: Annotated[bool, PropertyInfo(alias="showArchivedSessions")]
 
+    show_activity: Annotated[bool, PropertyInfo(alias="showActivity")]
+
     width: float
 
     right_sidebar: Annotated[Dict[str, AppSidebarPreferencesRightSidebar], PropertyInfo(alias="rightSidebar")]

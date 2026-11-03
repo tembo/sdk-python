@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Iterable
-from typing_extensions import Required, TypedDict
+from typing_extensions import Literal, Required, TypedDict
 
 __all__ = ["SkillCreateParams", "File"]
 
@@ -21,7 +21,10 @@ class SkillCreateParams(TypedDict, total=False):
 
 class File(TypedDict, total=False):
     content: Required[str]
-    """Complete text content of the skill file."""
+    """Complete file content: plain text, or base64 when encoding is base64."""
+
+    encoding: Literal["utf8", "base64"]
+    """utf8 for text files; base64 for binary files such as images."""
 
     filename: Required[str]
     """Relative file path within the skill, such as SKILL.md."""

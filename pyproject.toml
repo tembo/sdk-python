@@ -1,6 +1,6 @@
 [project]
 name = "tembo-sdk-python"
-version = "0.7.0" # x-release-please-version
+version = "0.8.0" # x-release-please-version
 description = "Manage agents, sessions, repositories, and organization resources with the Tembo API."
 readme = "README.md"
 license = "Apache-2.0"
@@ -15,6 +15,11 @@ dependencies = [
   "anyio>=3.5.0, <5",
   "sniffio",
 ]
+
+[project.urls]
+Source = "https://github.com/tembo/sdk-python"
+Issues = "https://github.com/tembo/sdk-python/issues"
+Changelog = "https://github.com/tembo/sdk-python/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.9"]

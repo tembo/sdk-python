@@ -112,7 +112,7 @@ def _smoke_case_9() -> None:
     skill = client.skills.create(
         description="",
         name="x",
-        files=[{"content": "", "filename": "x"}],
+        files=[{"content": "", "encoding": "utf8", "filename": "x"}],
     )
 
 
@@ -133,7 +133,7 @@ def _smoke_case_12() -> None:
         skill_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
         description="",
         name="x",
-        files=[{"content": "", "filename": "x"}],
+        files=[{"content": "", "encoding": "utf8", "filename": "x"}],
     )
 
 
@@ -625,20 +625,20 @@ def _smoke_case_71() -> None:
 
 def _smoke_case_72() -> None:
     model = client.models.list(
-        cursor="claude-opus-5-5",
+        cursor="cursor",
         limit=50,
     )
 
 
 def _smoke_case_73() -> None:
     model = client.models.update(
-        model_name="claude-opus-5-5",
+        model_name="modelName",
     )
 
 
 def _smoke_case_74() -> None:
     model = client.models.update(
-        model_name="claude-opus-5-5",
+        model_name="modelName",
         enabled=False,
         inference_provider="TemboManagedInference",
     )
@@ -701,6 +701,7 @@ def _smoke_case_81() -> None:
             "session_sort_by": "createdAt",
             "session_organization": "list",
             "show_archived_sessions": False,
+            "show_activity": False,
             "width": 0,
             "right_sidebar": {},
         },

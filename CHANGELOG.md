@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/tembo/sdk-python/compare/v0.7.0...v0.8.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add 403 error response on agents.runs.create (+1 more change) ([351f019](https://github.com/tembo/sdk-python/commit/351f019cefa6e229c4b3d1c94005a0fe58d99512))
+
 ## [0.7.0](https://github.com/tembo/sdk-python/compare/v0.6.1...v0.7.0) (2026-10-29)
 
 
