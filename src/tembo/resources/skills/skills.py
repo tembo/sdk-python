@@ -153,7 +153,7 @@ class SkillsResource(SyncAPIResource):
             skill = client.skills.create(
                 description="",
                 name="x",
-                files=[{"content": "", "filename": "x"}],
+                files=[{"content": "", "encoding": "utf8", "filename": "x"}],
             )
             ```
         """
@@ -427,7 +427,7 @@ class AsyncSkillsResource(AsyncAPIResource):
             skill = await client.skills.create(
                 description="",
                 name="x",
-                files=[{"content": "", "filename": "x"}],
+                files=[{"content": "", "encoding": "utf8", "filename": "x"}],
             )
             ```
         """

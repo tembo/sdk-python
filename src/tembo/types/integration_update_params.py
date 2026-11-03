@@ -17,21 +17,33 @@ __all__ = [
     "Variant3",
     "Variant3Postgres",
     "Variant4",
-    "Variant4AtlassianServiceAccount",
+    "Variant4Gitlab",
+    "Variant5",
+    "Variant5AtlassianServiceAccount",
 ]
 
 
-class Variant4AtlassianServiceAccount(TypedDict, total=False):
+class Variant5AtlassianServiceAccount(TypedDict, total=False):
     client_id: Required[Annotated[str, PropertyInfo(alias="clientId")]]
 
     client_secret: Required[Annotated[str, PropertyInfo(alias="clientSecret")]]
 
 
-class Variant4(TypedDict, total=False):
+class Variant5(TypedDict, total=False):
     atlassian_service_account: Required[
-        Annotated[Optional[Variant4AtlassianServiceAccount], PropertyInfo(alias="atlassianServiceAccount")]
+        Annotated[Optional[Variant5AtlassianServiceAccount], PropertyInfo(alias="atlassianServiceAccount")]
     ]
     """Set Atlassian service-account OAuth credentials for triggers, or null to remove them."""
+
+
+class Variant4Gitlab(TypedDict, total=False):
+    access_token: Required[Annotated[str, PropertyInfo(alias="accessToken")]]
+    """GitLab access token used to connect the integration."""
+
+
+class Variant4(TypedDict, total=False):
+    gitlab: Required[Variant4Gitlab]
+    """Replace GitLab credentials with a service account access token, keeping repositories and projects connected."""
 
 
 class Variant3Postgres(TypedDict, total=False):
@@ -78,4 +90,4 @@ class Variant(TypedDict, total=False):
     """Update integration settings, preserving unspecified settings."""
 
 
-IntegrationUpdateParams: TypeAlias = Union[Variant, Variant2, Variant3, Variant4]
+IntegrationUpdateParams: TypeAlias = Union[Variant, Variant2, Variant3, Variant4, Variant5]

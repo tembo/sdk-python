@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import List
 from datetime import datetime
+from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
 
@@ -14,6 +15,8 @@ __all__ = ["SkillRetrieveResponse", "File"]
 
 class File(BaseModel):
     content: str
+
+    encoding: Literal["utf8", "base64"]
 
     filename: str
 

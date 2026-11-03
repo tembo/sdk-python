@@ -67,6 +67,10 @@ class LiveResourceConnection:
         self._max_retries = max_retries
         self._initial_delay = initial_delay
         self._max_delay = max_delay
+        # Attempts spent since the connection last stayed up, carried across drops so a server that
+        # accepts and drops at once uses up max_retries instead of being redialed forever.
+        self._spent_attempts = 0
+        self._reconnected_at: float | None = None
         self._extra_query = extra_query
         self._extra_headers = extra_headers
         self._intentionally_closed = False
@@ -148,7 +152,12 @@ class LiveResourceConnection:
             return False
 
         self._is_reconnecting = True
-        for attempt in range(1, self._max_retries + 1):
+        # Only a reconnected socket that stayed up for the longest backoff (and at least a second)
+        # starts the count again at 1.
+        if self._reconnected_at is None or time.monotonic() - self._reconnected_at >= max(self._max_delay, 1.0):
+            self._spent_attempts = 0
+        for attempt in range(self._spent_attempts + 1, self._max_retries + 1):
+            self._spent_attempts = attempt
             base_delay = min(self._initial_delay * (2 ** (attempt - 1)), self._max_delay)
             jitter = 0.75 + random.random() * 0.25
             delay = base_delay * jitter
@@ -187,6 +196,7 @@ class LiveResourceConnection:
             try:
                 self._connection = self._make_ws(self._extra_query, self._extra_headers)
                 log.info("Reconnected to WebSocket API")
+                self._reconnected_at = time.monotonic()
                 self._flush_send_queue()
                 self._is_reconnecting = False
                 return True
@@ -268,6 +278,10 @@ class AsyncLiveResourceConnection:
         self._max_retries = max_retries
         self._initial_delay = initial_delay
         self._max_delay = max_delay
+        # Attempts spent since the connection last stayed up, carried across drops so a server that
+        # accepts and drops at once uses up max_retries instead of being redialed forever.
+        self._spent_attempts = 0
+        self._reconnected_at: float | None = None
         self._extra_query = extra_query
         self._extra_headers = extra_headers
         self._intentionally_closed = False
@@ -351,7 +365,12 @@ class AsyncLiveResourceConnection:
             return False
 
         self._is_reconnecting = True
-        for attempt in range(1, self._max_retries + 1):
+        # Only a reconnected socket that stayed up for the longest backoff (and at least a second)
+        # starts the count again at 1.
+        if self._reconnected_at is None or time.monotonic() - self._reconnected_at >= max(self._max_delay, 1.0):
+            self._spent_attempts = 0
+        for attempt in range(self._spent_attempts + 1, self._max_retries + 1):
+            self._spent_attempts = attempt
             base_delay = min(self._initial_delay * (2 ** (attempt - 1)), self._max_delay)
             jitter = 0.75 + random.random() * 0.25
             delay = base_delay * jitter
@@ -390,6 +409,7 @@ class AsyncLiveResourceConnection:
             try:
                 self._connection = await self._make_ws(self._extra_query, self._extra_headers)
                 log.info("Reconnected to WebSocket API")
+                self._reconnected_at = time.monotonic()
                 await self._flush_send_queue()
                 self._is_reconnecting = False
                 return True
@@ -728,7 +748,15 @@ class AsyncLiveResourceConnectionManager:
         if self.__websocket_connection_options:
             log.debug("Connection options: %s", self.__websocket_connection_options)
 
-        return await connect(
+        # websockets 13.1+ follows a handshake redirect itself and resends `additional_headers`, the
+        # credentials, to whatever host `Location` names; the sync client never follows one. A 3xx
+        # is reported as the `InvalidStatus` it raises instead, so both clients refuse it alike.
+        class _ConnectWithoutRedirects(connect):
+            def process_redirect(self, exc: Exception) -> Exception | str:
+                """Reports the redirect as the handshake error instead of following it."""
+                return exc
+
+        return await _ConnectWithoutRedirects(
             str(url),
             user_agent_header=self.__client.user_agent,
             additional_headers=headers,

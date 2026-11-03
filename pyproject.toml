@@ -16,6 +16,11 @@ dependencies = [
   "sniffio",
 ]
 
+[project.urls]
+Source = "https://github.com/tembo/sdk-python"
+Issues = "https://github.com/tembo/sdk-python/issues"
+Changelog = "https://github.com/tembo/sdk-python/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.9"]
 websockets = ["websockets >= 13, < 16"]

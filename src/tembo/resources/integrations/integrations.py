@@ -482,7 +482,7 @@ class IntegrationsResource(SyncAPIResource):
         self,
         integration_id: str,
         *,
-        atlassian_service_account: Optional[integration_update_params.Variant4AtlassianServiceAccount],
+        gitlab: integration_update_params.Variant4Gitlab,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -491,7 +491,21 @@ class IntegrationsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationUpdateResponse: ...
 
-    @required_args(["settings"], ["aws"], ["postgres"], ["atlassian_service_account"])
+    @overload
+    def update(
+        self,
+        integration_id: str,
+        *,
+        atlassian_service_account: Optional[integration_update_params.Variant5AtlassianServiceAccount],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> IntegrationUpdateResponse: ...
+
+    @required_args(["settings"], ["aws"], ["postgres"], ["gitlab"], ["atlassian_service_account"])
     def update(
         self,
         integration_id: str,
@@ -499,7 +513,8 @@ class IntegrationsResource(SyncAPIResource):
         settings: integration_update_params.VariantSettings | Omit = omit,
         aws: integration_update_params.Variant2Aws | Omit = omit,
         postgres: integration_update_params.Variant3Postgres | Omit = omit,
-        atlassian_service_account: Optional[integration_update_params.Variant4AtlassianServiceAccount] | Omit = omit,
+        gitlab: integration_update_params.Variant4Gitlab | Omit = omit,
+        atlassian_service_account: Optional[integration_update_params.Variant5AtlassianServiceAccount] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -508,13 +523,14 @@ class IntegrationsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationUpdateResponse:
         """
-        Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
+        Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.
 
         Args:
             integration_id: Path parameter.
             settings: Update integration settings, preserving unspecified settings.
             aws: Replace AWS environment and assumed-role configuration.
             postgres: Replace PostgreSQL connection configuration.
+            gitlab: Replace GitLab credentials with a service account access token, keeping repositories and projects connected.
             atlassian_service_account: Set Atlassian service-account OAuth credentials for triggers, or null to remove them.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -541,6 +557,7 @@ class IntegrationsResource(SyncAPIResource):
                     "settings": settings,
                     "aws": aws,
                     "postgres": postgres,
+                    "gitlab": gitlab,
                     "atlassian_service_account": atlassian_service_account,
                 },
                 integration_update_params.IntegrationUpdateParams,
@@ -1384,7 +1401,7 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         self,
         integration_id: str,
         *,
-        atlassian_service_account: Optional[integration_update_params.Variant4AtlassianServiceAccount],
+        gitlab: integration_update_params.Variant4Gitlab,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1393,7 +1410,21 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationUpdateResponse: ...
 
-    @required_args(["settings"], ["aws"], ["postgres"], ["atlassian_service_account"])
+    @overload
+    async def update(
+        self,
+        integration_id: str,
+        *,
+        atlassian_service_account: Optional[integration_update_params.Variant5AtlassianServiceAccount],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> IntegrationUpdateResponse: ...
+
+    @required_args(["settings"], ["aws"], ["postgres"], ["gitlab"], ["atlassian_service_account"])
     async def update(
         self,
         integration_id: str,
@@ -1401,7 +1432,8 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         settings: integration_update_params.VariantSettings | Omit = omit,
         aws: integration_update_params.Variant2Aws | Omit = omit,
         postgres: integration_update_params.Variant3Postgres | Omit = omit,
-        atlassian_service_account: Optional[integration_update_params.Variant4AtlassianServiceAccount] | Omit = omit,
+        gitlab: integration_update_params.Variant4Gitlab | Omit = omit,
+        atlassian_service_account: Optional[integration_update_params.Variant5AtlassianServiceAccount] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1410,13 +1442,14 @@ class AsyncIntegrationsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> IntegrationUpdateResponse:
         """
-        Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
+        Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.
 
         Args:
             integration_id: Path parameter.
             settings: Update integration settings, preserving unspecified settings.
             aws: Replace AWS environment and assumed-role configuration.
             postgres: Replace PostgreSQL connection configuration.
+            gitlab: Replace GitLab credentials with a service account access token, keeping repositories and projects connected.
             atlassian_service_account: Set Atlassian service-account OAuth credentials for triggers, or null to remove them.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -1443,6 +1476,7 @@ class AsyncIntegrationsResource(AsyncAPIResource):
                     "settings": settings,
                     "aws": aws,
                     "postgres": postgres,
+                    "gitlab": gitlab,
                     "atlassian_service_account": atlassian_service_account,
                 },
                 integration_update_params.IntegrationUpdateParams,
