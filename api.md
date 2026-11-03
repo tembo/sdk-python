@@ -326,7 +326,7 @@ Create an organization skill with its files.
 skill = client.skills.create(
     description="",
     name="x",
-    files=[{"content": "", "filename": "x"}],
+    files=[{"content": "", "encoding": "utf8", "filename": "x"}],
 )
 ```
 
@@ -1032,7 +1032,7 @@ Enable or disable an organization model, or select its inference provider.
 
 ```python
 model = client.models.update(
-    model_name="claude-opus-5-5",
+    model_name="modelName",
 )
 ```
 
@@ -2439,7 +2439,7 @@ integration = client.integrations.retrieve(
 
 ### Update an integration
 
-Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
+Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.
 
 | Direction | Type |
 | --- | --- |

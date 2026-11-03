@@ -137,6 +137,8 @@ class AppSidebarPreferences(BaseModel):
 
     show_archived_sessions: Optional[bool] = FieldInfo(alias="showArchivedSessions", default=None)
 
+    show_activity: Optional[bool] = FieldInfo(alias="showActivity", default=None)
+
     width: Optional[float] = None
 
     right_sidebar: Optional[Dict[str, AppSidebarPreferencesRightSidebar]] = FieldInfo(
