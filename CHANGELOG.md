@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/tembo/sdk-python/compare/v0.8.0...v0.9.0) (2026-11-05)
+
+
+### Features
+
+* **api:** update SDK surface (2 changes) ([74d8a52](https://github.com/tembo/sdk-python/commit/74d8a52caa38bb6bb41e6c9db3fb6d0d2e130c6c))
+
 ## [0.8.0](https://github.com/tembo/sdk-python/compare/v0.7.0...v0.8.0) (2026-11-03)
 
 
