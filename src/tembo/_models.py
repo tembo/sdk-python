@@ -874,9 +874,12 @@ elif not TYPE_CHECKING:  # TODO: condition is weird
         return RootModel[type_]  # type: ignore
 
 
-class SecurityOptions(TypedDict, total=False):
-    api_key_auth: bool
-    bearer_auth: bool
+# An operation's own security requirements, by security scheme name: alternatives (any one
+# suffices), each the schemes sent together. The client sends only the schemes these name: the
+# first alternative whose credentials are all configured, else the configured part of the first
+# alternative that has one. An empty list sends no credential. `None` is an operation that inherits
+# the client's default and is sent every configured credential.
+SecurityOptions: TypeAlias = List[List[str]]
 
 
 class FinalRequestOptionsInput(TypedDict, total=False):
@@ -907,10 +910,7 @@ class FinalRequestOptions(pydantic.BaseModel):
     idempotency_key: Union[str, None] = None
     post_parser: Union[Callable[[Any], Any], NotGiven] = NotGiven()
     follow_redirects: Union[bool, None] = None
-    security: SecurityOptions = {
-        "api_key_auth": True,
-        "bearer_auth": True,
-    }
+    security: Union[SecurityOptions, None] = None
 
     content: Union[bytes, bytearray, IO[bytes], Iterable[bytes], AsyncIterable[bytes], None] = None
     # It should be noted that we cannot use `json` here as that would override

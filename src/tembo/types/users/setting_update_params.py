@@ -26,6 +26,11 @@ __all__ = [
 
 
 class SettingUpdateParams(TypedDict, total=False):
+    default_session_visibility_by_workspace: Annotated[
+        Dict[str, Literal["private", "public"]], PropertyInfo(alias="defaultSessionVisibilityByWorkspace")
+    ]
+    """Default visibility for your new sessions, keyed by workspace ID."""
+
     auto_restart_vm: Annotated[bool, PropertyInfo(alias="autoRestartVm")]
     """Automatically restart a session VM when needed."""
 
