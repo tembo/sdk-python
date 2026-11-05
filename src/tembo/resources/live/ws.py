@@ -581,12 +581,12 @@ class LiveResourceConnectionManager:
         params = _merge_mappings(
             {
                 **url.params,
-                **self.__client._auth_query({}),
+                **self.__client._auth_query(None),
                 **self.__client.default_query,
             },
             extra_query,
         )
-        cookies = self.__client._auth_cookies({})
+        cookies = self.__client._auth_cookies(None)
         headers = _merge_mappings(
             {
                 **self.__client.auth_headers,
@@ -729,12 +729,12 @@ class AsyncLiveResourceConnectionManager:
         params = _merge_mappings(
             {
                 **url.params,
-                **self.__client._auth_query({}),
+                **self.__client._auth_query(None),
                 **self.__client.default_query,
             },
             extra_query,
         )
-        cookies = self.__client._auth_cookies({})
+        cookies = self.__client._auth_cookies(None)
         headers = _merge_mappings(
             {
                 **self.__client.auth_headers,
