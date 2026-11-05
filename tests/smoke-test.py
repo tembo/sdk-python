@@ -682,6 +682,7 @@ def _smoke_case_80() -> None:
 def _smoke_case_81() -> None:
     setting = client.users.settings.update(
         user_id="userId",
+        default_session_visibility_by_workspace={},
         auto_restart_vm=False,
         default_project_id="x",
         gpg_key="",

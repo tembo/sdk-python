@@ -179,6 +179,10 @@ class SettingUpdateResponse(BaseModel):
 
     default_project_id: Optional[str] = FieldInfo(alias="defaultProjectId", default=None)
 
+    default_session_visibility_by_workspace: Optional[Dict[str, Literal["private", "public"]]] = FieldInfo(
+        alias="defaultSessionVisibilityByWorkspace", default=None
+    )
+
     gpg_key: Optional[str] = FieldInfo(alias="gpgKey", default=None)
 
     include_tembo_commit_attribution: Optional[bool] = FieldInfo(alias="includeTemboCommitAttribution", default=None)

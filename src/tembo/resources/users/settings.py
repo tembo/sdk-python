@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import httpx
 
-from typing import Optional
+from typing import Dict, Optional
 from typing_extensions import Literal
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
@@ -79,6 +79,7 @@ class SettingsResource(SyncAPIResource):
         self,
         user_id: str,
         *,
+        default_session_visibility_by_workspace: Dict[str, Literal["private", "public"]] | Omit = omit,
         auto_restart_vm: bool | Omit = omit,
         default_project_id: Optional[str] | Omit = omit,
         gpg_key: str | Omit = omit,
@@ -110,6 +111,7 @@ class SettingsResource(SyncAPIResource):
 
         Args:
             user_id: Path parameter.
+            default_session_visibility_by_workspace: Default visibility for your new sessions, keyed by workspace ID.
             auto_restart_vm: Automatically restart a session VM when needed.
             default_project_id: Default project environment for new sessions, or null to clear the preference.
             gpg_key: GPG signing key configuration. This value is returned by retrieveUserSettings.
@@ -150,6 +152,7 @@ class SettingsResource(SyncAPIResource):
             path_template("/v1/users/{userId}/settings", **{"userId": user_id}),
             body=maybe_transform(
                 {
+                    "default_session_visibility_by_workspace": default_session_visibility_by_workspace,
                     "auto_restart_vm": auto_restart_vm,
                     "default_project_id": default_project_id,
                     "gpg_key": gpg_key,
@@ -233,6 +236,7 @@ class AsyncSettingsResource(AsyncAPIResource):
         self,
         user_id: str,
         *,
+        default_session_visibility_by_workspace: Dict[str, Literal["private", "public"]] | Omit = omit,
         auto_restart_vm: bool | Omit = omit,
         default_project_id: Optional[str] | Omit = omit,
         gpg_key: str | Omit = omit,
@@ -264,6 +268,7 @@ class AsyncSettingsResource(AsyncAPIResource):
 
         Args:
             user_id: Path parameter.
+            default_session_visibility_by_workspace: Default visibility for your new sessions, keyed by workspace ID.
             auto_restart_vm: Automatically restart a session VM when needed.
             default_project_id: Default project environment for new sessions, or null to clear the preference.
             gpg_key: GPG signing key configuration. This value is returned by retrieveUserSettings.
@@ -304,6 +309,7 @@ class AsyncSettingsResource(AsyncAPIResource):
             path_template("/v1/users/{userId}/settings", **{"userId": user_id}),
             body=await async_maybe_transform(
                 {
+                    "default_session_visibility_by_workspace": default_session_visibility_by_workspace,
                     "auto_restart_vm": auto_restart_vm,
                     "default_project_id": default_project_id,
                     "gpg_key": gpg_key,

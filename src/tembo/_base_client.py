@@ -503,6 +503,39 @@ async def _aread_body(response: httpx.Response, *, capped: bool, deadline: float
 
 
 @dataclass
+class SchemeCredentials:
+    """The credential one security scheme puts on a request, split by where it is sent."""
+
+    headers: Dict[str, str] = field(default_factory=dict)
+    query: Dict[str, str] = field(default_factory=dict)
+    cookies: Dict[str, str] = field(default_factory=dict)
+
+    @property
+    def configured(self) -> bool:
+        """Whether the scheme's client option(s) are set, so it has a credential to send."""
+        return bool(self.headers or self.query or self.cookies)
+
+
+def _merge_scheme_credentials(parts: List[SchemeCredentials]) -> SchemeCredentials:
+    """The credentials of several schemes sent together, one request's worth."""
+    merged = SchemeCredentials()
+    for part in parts:
+        merged.headers.update(part.headers)
+        merged.query.update(part.query)
+        merged.cookies.update(part.cookies)
+    return merged
+
+
+@dataclass(frozen=True)
+class AuthLocations:
+    """The lower-cased header names, and the query and cookie names, the client's credentials use."""
+
+    headers: frozenset[str] = frozenset()
+    query: frozenset[str] = frozenset()
+    cookies: frozenset[str] = frozenset()
+
+
+@dataclass
 class CursorPageConfig:
     """Per-operation cursor pagination descriptor baked into a page by the generated list method.
 
@@ -894,21 +927,106 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
     ) -> _exceptions.APIStatusError:
         raise NotImplementedError()
 
+    @property
+    def _auth_by_scheme(self) -> dict[str, SchemeCredentials]:
+        """The credentials each security scheme is sent with, by the scheme's name in the document."""
+        return {}
+
+    def _select_auth(self, security: SecurityOptions) -> SchemeCredentials:
+        """
+        The credentials an operation with its own `security` requirements is sent with.
+
+        The first alternative whose schemes all have a configured credential wins, and only its
+        credentials are sent: two schemes can share a wire slot (`Authorization` for Basic and
+        Bearer), so merging every configured credential would let one overwrite the one the
+        operation asked for. An empty alternative is the anonymous one and selects nothing.
+
+        With no alternative met, the configured part of the first alternative that has one is sent:
+        the request only goes out at all when the caller supplies the rest some other way (see
+        `_credential_supplied`), and withholding the half the client holds would leave it incomplete.
+        An empty (anonymous) alternative counts as met, so an operation that also accepts `{}` is sent
+        nothing rather than a partial credential. Only schemes the operation names are ever sent.
+        """
+        available = self._auth_by_scheme
+        partial: SchemeCredentials | None = None
+        for alternative in security:
+            parts = [available.get(scheme) for scheme in alternative]
+            configured = [part for part in parts if part is not None and part.configured]
+            if len(configured) == len(parts):
+                return _merge_scheme_credentials(configured)
+            if partial is None and configured:
+                partial = _merge_scheme_credentials(configured)
+        return partial if partial is not None else SchemeCredentials()
+
+    @property
+    def _auth_locations(self) -> AuthLocations:
+        """Where the client's credentials travel, configured or not."""
+        return AuthLocations()
+
+    def _credential_supplied(
+        self,
+        security: SecurityOptions,
+        headers: Mapping[str, str],
+        custom_headers: Headers,
+        params: Query,
+        cookies: Mapping[str, str],
+    ) -> bool:
+        """
+        Whether the request already carries a credential the caller set some other way than a client
+        option — the client's `default_headers` or `default_query`, or the call's `extra_headers` or
+        `extra_query` — or omits a credential header on purpose, as the client-wide check accepts.
+
+        A value `_select_auth` put on the request is the client's own partial credential, not the
+        caller's, so it never counts: a half-configured alternative is refused unless the caller
+        supplies the rest.
+        """
+        locations = self._auth_locations
+        selected = self._select_auth(security)
+        selected_headers = {name.lower(): value for name, value in selected.headers.items()}
+        return (
+            any(
+                name.lower() in locations.headers and value and selected_headers.get(name.lower()) != value
+                for name, value in headers.items()
+            )
+            or any(
+                name.lower() in locations.headers and isinstance(value, Omit) for name, value in custom_headers.items()
+            )
+            or any(
+                params.get(name) is not None and params.get(name) != selected.query.get(name)
+                for name in locations.query
+            )
+            or any(
+                cookies.get(name) is not None and cookies.get(name) != selected.cookies.get(name)
+                for name in locations.cookies
+            )
+        )
+
+    def _security_met(self, security: SecurityOptions) -> bool:
+        """
+        Whether an operation's own requirements can be met: it is public (`[]`), lists the anonymous
+        alternative (an empty one), or the credentials of some alternative are all configured.
+        """
+        available = self._auth_by_scheme
+        return not security or any(
+            all((part := available.get(scheme)) is not None and part.configured for scheme in alternative)
+            for alternative in security
+        )
+
     def _auth_query(
         self,
-        security: SecurityOptions,  # noqa: ARG002
+        security: SecurityOptions | None,  # noqa: ARG002
     ) -> dict[str, str]:
         return {}
 
     def _auth_cookies(
         self,
-        security: SecurityOptions,  # noqa: ARG002
+        security: SecurityOptions | None,  # noqa: ARG002
     ) -> dict[str, str]:
         return {}
 
     def _custom_auth(
         self,
-        security: SecurityOptions,  # noqa: ARG002
+        security: SecurityOptions | None,  # noqa: ARG002
     ) -> httpx.Auth | None:
         # Single hook for custom httpx auth on both the sync and async request paths. It defaults to
         # the legacy public `custom_auth` property so subclasses that already override that property
@@ -927,8 +1045,38 @@ class BaseClient(Generic[_HttpxClientT, _DefaultStreamT]):
         custom_headers = options.headers or {}
         # Auth headers are folded into `default_headers` (matching the reference SDKs), so
         # merging `default_headers` here already applies the configured credentials.
-        headers_dict = _merge_mappings(self.default_headers, custom_headers)
-        self._validate_headers(headers_dict, custom_headers, params, cookies)
+        default_headers = self.default_headers
+        if options.security is not None:
+            # The operation names its own requirements: swap the client-wide credential headers for
+            # the selected alternative's, keeping any header the caller configured on the client.
+            auth_names = {name.lower() for name in self.auth_headers}
+            custom_names = {name.lower() for name in self._custom_headers}
+            default_headers = {
+                **{
+                    name: value
+                    for name, value in default_headers.items()
+                    if name.lower() not in auth_names or name.lower() in custom_names
+                },
+                **self._select_auth(options.security).headers,
+                **self._custom_headers,
+            }
+        headers_dict = _merge_mappings(default_headers, custom_headers)
+        if options.security is None:
+            # The client-wide check that some credential is configured.
+            self._validate_headers(headers_dict, custom_headers, params, cookies)
+        elif not self._security_met(options.security) and not self._credential_supplied(
+            options.security, headers_dict, custom_headers, params, cookies
+        ):
+            # An operation naming its own requirements is checked against those alone: a public one
+            # or one met by a query key is never refused for want of a header, and the client-wide
+            # check would both pass a document whose root allows anonymous calls and name credentials
+            # that cannot meet this operation. A credential the caller supplies outside the client's
+            # options takes the place of a configured one; the selected credentials are already
+            # swapped in above, so an unselected configured one does not count.
+            alternatives = " or ".join(" + ".join(alternative) for alternative in options.security)
+            raise TypeError(
+                f"Could not resolve authentication method for this operation. Expected the credentials of {alternatives} to be set."
+            )
 
         # headers are case-insensitive while dictionaries are not.
         headers = httpx.Headers(headers_dict)
