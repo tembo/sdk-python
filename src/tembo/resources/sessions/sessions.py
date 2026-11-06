@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import httpx
 
-from typing import List, Optional, Union
+from typing import Iterable, List, Optional, Union
 from datetime import datetime
 from typing_extensions import Literal
 from ..._types import SequenceNotStr
@@ -66,6 +66,7 @@ from ...types import (
     session_create_params,
     session_update_params,
     session_fork_params,
+    session_import_params,
     session_stop_params,
     session_list_events_params,
 )
@@ -74,6 +75,7 @@ from ...types.session_retrieve_response import SessionRetrieveResponse
 from ...types.session_update_response import SessionUpdateResponse
 from ...types.session_delete_response import SessionDeleteResponse
 from ...types.session_fork_response import SessionForkResponse
+from ...types.session_import_response import SessionImportResponse
 from ...types.session_stop_response import SessionStopResponse
 from ...types.session_list_events_response import SessionListEventsResponse
 
@@ -552,6 +554,63 @@ class SessionsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=SessionForkResponse,
+        )
+
+    def import_(
+        self,
+        *,
+        source: Literal["conductor"],
+        external_id: str,
+        title: str,
+        messages: Iterable[session_import_params.Message],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SessionImportResponse:
+        """
+        Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.
+
+        Args:
+            source: Application the chat is imported from.
+            external_id: Chat ID in the source application. Importing the same chat again returns the existing session.
+            title: Title of the chat.
+            messages: Chat messages in the order they were sent.
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            SessionImportResponse: Import a chat as a session
+
+        Example:
+            ```python
+            session = client.sessions.import_(
+                source="conductor",
+                external_id="x",
+                title="x",
+                messages=[{"id": "x", "role": "user", "content": "", "sent_at": "2024-01-01T00:00:00.000Z"}],
+            )
+            ```
+        """
+        return self._post(
+            "/v1/sessions/import",
+            body=maybe_transform(
+                {
+                    "source": source,
+                    "external_id": external_id,
+                    "title": title,
+                    "messages": messages,
+                },
+                session_import_params.SessionImportParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SessionImportResponse,
         )
 
     def stop(
@@ -1133,6 +1192,63 @@ class AsyncSessionsResource(AsyncAPIResource):
             cast_to=SessionForkResponse,
         )
 
+    async def import_(
+        self,
+        *,
+        source: Literal["conductor"],
+        external_id: str,
+        title: str,
+        messages: Iterable[session_import_params.Message],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> SessionImportResponse:
+        """
+        Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.
+
+        Args:
+            source: Application the chat is imported from.
+            external_id: Chat ID in the source application. Importing the same chat again returns the existing session.
+            title: Title of the chat.
+            messages: Chat messages in the order they were sent.
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            SessionImportResponse: Import a chat as a session
+
+        Example:
+            ```python
+            session = await client.sessions.import_(
+                source="conductor",
+                external_id="x",
+                title="x",
+                messages=[{"id": "x", "role": "user", "content": "", "sent_at": "2024-01-01T00:00:00.000Z"}],
+            )
+            ```
+        """
+        return await self._post(
+            "/v1/sessions/import",
+            body=await async_maybe_transform(
+                {
+                    "source": source,
+                    "external_id": external_id,
+                    "title": title,
+                    "messages": messages,
+                },
+                session_import_params.SessionImportParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SessionImportResponse,
+        )
+
     async def stop(
         self,
         session_id: str,
@@ -1262,6 +1378,9 @@ class SessionsResourceWithRawResponse:
         self.fork = to_raw_response_wrapper(
             sessions.fork,
         )
+        self.import_ = to_raw_response_wrapper(
+            sessions.import_,
+        )
         self.stop = to_raw_response_wrapper(
             sessions.stop,
         )
@@ -1311,6 +1430,9 @@ class AsyncSessionsResourceWithRawResponse:
         )
         self.fork = async_to_raw_response_wrapper(
             sessions.fork,
+        )
+        self.import_ = async_to_raw_response_wrapper(
+            sessions.import_,
         )
         self.stop = async_to_raw_response_wrapper(
             sessions.stop,
@@ -1362,6 +1484,9 @@ class SessionsResourceWithStreamingResponse:
         self.fork = to_streamed_response_wrapper(
             sessions.fork,
         )
+        self.import_ = to_streamed_response_wrapper(
+            sessions.import_,
+        )
         self.stop = to_streamed_response_wrapper(
             sessions.stop,
         )
@@ -1411,6 +1536,9 @@ class AsyncSessionsResourceWithStreamingResponse:
         )
         self.fork = async_to_streamed_response_wrapper(
             sessions.fork,
+        )
+        self.import_ = async_to_streamed_response_wrapper(
+            sessions.import_,
         )
         self.stop = async_to_streamed_response_wrapper(
             sessions.stop,
