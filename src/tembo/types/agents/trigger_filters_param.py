@@ -52,10 +52,12 @@ __all__ = [
     "Variant40",
     "Variant41",
     "Variant42",
+    "Variant43",
+    "Variant44",
 ]
 
 
-class Variant42(TypedDict, total=False):
+class Variant44(TypedDict, total=False):
     spaces: SequenceNotStr[str]
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -69,7 +71,7 @@ class Variant42(TypedDict, total=False):
     """Only trigger if the comment contains one of these substrings"""
 
 
-class Variant41(TypedDict, total=False):
+class Variant43(TypedDict, total=False):
     spaces: SequenceNotStr[str]
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -83,7 +85,7 @@ class Variant41(TypedDict, total=False):
     """Only trigger if the comment contains one of these substrings"""
 
 
-class Variant40(TypedDict, total=False):
+class Variant42(TypedDict, total=False):
     spaces: SequenceNotStr[str]
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -94,7 +96,7 @@ class Variant40(TypedDict, total=False):
     """Only trigger for footer comments, inline comments, or both"""
 
 
-class Variant39(TypedDict, total=False):
+class Variant41(TypedDict, total=False):
     spaces: SequenceNotStr[str]
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -105,7 +107,7 @@ class Variant39(TypedDict, total=False):
     """Only trigger if the page was moved from a space with one of these names or IDs"""
 
 
-class Variant38(TypedDict, total=False):
+class Variant40(TypedDict, total=False):
     spaces: SequenceNotStr[str]
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -113,7 +115,7 @@ class Variant38(TypedDict, total=False):
     """Only trigger if the page title contains one of these substrings"""
 
 
-class Variant37(TypedDict, total=False):
+class Variant39(TypedDict, total=False):
     channels: SequenceNotStr[str]
     """Only trigger if the message is sent in one of the channels"""
 
@@ -127,7 +129,7 @@ class Variant37(TypedDict, total=False):
     """Skip messages containing any of these case-sensitive substrings (for example, On-call handover:)"""
 
 
-class Variant36(TypedDict, total=False):
+class Variant38(TypedDict, total=False):
     emojis: SequenceNotStr[str]
     """Only trigger if one of these emoji reactions is added"""
 
@@ -138,7 +140,7 @@ class Variant36(TypedDict, total=False):
     """Only trigger if the reaction is added by one of these user names"""
 
 
-class Variant35(TypedDict, total=False):
+class Variant37(TypedDict, total=False):
     priorities: List[Literal["high", "medium", "low"]]
     """Only trigger if the issue has one of the specified priorities"""
 
@@ -146,7 +148,7 @@ class Variant35(TypedDict, total=False):
     """Only trigger if the issue is in one of the specified projects"""
 
 
-class Variant34(TypedDict, total=False):
+class Variant36(TypedDict, total=False):
     teams: SequenceNotStr[str]
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -163,7 +165,7 @@ class Variant34(TypedDict, total=False):
     """Enable agent for Tembo-updated issues (disabled by default)"""
 
 
-class Variant33(TypedDict, total=False):
+class Variant35(TypedDict, total=False):
     teams: SequenceNotStr[str]
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -180,7 +182,7 @@ class Variant33(TypedDict, total=False):
     """Only trigger if the issue has at least one of the specified labels"""
 
 
-class Variant32(TypedDict, total=False):
+class Variant34(TypedDict, total=False):
     teams: SequenceNotStr[str]
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -191,7 +193,7 @@ class Variant32(TypedDict, total=False):
     """Only trigger if one of the specified labels was added to the issue"""
 
 
-class Variant31(TypedDict, total=False):
+class Variant33(TypedDict, total=False):
     teams: SequenceNotStr[str]
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -211,7 +213,7 @@ class Variant31(TypedDict, total=False):
     """Enable agent for Tembo-created issues (disabled by default)"""
 
 
-class Variant30(TypedDict, total=False):
+class Variant32(TypedDict, total=False):
     repositories: SequenceNotStr[str]
 
     ref_type: Annotated[List[Literal["branch", "tag"]], PropertyInfo(alias="refType")]
@@ -222,7 +224,7 @@ class Variant30(TypedDict, total=False):
     tag_names: Annotated[SequenceNotStr[str], PropertyInfo(alias="tagNames")]
 
 
-class Variant29(TypedDict, total=False):
+class Variant31(TypedDict, total=False):
     repositories: SequenceNotStr[str]
     """Only trigger if the pipeline is in one of the repositories"""
 
@@ -230,7 +232,7 @@ class Variant29(TypedDict, total=False):
     """Only trigger for specific branches"""
 
 
-class Variant28(TypedDict, total=False):
+class Variant30(TypedDict, total=False):
     repositories: SequenceNotStr[str]
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -244,7 +246,7 @@ class Variant28(TypedDict, total=False):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class Variant27(TypedDict, total=False):
+class Variant29(TypedDict, total=False):
     repositories: SequenceNotStr[str]
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -255,7 +257,7 @@ class Variant27(TypedDict, total=False):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class Variant26(TypedDict, total=False):
+class Variant28(TypedDict, total=False):
     repositories: SequenceNotStr[str]
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -266,7 +268,7 @@ class Variant26(TypedDict, total=False):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class Variant25(TypedDict, total=False):
+class Variant27(TypedDict, total=False):
     repositories: SequenceNotStr[str]
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -275,6 +277,28 @@ class Variant25(TypedDict, total=False):
 
     tembo_mrs: Annotated[bool, PropertyInfo(alias="temboMrs")]
     """Enable agent for Tembo-created merge requests (disabled by default)"""
+
+
+class Variant26(TypedDict, total=False):
+    repositories: SequenceNotStr[str]
+    """Only trigger if the issue is in one of the repositories"""
+
+    labels: SequenceNotStr[str]
+    """Only trigger if the issue has at least one of the specified labels"""
+
+    updated_by: Annotated[SequenceNotStr[str], PropertyInfo(alias="updatedBy")]
+    """Only trigger if the issue was updated by one of the specified users"""
+
+
+class Variant25(TypedDict, total=False):
+    repositories: SequenceNotStr[str]
+    """Only trigger if the issue is in one of the repositories"""
+
+    labels: SequenceNotStr[str]
+    """Only trigger if one of the added labels matches these labels"""
+
+    added_by: Annotated[SequenceNotStr[str], PropertyInfo(alias="addedBy")]
+    """Only trigger if the label was added by one of the specified users"""
 
 
 class Variant24(TypedDict, total=False):
@@ -625,5 +649,7 @@ TriggerFiltersParam: TypeAlias = Union[
     Variant40,
     Variant41,
     Variant42,
+    Variant43,
+    Variant44,
     object,
 ]

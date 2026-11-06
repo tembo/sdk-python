@@ -8,6 +8,6 @@ __all__ = ["IntegrationRetrieveSyncStatusResponse"]
 
 
 class IntegrationRetrieveSyncStatusResponse(BaseModel):
-    active_job_count: int = FieldInfo(alias="activeJobCount")
+    has_active_jobs: bool = FieldInfo(alias="hasActiveJobs")
 
     eligible_integration_count: int = FieldInfo(alias="eligibleIntegrationCount")

@@ -16,7 +16,7 @@ __all__ = ["AgentListResponse", "Item", "ItemLastRun", "FilterOptions"]
 
 
 class FilterOptions(BaseModel):
-    total_count: int = FieldInfo(alias="totalCount")
+    has_agents: bool = FieldInfo(alias="hasAgents")
 
     integration_types: List[str] = FieldInfo(alias="integrationTypes")
 
@@ -69,8 +69,6 @@ class Item(BaseModel):
     enabled_at: Optional[datetime] = FieldInfo(alias="enabledAt", default=None)
 
     last_run: Optional[ItemLastRun] = FieldInfo(alias="lastRun", default=None)
-
-    run_count: int = FieldInfo(alias="runCount")
 
     schedule_count: int = FieldInfo(alias="scheduleCount")
 
