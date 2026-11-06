@@ -102,8 +102,6 @@ class AgentUpdateResponse(BaseModel):
 
     last_run: Optional[LastRun] = FieldInfo(alias="lastRun", default=None)
 
-    run_count: int = FieldInfo(alias="runCount")
-
     schedule_count: int = FieldInfo(alias="scheduleCount")
 
     trigger_count: int = FieldInfo(alias="triggerCount")

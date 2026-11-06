@@ -84,6 +84,7 @@ class SettingsResource(SyncAPIResource):
         default_project_id: Optional[str] | Omit = omit,
         gpg_key: str | Omit = omit,
         include_tembo_commit_attribution: bool | Omit = omit,
+        open_pull_requests_as_bot: bool | Omit = omit,
         desktop_notifications_enabled: bool | Omit = omit,
         desktop_notification_preferences: setting_update_params.DesktopNotificationPreferences | Omit = omit,
         has_desktop_app: bool | Omit = omit,
@@ -97,6 +98,7 @@ class SettingsResource(SyncAPIResource):
         diff_light_theme: str | Omit = omit,
         diff_dark_theme: str | Omit = omit,
         default_agent: Optional[str] | Omit = omit,
+        default_fast_mode: bool | Omit = omit,
         follow_up_behavior: Literal["queue", "steer"] | Omit = omit,
         custom_system_prompt: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -116,6 +118,7 @@ class SettingsResource(SyncAPIResource):
             default_project_id: Default project environment for new sessions, or null to clear the preference.
             gpg_key: GPG signing key configuration. This value is returned by retrieveUserSettings.
             include_tembo_commit_attribution: Include Tembo attribution in agent-created commits.
+            open_pull_requests_as_bot: Open GitHub pull requests as the Tembo bot instead of your personal account.
             desktop_notifications_enabled: Enable or disable desktop notifications.
             desktop_notification_preferences: Notification types to show on the desktop.
             has_desktop_app: Whether the user has signed in to the Tembo desktop app.
@@ -129,6 +132,7 @@ class SettingsResource(SyncAPIResource):
             diff_light_theme: Diff syntax theme for light mode.
             diff_dark_theme: Diff syntax theme for dark mode.
             default_agent: Default coding agent and model key. Null clears the preference.
+            default_fast_mode: Enable Fast mode by default for new sessions with supported agents.
             follow_up_behavior: Default follow-up delivery: queue a new turn or steer an active turn.
             custom_system_prompt: Personal system instructions supplied to agents.
             extra_headers: Send extra headers with the request.
@@ -157,6 +161,7 @@ class SettingsResource(SyncAPIResource):
                     "default_project_id": default_project_id,
                     "gpg_key": gpg_key,
                     "include_tembo_commit_attribution": include_tembo_commit_attribution,
+                    "open_pull_requests_as_bot": open_pull_requests_as_bot,
                     "desktop_notifications_enabled": desktop_notifications_enabled,
                     "desktop_notification_preferences": desktop_notification_preferences,
                     "has_desktop_app": has_desktop_app,
@@ -170,6 +175,7 @@ class SettingsResource(SyncAPIResource):
                     "diff_light_theme": diff_light_theme,
                     "diff_dark_theme": diff_dark_theme,
                     "default_agent": default_agent,
+                    "default_fast_mode": default_fast_mode,
                     "follow_up_behavior": follow_up_behavior,
                     "custom_system_prompt": custom_system_prompt,
                 },
@@ -241,6 +247,7 @@ class AsyncSettingsResource(AsyncAPIResource):
         default_project_id: Optional[str] | Omit = omit,
         gpg_key: str | Omit = omit,
         include_tembo_commit_attribution: bool | Omit = omit,
+        open_pull_requests_as_bot: bool | Omit = omit,
         desktop_notifications_enabled: bool | Omit = omit,
         desktop_notification_preferences: setting_update_params.DesktopNotificationPreferences | Omit = omit,
         has_desktop_app: bool | Omit = omit,
@@ -254,6 +261,7 @@ class AsyncSettingsResource(AsyncAPIResource):
         diff_light_theme: str | Omit = omit,
         diff_dark_theme: str | Omit = omit,
         default_agent: Optional[str] | Omit = omit,
+        default_fast_mode: bool | Omit = omit,
         follow_up_behavior: Literal["queue", "steer"] | Omit = omit,
         custom_system_prompt: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -273,6 +281,7 @@ class AsyncSettingsResource(AsyncAPIResource):
             default_project_id: Default project environment for new sessions, or null to clear the preference.
             gpg_key: GPG signing key configuration. This value is returned by retrieveUserSettings.
             include_tembo_commit_attribution: Include Tembo attribution in agent-created commits.
+            open_pull_requests_as_bot: Open GitHub pull requests as the Tembo bot instead of your personal account.
             desktop_notifications_enabled: Enable or disable desktop notifications.
             desktop_notification_preferences: Notification types to show on the desktop.
             has_desktop_app: Whether the user has signed in to the Tembo desktop app.
@@ -286,6 +295,7 @@ class AsyncSettingsResource(AsyncAPIResource):
             diff_light_theme: Diff syntax theme for light mode.
             diff_dark_theme: Diff syntax theme for dark mode.
             default_agent: Default coding agent and model key. Null clears the preference.
+            default_fast_mode: Enable Fast mode by default for new sessions with supported agents.
             follow_up_behavior: Default follow-up delivery: queue a new turn or steer an active turn.
             custom_system_prompt: Personal system instructions supplied to agents.
             extra_headers: Send extra headers with the request.
@@ -314,6 +324,7 @@ class AsyncSettingsResource(AsyncAPIResource):
                     "default_project_id": default_project_id,
                     "gpg_key": gpg_key,
                     "include_tembo_commit_attribution": include_tembo_commit_attribution,
+                    "open_pull_requests_as_bot": open_pull_requests_as_bot,
                     "desktop_notifications_enabled": desktop_notifications_enabled,
                     "desktop_notification_preferences": desktop_notification_preferences,
                     "has_desktop_app": has_desktop_app,
@@ -327,6 +338,7 @@ class AsyncSettingsResource(AsyncAPIResource):
                     "diff_light_theme": diff_light_theme,
                     "diff_dark_theme": diff_dark_theme,
                     "default_agent": default_agent,
+                    "default_fast_mode": default_fast_mode,
                     "follow_up_behavior": follow_up_behavior,
                     "custom_system_prompt": custom_system_prompt,
                 },

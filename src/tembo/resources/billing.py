@@ -82,6 +82,7 @@ class BillingResource(SyncAPIResource):
         created_before: Union[str, datetime] | Omit = omit,
         created_by: SequenceNotStr[str] | Omit = omit,
         models: SequenceNotStr[str] | Omit = omit,
+        agent_ids: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -101,6 +102,7 @@ class BillingResource(SyncAPIResource):
             created_before: Include sessions created or warm pool runtime before this ISO 8601 timestamp.
             created_by: Filter by creator IDs, supplied as a comma-separated list.
             models: Filter by model names, supplied as a comma-separated list.
+            agent_ids: Filter by the agents that created sessions, supplied as a comma-separated list of agent IDs.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -133,6 +135,7 @@ class BillingResource(SyncAPIResource):
                         "created_before": created_before,
                         "created_by": created_by,
                         "models": models,
+                        "agent_ids": agent_ids,
                     },
                     billing_list_usage_params.BillingListUsageParams,
                 ),
@@ -196,6 +199,7 @@ class AsyncBillingResource(AsyncAPIResource):
         created_before: Union[str, datetime] | Omit = omit,
         created_by: SequenceNotStr[str] | Omit = omit,
         models: SequenceNotStr[str] | Omit = omit,
+        agent_ids: SequenceNotStr[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -215,6 +219,7 @@ class AsyncBillingResource(AsyncAPIResource):
             created_before: Include sessions created or warm pool runtime before this ISO 8601 timestamp.
             created_by: Filter by creator IDs, supplied as a comma-separated list.
             models: Filter by model names, supplied as a comma-separated list.
+            agent_ids: Filter by the agents that created sessions, supplied as a comma-separated list of agent IDs.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -247,6 +252,7 @@ class AsyncBillingResource(AsyncAPIResource):
                         "created_before": created_before,
                         "created_by": created_by,
                         "models": models,
+                        "agent_ids": agent_ids,
                     },
                     billing_list_usage_params.BillingListUsageParams,
                 ),

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/tembo/sdk-python/compare/v0.9.0...v0.10.0) (2026-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** add operation sessions.import ([a3489f5](https://github.com/tembo/sdk-python/commit/a3489f5f67dfebd5bf8925776d25d619b9a03a44))
+* **api:** update schema trigger_filters (+6 more changes) ([d3199ba](https://github.com/tembo/sdk-python/commit/d3199ba98a86b7c671592b63d24a3b7108fee968))
+
 ## [0.9.0](https://github.com/tembo/sdk-python/compare/v0.8.0...v0.9.0) (2026-11-05)
 
 

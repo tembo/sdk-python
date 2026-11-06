@@ -187,6 +187,8 @@ class SettingUpdateResponse(BaseModel):
 
     include_tembo_commit_attribution: Optional[bool] = FieldInfo(alias="includeTemboCommitAttribution", default=None)
 
+    open_pull_requests_as_bot: Optional[bool] = FieldInfo(alias="openPullRequestsAsBot", default=None)
+
     desktop_notifications_enabled: Optional[bool] = FieldInfo(alias="desktopNotificationsEnabled", default=None)
 
     desktop_notification_preferences: Optional[DesktopNotificationPreferences] = FieldInfo(
@@ -214,6 +216,8 @@ class SettingUpdateResponse(BaseModel):
     diff_dark_theme: Optional[str] = FieldInfo(alias="diffDarkTheme", default=None)
 
     default_agent: Optional[str] = FieldInfo(alias="defaultAgent", default=None)
+
+    default_fast_mode: Optional[bool] = FieldInfo(alias="defaultFastMode", default=None)
 
     follow_up_behavior: Optional[Literal["queue", "steer"]] = FieldInfo(alias="followUpBehavior", default=None)
 
