@@ -63,8 +63,6 @@ class SessionEventData(BaseModel):
 
     response_phase: Optional[Literal["commentary", "final_answer"]] = FieldInfo(alias="responsePhase", default=None)
 
-    is_progress_update: Optional[bool] = FieldInfo(alias="isProgressUpdate", default=None)
-
     tool_name: Optional[str] = FieldInfo(alias="toolName", default=None)
 
     tool_result: Optional[ToolResult] = FieldInfo(alias="toolResult", default=None)
