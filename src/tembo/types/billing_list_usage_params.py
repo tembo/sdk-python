@@ -36,3 +36,6 @@ class BillingListUsageParams(TypedDict, total=False):
 
     models: SequenceNotStr[str]
     """Filter by model names, supplied as a comma-separated list."""
+
+    agent_ids: Annotated[SequenceNotStr[str], PropertyInfo(alias="agentIds")]
+    """Filter by the agents that created sessions, supplied as a comma-separated list of agent IDs."""

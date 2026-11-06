@@ -687,6 +687,7 @@ def _smoke_case_81() -> None:
         default_project_id="x",
         gpg_key="",
         include_tembo_commit_attribution=False,
+        open_pull_requests_as_bot=False,
         desktop_notifications_enabled=False,
         desktop_notification_preferences={
             "awaiting_approval": False,
@@ -730,6 +731,7 @@ def _smoke_case_81() -> None:
         diff_light_theme="",
         diff_dark_theme="",
         default_agent="",
+        default_fast_mode=False,
         follow_up_behavior="queue",
         custom_system_prompt="",
     )
@@ -1948,6 +1950,7 @@ def _smoke_case_227() -> None:
         created_before="2024-01-01T00:00:00.000Z",
         created_by=["created_by"],
         models=["model"],
+        agent_ids=["7c9e6679-7425-40de-944b-e07fc1f90ae7"],
     )
 
 

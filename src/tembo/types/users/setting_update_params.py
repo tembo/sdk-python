@@ -43,6 +43,9 @@ class SettingUpdateParams(TypedDict, total=False):
     include_tembo_commit_attribution: Annotated[bool, PropertyInfo(alias="includeTemboCommitAttribution")]
     """Include Tembo attribution in agent-created commits."""
 
+    open_pull_requests_as_bot: Annotated[bool, PropertyInfo(alias="openPullRequestsAsBot")]
+    """Open GitHub pull requests as the Tembo bot instead of your personal account."""
+
     desktop_notifications_enabled: Annotated[bool, PropertyInfo(alias="desktopNotificationsEnabled")]
     """Enable or disable desktop notifications."""
 
@@ -83,6 +86,9 @@ class SettingUpdateParams(TypedDict, total=False):
 
     default_agent: Annotated[Optional[str], PropertyInfo(alias="defaultAgent")]
     """Default coding agent and model key. Null clears the preference."""
+
+    default_fast_mode: Annotated[bool, PropertyInfo(alias="defaultFastMode")]
+    """Enable Fast mode by default for new sessions with supported agents."""
 
     follow_up_behavior: Annotated[Literal["queue", "steer"], PropertyInfo(alias="followUpBehavior")]
     """Default follow-up delivery: queue a new turn or steer an active turn."""

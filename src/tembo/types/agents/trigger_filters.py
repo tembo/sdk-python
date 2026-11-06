@@ -51,10 +51,12 @@ __all__ = [
     "TriggerFilters41",
     "TriggerFilters42",
     "TriggerFilters43",
+    "TriggerFilters44",
+    "TriggerFilters45",
 ]
 
 
-class TriggerFilters43(BaseModel):
+class TriggerFilters45(BaseModel):
     spaces: Optional[List[str]] = None
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -81,7 +83,7 @@ class TriggerFilters43(BaseModel):
         __pydantic_extra__: Dict[str, object]
 
 
-class TriggerFilters42(BaseModel):
+class TriggerFilters44(BaseModel):
     spaces: Optional[List[str]] = None
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -108,7 +110,7 @@ class TriggerFilters42(BaseModel):
         __pydantic_extra__: Dict[str, object]
 
 
-class TriggerFilters41(BaseModel):
+class TriggerFilters43(BaseModel):
     spaces: Optional[List[str]] = None
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -132,7 +134,7 @@ class TriggerFilters41(BaseModel):
         __pydantic_extra__: Dict[str, object]
 
 
-class TriggerFilters40(BaseModel):
+class TriggerFilters42(BaseModel):
     spaces: Optional[List[str]] = None
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -156,7 +158,7 @@ class TriggerFilters40(BaseModel):
         __pydantic_extra__: Dict[str, object]
 
 
-class TriggerFilters39(BaseModel):
+class TriggerFilters41(BaseModel):
     spaces: Optional[List[str]] = None
     """Only trigger if the page is in a space with one of these names or IDs"""
 
@@ -177,7 +179,7 @@ class TriggerFilters39(BaseModel):
         __pydantic_extra__: Dict[str, object]
 
 
-class TriggerFilters38(BaseModel):
+class TriggerFilters40(BaseModel):
     channels: Optional[List[str]] = None
     """Only trigger if the message is sent in one of the channels"""
 
@@ -191,7 +193,7 @@ class TriggerFilters38(BaseModel):
     """Skip messages containing any of these case-sensitive substrings (for example, On-call handover:)"""
 
 
-class TriggerFilters37(BaseModel):
+class TriggerFilters39(BaseModel):
     emojis: Optional[List[str]] = None
     """Only trigger if one of these emoji reactions is added"""
 
@@ -202,7 +204,7 @@ class TriggerFilters37(BaseModel):
     """Only trigger if the reaction is added by one of these user names"""
 
 
-class TriggerFilters36(BaseModel):
+class TriggerFilters38(BaseModel):
     priorities: Optional[List[Literal["high", "medium", "low"]]] = None
     """Only trigger if the issue has one of the specified priorities"""
 
@@ -210,7 +212,7 @@ class TriggerFilters36(BaseModel):
     """Only trigger if the issue is in one of the specified projects"""
 
 
-class TriggerFilters35(BaseModel):
+class TriggerFilters37(BaseModel):
     teams: Optional[List[str]] = None
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -227,7 +229,7 @@ class TriggerFilters35(BaseModel):
     """Enable agent for Tembo-updated issues (disabled by default)"""
 
 
-class TriggerFilters34(BaseModel):
+class TriggerFilters36(BaseModel):
     teams: Optional[List[str]] = None
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -244,7 +246,7 @@ class TriggerFilters34(BaseModel):
     """Only trigger if the issue has at least one of the specified labels"""
 
 
-class TriggerFilters33(BaseModel):
+class TriggerFilters35(BaseModel):
     teams: Optional[List[str]] = None
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -255,7 +257,7 @@ class TriggerFilters33(BaseModel):
     """Only trigger if one of the specified labels was added to the issue"""
 
 
-class TriggerFilters32(BaseModel):
+class TriggerFilters34(BaseModel):
     teams: Optional[List[str]] = None
     """Only trigger if the issue belongs to one of the specified teams"""
 
@@ -275,7 +277,7 @@ class TriggerFilters32(BaseModel):
     """Enable agent for Tembo-created issues (disabled by default)"""
 
 
-class TriggerFilters31(BaseModel):
+class TriggerFilters33(BaseModel):
     repositories: Optional[List[str]] = None
 
     refType: Optional[List[Literal["branch", "tag"]]] = None
@@ -286,7 +288,7 @@ class TriggerFilters31(BaseModel):
     tagNames: Optional[List[str]] = None
 
 
-class TriggerFilters30(BaseModel):
+class TriggerFilters32(BaseModel):
     repositories: Optional[List[str]] = None
     """Only trigger if the pipeline is in one of the repositories"""
 
@@ -294,7 +296,7 @@ class TriggerFilters30(BaseModel):
     """Only trigger for specific branches"""
 
 
-class TriggerFilters29(BaseModel):
+class TriggerFilters31(BaseModel):
     repositories: Optional[List[str]] = None
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -308,7 +310,7 @@ class TriggerFilters29(BaseModel):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class TriggerFilters28(BaseModel):
+class TriggerFilters30(BaseModel):
     repositories: Optional[List[str]] = None
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -319,7 +321,7 @@ class TriggerFilters28(BaseModel):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class TriggerFilters27(BaseModel):
+class TriggerFilters29(BaseModel):
     repositories: Optional[List[str]] = None
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -330,7 +332,7 @@ class TriggerFilters27(BaseModel):
     """Enable agent for Tembo-created merge requests (disabled by default)"""
 
 
-class TriggerFilters26(BaseModel):
+class TriggerFilters28(BaseModel):
     repositories: Optional[List[str]] = None
     """Only trigger if the merge request is in one of the repositories"""
 
@@ -339,6 +341,28 @@ class TriggerFilters26(BaseModel):
 
     temboMrs: Optional[bool] = None
     """Enable agent for Tembo-created merge requests (disabled by default)"""
+
+
+class TriggerFilters27(BaseModel):
+    repositories: Optional[List[str]] = None
+    """Only trigger if the issue is in one of the repositories"""
+
+    labels: Optional[List[str]] = None
+    """Only trigger if the issue has at least one of the specified labels"""
+
+    updatedBy: Optional[List[str]] = None
+    """Only trigger if the issue was updated by one of the specified users"""
+
+
+class TriggerFilters26(BaseModel):
+    repositories: Optional[List[str]] = None
+    """Only trigger if the issue is in one of the repositories"""
+
+    labels: Optional[List[str]] = None
+    """Only trigger if one of the added labels matches these labels"""
+
+    addedBy: Optional[List[str]] = None
+    """Only trigger if the label was added by one of the specified users"""
 
 
 class TriggerFilters25(BaseModel):
@@ -689,5 +713,7 @@ TriggerFilters: TypeAlias = Union[
     TriggerFilters41,
     TriggerFilters42,
     TriggerFilters43,
+    TriggerFilters44,
+    TriggerFilters45,
     object,
 ]
