@@ -97,6 +97,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Update a session](#update-a-session)
   - [Delete a session](#delete-a-session)
   - [Fork a session](#fork-a-session)
+  - [Import a chat as a session](#import-a-chat-as-a-session)
   - [Stop a session](#stop-a-session)
   - [List session events](#list-session-events)
   - [`Sessions Sources`](#sessions-sources)
@@ -1350,6 +1351,24 @@ Create an independent session from a fresh workspace snapshot, or the latest sav
 session = client.sessions.fork(
     session_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
     queue_right_away=True,
+)
+```
+
+### Import a chat as a session
+
+Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`SessionImportParams`](./src/tembo/types/session_import_params.py) |
+| Response | [`SessionImportResponse`](./src/tembo/types/session_import_response.py) |
+
+```python
+session = client.sessions.import_(
+    source="conductor",
+    external_id="x",
+    title="x",
+    messages=[{"id": "x", "role": "user", "content": "", "sent_at": "2024-01-01T00:00:00.000Z"}],
 )
 ```
 

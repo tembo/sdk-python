@@ -117,6 +117,8 @@ from .session_update_params import SessionUpdateParams as SessionUpdateParams
 from .session_delete_response import SessionDeleteResponse as SessionDeleteResponse
 from .session_fork_response import SessionForkResponse as SessionForkResponse
 from .session_fork_params import SessionForkParams as SessionForkParams
+from .session_import_response import SessionImportResponse as SessionImportResponse
+from .session_import_params import SessionImportParams as SessionImportParams
 from .session_stop_response import SessionStopResponse as SessionStopResponse
 from .session_stop_params import SessionStopParams as SessionStopParams
 from .session_list_events_response import SessionListEventsResponse as SessionListEventsResponse
