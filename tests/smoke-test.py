@@ -371,6 +371,7 @@ def _smoke_case_44() -> None:
         clone_depth=1,
         commit_instructions="",
         cursor_api_key="",
+        custom_review_bots=["x"],
         custom_system_prompt="",
         default_agent="",
         default_keep_alive_minutes=0,

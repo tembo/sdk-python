@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing_extensions import Annotated, Literal, TypedDict
+from ..._types import SequenceNotStr
 
 from ..._utils import PropertyInfo
 
@@ -33,6 +34,9 @@ class SettingUpdateParams(TypedDict, total=False):
 
     cursor_api_key: Annotated[str, PropertyInfo(alias="cursorApiKey")]
     """API key for Cursor agent access."""
+
+    custom_review_bots: Annotated[SequenceNotStr[str], PropertyInfo(alias="customReviewBots")]
+    """Additional GitHub bot logins Tembo responds to without an @tembo mention."""
 
     custom_system_prompt: Annotated[str, PropertyInfo(alias="customSystemPrompt")]
     """Custom system instructions supplied to organization agents."""

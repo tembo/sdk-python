@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.11.0](https://github.com/tembo/sdk-python/compare/v0.10.0...v0.11.0) (2026-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Removed optional property `session_event_data.isProgressUpdate`.
+
+### Features
+
+* **api:** update SDK surface (2 changes) ([abff930](https://github.com/tembo/sdk-python/commit/abff9306776e0590920f5e2163ec489cd1e70113))
+
 ## [0.10.0](https://github.com/tembo/sdk-python/compare/v0.9.0...v0.10.0) (2026-11-06)
 
 
