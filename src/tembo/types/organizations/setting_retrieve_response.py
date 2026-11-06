@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from typing import List
 from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
@@ -17,6 +18,9 @@ class Settings(BaseModel):
 
     commit_instructions: str = FieldInfo(alias="commitInstructions")
     """Organization instructions for agent commit messages."""
+
+    custom_review_bots: List[str] = FieldInfo(alias="customReviewBots")
+    """Additional GitHub bot logins Tembo responds to without an @tembo mention."""
 
     custom_system_prompt: str = FieldInfo(alias="customSystemPrompt")
     """Custom system instructions supplied to organization agents."""

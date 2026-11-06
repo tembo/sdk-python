@@ -6,6 +6,7 @@ import httpx
 
 from typing import Union
 from typing_extensions import Literal, overload
+from ..._types import SequenceNotStr
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ..._utils import path_template, maybe_transform, async_maybe_transform, required_args
@@ -88,6 +89,7 @@ class SettingsResource(SyncAPIResource):
         clone_depth: int | Omit = omit,
         commit_instructions: str | Omit = omit,
         cursor_api_key: str | Omit = omit,
+        custom_review_bots: SequenceNotStr[str] | Omit = omit,
         custom_system_prompt: str | Omit = omit,
         default_agent: str | Omit = omit,
         default_keep_alive_minutes: int | Omit = omit,
@@ -140,6 +142,7 @@ class SettingsResource(SyncAPIResource):
             clone_depth: Git clone history depth used for repositories.
             commit_instructions: Organization instructions for agent commit messages.
             cursor_api_key: API key for Cursor agent access.
+            custom_review_bots: Additional GitHub bot logins Tembo responds to without an @tembo mention.
             custom_system_prompt: Custom system instructions supplied to organization agents.
             default_agent: Default coding agent and model key for the organization.
             default_keep_alive_minutes: Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
@@ -201,6 +204,7 @@ class SettingsResource(SyncAPIResource):
                     "clone_depth": clone_depth,
                     "commit_instructions": commit_instructions,
                     "cursor_api_key": cursor_api_key,
+                    "custom_review_bots": custom_review_bots,
                     "custom_system_prompt": custom_system_prompt,
                     "default_agent": default_agent,
                     "default_keep_alive_minutes": default_keep_alive_minutes,
@@ -486,6 +490,7 @@ class AsyncSettingsResource(AsyncAPIResource):
         clone_depth: int | Omit = omit,
         commit_instructions: str | Omit = omit,
         cursor_api_key: str | Omit = omit,
+        custom_review_bots: SequenceNotStr[str] | Omit = omit,
         custom_system_prompt: str | Omit = omit,
         default_agent: str | Omit = omit,
         default_keep_alive_minutes: int | Omit = omit,
@@ -538,6 +543,7 @@ class AsyncSettingsResource(AsyncAPIResource):
             clone_depth: Git clone history depth used for repositories.
             commit_instructions: Organization instructions for agent commit messages.
             cursor_api_key: API key for Cursor agent access.
+            custom_review_bots: Additional GitHub bot logins Tembo responds to without an @tembo mention.
             custom_system_prompt: Custom system instructions supplied to organization agents.
             default_agent: Default coding agent and model key for the organization.
             default_keep_alive_minutes: Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
@@ -599,6 +605,7 @@ class AsyncSettingsResource(AsyncAPIResource):
                     "clone_depth": clone_depth,
                     "commit_instructions": commit_instructions,
                     "cursor_api_key": cursor_api_key,
+                    "custom_review_bots": custom_review_bots,
                     "custom_system_prompt": custom_system_prompt,
                     "default_agent": default_agent,
                     "default_keep_alive_minutes": default_keep_alive_minutes,
