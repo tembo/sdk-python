@@ -141,7 +141,7 @@ class OrganizationsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> OrganizationRetrieveResponse:
         """
-        Retrieve an organization profile.
+        Return self membership and workspace eligibility; include the full profile with organization read permission.
 
         Args:
             organization_id: Path parameter.
@@ -352,7 +352,7 @@ class AsyncOrganizationsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> OrganizationRetrieveResponse:
         """
-        Retrieve an organization profile.
+        Return self membership and workspace eligibility; include the full profile with organization read permission.
 
         Args:
             organization_id: Path parameter.
