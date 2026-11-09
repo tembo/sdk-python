@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/tembo/sdk-python/compare/v0.11.0...v0.11.1) (2026-11-08)
+
+
+### Chores
+
+* **api:** update generated SDK content ([a384056](https://github.com/tembo/sdk-python/commit/a3840563969e05389690fbe9eac813bf9e4a031c))
+
 ## [0.11.0](https://github.com/tembo/sdk-python/compare/v0.10.0...v0.11.0) (2026-11-06)
 
 
