@@ -1,5 +1,56 @@
 # Changelog
 
+## [0.12.0](https://github.com/tembo/sdk-python/compare/v0.11.1...v0.12.0) (2026-11-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Removed optional property `session_event_data.isProgressUpdate`.
+* **api:** Schema `trigger_filters` shape changed.
+* **api:** 3 breaking changes to the SDK surface.
+    - Removed operation `organizations.subscriptions.reset` (`POST /v1/organizations/{organizationId}/subscriptions/reset`).
+    - Removed operation `users.delete` (`DELETE /v1/users/{userId}`).
+    - Removed operation `users.subscriptions.reset` (`POST /v1/users/{userId}/subscriptions/reset`).
+* **api:** Schema `agent_options_input` shape changed.
+
+### Features
+
+* **api:** add 403 error response on agents.runs.create (+1 more change) ([351f019](https://github.com/tembo/sdk-python/commit/351f019cefa6e229c4b3d1c94005a0fe58d99512))
+* **api:** add operation sessions.import ([a3489f5](https://github.com/tembo/sdk-python/commit/a3489f5f67dfebd5bf8925776d25d619b9a03a44))
+* **api:** add operation sessions.inputs.list (+3 more changes) ([388c5f4](https://github.com/tembo/sdk-python/commit/388c5f4809a80a985a41cf4f7ad5a4fdcefbedce))
+* **api:** add query param parentSessionId on sessions.list ([508ac63](https://github.com/tembo/sdk-python/commit/508ac638813660b277334ceaebf59d5d885ed6bc))
+* **api:** api update ([ec8177b](https://github.com/tembo/sdk-python/commit/ec8177b069c4f04a6a525ae831aea5cd21411e66))
+* **api:** api update ([c13ae2a](https://github.com/tembo/sdk-python/commit/c13ae2a7df6d479fc2010a93ef4f97e4bba45743))
+* **api:** initial SDK generation ([b356bfb](https://github.com/tembo/sdk-python/commit/b356bfbc4f5b4218bc0290955c74c86aac68e9d4))
+* **api:** update schema agent_options_input (+7 more changes) ([1284046](https://github.com/tembo/sdk-python/commit/1284046585d20374b6f94c05393ed468bf45a5b4))
+* **api:** update schema trigger_filters (+6 more changes) ([d3199ba](https://github.com/tembo/sdk-python/commit/d3199ba98a86b7c671592b63d24a3b7108fee968))
+* **api:** update SDK surface (10 changes) ([c77633b](https://github.com/tembo/sdk-python/commit/c77633b90e182d6d7b0d279410d6b82e436872ca))
+* **api:** update SDK surface (2 changes) ([abff930](https://github.com/tembo/sdk-python/commit/abff9306776e0590920f5e2163ec489cd1e70113))
+* **api:** update SDK surface (2 changes) ([74d8a52](https://github.com/tembo/sdk-python/commit/74d8a52caa38bb6bb41e6c9db3fb6d0d2e130c6c))
+* **api:** update SDK surface (2 changes) ([5a169ec](https://github.com/tembo/sdk-python/commit/5a169ec1541810a30e8f778148b80b593e6c62d2))
+* **api:** update SDK surface (3 changes) ([aecec17](https://github.com/tembo/sdk-python/commit/aecec170fe9b4bc13722dadbdbc08e9b662b2f90))
+
+
+### Bug Fixes
+
+* **types:** break TipTapNode circular import ([692a44e](https://github.com/tembo/sdk-python/commit/692a44e5b4c4c13a22676a0db206bce3a252238b))
+* **types:** break TipTapNode circular import ([fafebb9](https://github.com/tembo/sdk-python/commit/fafebb93930acba8f39c39ba08c4a5be82020e60))
+* use async_to_httpx_files in patch method ([8e68b11](https://github.com/tembo/sdk-python/commit/8e68b11eabbba28505f65095a510f0a2d5fc7ab1))
+
+
+### Chores
+
+* **api:** update generated SDK content ([a384056](https://github.com/tembo/sdk-python/commit/a3840563969e05389690fbe9eac813bf9e4a031c))
+* **api:** update generated SDK content ([16996d7](https://github.com/tembo/sdk-python/commit/16996d7e4e0484f5cdb2a989f9f33e632fa7d33b))
+* **internal:** add `--fix` argument to lint script ([3ed4ea9](https://github.com/tembo/sdk-python/commit/3ed4ea92fcfc85554da48563f0f15438a40a76e8))
+* **internal:** add missing files argument to base client ([aa164b1](https://github.com/tembo/sdk-python/commit/aa164b15d7cefdb3fe035fd9ba128e1e6e6df6b4))
+* speedup initial import ([19df223](https://github.com/tembo/sdk-python/commit/19df223a93dee6ee37f683bb6dd2c483559e200a))
+
+
+### Refactors
+
+* **internal:** switch from rye to uv ([ce3921d](https://github.com/tembo/sdk-python/commit/ce3921dbadd12dd2ff18a0b3ac5a51fd25eba573))
+
 ## [0.11.1](https://github.com/tembo/sdk-python/compare/v0.11.0...v0.11.1) (2026-11-08)
 
 
