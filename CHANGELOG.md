@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/tembo/sdk-python/compare/v0.11.1...v0.12.0) (2026-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Added required body field `roleId` to `organizations.members.create`.
+    - Removed body field `role` from `organizations.members.create`.
+    - Removed body field `role` from `organizations.members.update`.
+
+### Features
+
+* **api:** add operation organizations.roles.list (+10 more changes) ([4c68011](https://github.com/tembo/sdk-python/commit/4c6801159bcbef9479864af5f08b36f2bbfc1e25))
+* **api:** update SDK surface (6 changes) ([9b0a9f0](https://github.com/tembo/sdk-python/commit/9b0a9f0de2dbf1240a167aa15e652e9d4afa7fd7))
+
 ## [0.11.1](https://github.com/tembo/sdk-python/compare/v0.11.0...v0.11.1) (2026-11-08)
 
 
