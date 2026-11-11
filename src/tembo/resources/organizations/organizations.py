@@ -23,6 +23,14 @@ from .members import (
     MembersResourceWithStreamingResponse,
     AsyncMembersResourceWithStreamingResponse,
 )
+from .roles import (
+    RolesResource,
+    AsyncRolesResource,
+    RolesResourceWithRawResponse,
+    AsyncRolesResourceWithRawResponse,
+    RolesResourceWithStreamingResponse,
+    AsyncRolesResourceWithStreamingResponse,
+)
 from .secrets import (
     SecretsResource,
     AsyncSecretsResource,
@@ -60,6 +68,10 @@ class OrganizationsResource(SyncAPIResource):
     @cached_property
     def members(self) -> MembersResource:
         return MembersResource(self._client)
+
+    @cached_property
+    def roles(self) -> RolesResource:
+        return RolesResource(self._client)
 
     @cached_property
     def secrets(self) -> SecretsResource:
@@ -271,6 +283,10 @@ class AsyncOrganizationsResource(AsyncAPIResource):
     @cached_property
     def members(self) -> AsyncMembersResource:
         return AsyncMembersResource(self._client)
+
+    @cached_property
+    def roles(self) -> AsyncRolesResource:
+        return AsyncRolesResource(self._client)
 
     @cached_property
     def secrets(self) -> AsyncSecretsResource:
@@ -500,6 +516,10 @@ class OrganizationsResourceWithRawResponse:
         return MembersResourceWithRawResponse(self._organizations.members)
 
     @cached_property
+    def roles(self) -> RolesResourceWithRawResponse:
+        return RolesResourceWithRawResponse(self._organizations.roles)
+
+    @cached_property
     def secrets(self) -> SecretsResourceWithRawResponse:
         return SecretsResourceWithRawResponse(self._organizations.secrets)
 
@@ -532,6 +552,10 @@ class AsyncOrganizationsResourceWithRawResponse:
     @cached_property
     def members(self) -> AsyncMembersResourceWithRawResponse:
         return AsyncMembersResourceWithRawResponse(self._organizations.members)
+
+    @cached_property
+    def roles(self) -> AsyncRolesResourceWithRawResponse:
+        return AsyncRolesResourceWithRawResponse(self._organizations.roles)
 
     @cached_property
     def secrets(self) -> AsyncSecretsResourceWithRawResponse:
@@ -568,6 +592,10 @@ class OrganizationsResourceWithStreamingResponse:
         return MembersResourceWithStreamingResponse(self._organizations.members)
 
     @cached_property
+    def roles(self) -> RolesResourceWithStreamingResponse:
+        return RolesResourceWithStreamingResponse(self._organizations.roles)
+
+    @cached_property
     def secrets(self) -> SecretsResourceWithStreamingResponse:
         return SecretsResourceWithStreamingResponse(self._organizations.secrets)
 
@@ -600,6 +628,10 @@ class AsyncOrganizationsResourceWithStreamingResponse:
     @cached_property
     def members(self) -> AsyncMembersResourceWithStreamingResponse:
         return AsyncMembersResourceWithStreamingResponse(self._organizations.members)
+
+    @cached_property
+    def roles(self) -> AsyncRolesResourceWithStreamingResponse:
+        return AsyncRolesResourceWithStreamingResponse(self._organizations.roles)
 
     @cached_property
     def secrets(self) -> AsyncSecretsResourceWithStreamingResponse:

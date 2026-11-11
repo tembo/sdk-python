@@ -10,6 +10,14 @@ from .member_retrieve_response import MemberRetrieveResponse as MemberRetrieveRe
 from .member_update_response import MemberUpdateResponse as MemberUpdateResponse
 from .member_update_params import MemberUpdateParams as MemberUpdateParams
 from .member_delete_response import MemberDeleteResponse as MemberDeleteResponse
+from .role_list_response import RoleListResponse as RoleListResponse
+from .role_create_response import RoleCreateResponse as RoleCreateResponse
+from .role_create_params import RoleCreateParams as RoleCreateParams
+from .role_retrieve_response import RoleRetrieveResponse as RoleRetrieveResponse
+from .role_update_response import RoleUpdateResponse as RoleUpdateResponse
+from .role_update_params import RoleUpdateParams as RoleUpdateParams
+from .role_delete_response import RoleDeleteResponse as RoleDeleteResponse
+from .role_delete_params import RoleDeleteParams as RoleDeleteParams
 from .secret_list_response import SecretListResponse as SecretListResponse
 from .secret_list_params import SecretListParams as SecretListParams
 from .secret_create_response import SecretCreateResponse as SecretCreateResponse
