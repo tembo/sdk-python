@@ -23,6 +23,7 @@ from ..types.artifact_list_response import ArtifactListResponse
 from ..types import artifact_list_params, artifact_create_params
 from ..types.artifact_create_response import ArtifactCreateResponse
 from ..types.artifact_retrieve_response import ArtifactRetrieveResponse
+from ..types.artifact_retrieve_asset_url_response import ArtifactRetrieveAssetURLResponse
 from ..types.artifact_delete_response import ArtifactDeleteResponse
 
 __all__ = ["ArtifactsResource", "AsyncArtifactsResource"]
@@ -213,6 +214,47 @@ class ArtifactsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ArtifactRetrieveResponse,
+        )
+
+    def retrieve_asset_url(
+        self,
+        asset_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ArtifactRetrieveAssetURLResponse:
+        """
+        Get a fresh signed download URL for an uploaded session asset by its asset ID.
+
+        Args:
+            asset_id: Path parameter.
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            ArtifactRetrieveAssetURLResponse: Retrieve a signed asset URL
+
+        Example:
+            ```python
+            artifact = client.artifacts.retrieve_asset_url(
+                asset_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+            )
+            ```
+        """
+        if asset_id is None or (isinstance(asset_id, str) and not asset_id):
+            raise ValueError(f"Expected a non-empty value for `asset_id` but received {asset_id!r}")
+        return self._get(
+            path_template("/v1/artifacts/assets/{assetId}", **{"assetId": asset_id}),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ArtifactRetrieveAssetURLResponse,
         )
 
     def delete(
@@ -444,6 +486,47 @@ class AsyncArtifactsResource(AsyncAPIResource):
             cast_to=ArtifactRetrieveResponse,
         )
 
+    async def retrieve_asset_url(
+        self,
+        asset_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ArtifactRetrieveAssetURLResponse:
+        """
+        Get a fresh signed download URL for an uploaded session asset by its asset ID.
+
+        Args:
+            asset_id: Path parameter.
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            ArtifactRetrieveAssetURLResponse: Retrieve a signed asset URL
+
+        Example:
+            ```python
+            artifact = await client.artifacts.retrieve_asset_url(
+                asset_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+            )
+            ```
+        """
+        if asset_id is None or (isinstance(asset_id, str) and not asset_id):
+            raise ValueError(f"Expected a non-empty value for `asset_id` but received {asset_id!r}")
+        return await self._get(
+            path_template("/v1/artifacts/assets/{assetId}", **{"assetId": asset_id}),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ArtifactRetrieveAssetURLResponse,
+        )
+
     async def delete(
         self,
         artifact_id: str,
@@ -499,6 +582,9 @@ class ArtifactsResourceWithRawResponse:
         self.retrieve = to_raw_response_wrapper(
             artifacts.retrieve,
         )
+        self.retrieve_asset_url = to_raw_response_wrapper(
+            artifacts.retrieve_asset_url,
+        )
         self.delete = to_raw_response_wrapper(
             artifacts.delete,
         )
@@ -516,6 +602,9 @@ class AsyncArtifactsResourceWithRawResponse:
         )
         self.retrieve = async_to_raw_response_wrapper(
             artifacts.retrieve,
+        )
+        self.retrieve_asset_url = async_to_raw_response_wrapper(
+            artifacts.retrieve_asset_url,
         )
         self.delete = async_to_raw_response_wrapper(
             artifacts.delete,
@@ -535,6 +624,9 @@ class ArtifactsResourceWithStreamingResponse:
         self.retrieve = to_streamed_response_wrapper(
             artifacts.retrieve,
         )
+        self.retrieve_asset_url = to_streamed_response_wrapper(
+            artifacts.retrieve_asset_url,
+        )
         self.delete = to_streamed_response_wrapper(
             artifacts.delete,
         )
@@ -552,6 +644,9 @@ class AsyncArtifactsResourceWithStreamingResponse:
         )
         self.retrieve = async_to_streamed_response_wrapper(
             artifacts.retrieve,
+        )
+        self.retrieve_asset_url = async_to_streamed_response_wrapper(
+            artifacts.retrieve_asset_url,
         )
         self.delete = async_to_streamed_response_wrapper(
             artifacts.delete,

@@ -35,6 +35,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve an organization member](#retrieve-an-organization-member)
     - [Update an organization member](#update-an-organization-member)
     - [Remove an organization member](#remove-an-organization-member)
+  - [`Organizations Roles`](#organizations-roles)
+    - [List organization roles](#list-organization-roles)
+    - [Create a organization role](#create-a-organization-role)
+    - [Retrieve an organization role](#retrieve-an-organization-role)
+    - [Update a organization role](#update-a-organization-role)
+    - [Archive a role with an explicit replacement](#archive-a-role-with-an-explicit-replacement)
   - [`Organizations Secrets`](#organizations-secrets)
     - [List organization secrets](#list-organization-secrets)
     - [Create an organization secret](#create-an-organization-secret)
@@ -59,6 +65,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List artifacts](#list-artifacts)
   - [Create an artifact](#create-an-artifact)
   - [Retrieve an artifact](#retrieve-an-artifact)
+  - [Retrieve a signed asset URL](#retrieve-a-signed-asset-url)
   - [Delete an artifact](#delete-an-artifact)
 - [`Messages`](#messages)
   - [List messages](#list-messages)
@@ -115,6 +122,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List session commands](#list-session-commands)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
+  - [Retrieve project defaults](#retrieve-project-defaults)
   - [List projects](#list-projects)
   - [Create a project](#create-a-project)
   - [Retrieve a project](#retrieve-a-project)
@@ -206,6 +214,11 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Billing`](#billing)
   - [Retrieve billing](#retrieve-billing)
   - [List billing usage](#list-billing-usage)
+- [`Folders`](#folders)
+  - [List folders](#list-folders)
+  - [Create a folder](#create-a-folder)
+  - [Update a folder](#update-a-folder)
+  - [Delete a folder](#delete-a-folder)
 - [`Live`](#live)
   - [Authorize a live connection](#authorize-a-live-connection)
   - [Live resource subscriptions](#live-resource-subscriptions)
@@ -613,6 +626,79 @@ member = client.organizations.members.delete(
 )
 ```
 
+### `Organizations Roles`
+
+#### List organization roles
+
+| Direction | Type |
+| --- | --- |
+| Response | [`RoleListResponse`](./src/tembo/types/organizations/role_list_response.py) |
+
+```python
+role = client.organizations.roles.list(
+    organization_id="organizationId",
+)
+```
+
+#### Create a organization role
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleCreateParams`](./src/tembo/types/organizations/role_create_params.py) |
+| Response | [`RoleCreateResponse`](./src/tembo/types/organizations/role_create_response.py) |
+
+```python
+role = client.organizations.roles.create(
+    organization_id="organizationId",
+    name="x",
+    description="",
+    permissions=["organization:read"],
+)
+```
+
+#### Retrieve an organization role
+
+| Direction | Type |
+| --- | --- |
+| Response | [`RoleRetrieveResponse`](./src/tembo/types/organizations/role_retrieve_response.py) |
+
+```python
+role = client.organizations.roles.retrieve(
+    organization_id="organizationId",
+    role_id="roleId",
+)
+```
+
+#### Update a organization role
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleUpdateParams`](./src/tembo/types/organizations/role_update_params.py) |
+| Response | [`RoleUpdateResponse`](./src/tembo/types/organizations/role_update_response.py) |
+
+```python
+role = client.organizations.roles.update(
+    organization_id="organizationId",
+    role_id="roleId",
+    description="",
+)
+```
+
+#### Archive a role with an explicit replacement
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleDeleteParams`](./src/tembo/types/organizations/role_delete_params.py) |
+| Response | [`RoleDeleteResponse`](./src/tembo/types/organizations/role_delete_response.py) |
+
+```python
+role = client.organizations.roles.delete(
+    organization_id="organizationId",
+    role_id="roleId",
+    replacement_role_id="x",
+)
+```
+
 ### `Organizations Secrets`
 
 #### List organization secrets
@@ -911,6 +997,20 @@ Retrieve an organization artifact by ID.
 ```python
 artifact = client.artifacts.retrieve(
     artifact_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+)
+```
+
+### Retrieve a signed asset URL
+
+Get a fresh signed download URL for an uploaded session asset by its asset ID.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ArtifactRetrieveAssetURLResponse`](./src/tembo/types/artifact_retrieve_asset_url_response.py) |
+
+```python
+artifact = client.artifacts.retrieve_asset_url(
+    asset_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
 )
 ```
 
@@ -1550,6 +1650,18 @@ project = client.projects.update_defaults(
     project_id="x",
     sandbox_size="nano",
 )
+```
+
+### Retrieve project defaults
+
+Get the default sandbox size and the largest size the plan allows.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ProjectRetrieveDefaultsResponse`](./src/tembo/types/project_retrieve_defaults_response.py) |
+
+```python
+project = client.projects.retrieve_defaults()
 ```
 
 ### List projects
@@ -2712,6 +2824,64 @@ List session usage by default, or include warm pool compute with the type filter
 ```python
 billing = client.billing.list_usage(
     limit=50,
+)
+```
+
+## `Folders`
+
+### List folders
+
+List the sidebar folders you use to organize sessions. Use listSessions with folderId to list the sessions in a folder.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`FolderListResponse`](./src/tembo/types/folder_list_response.py) |
+
+```python
+folder = client.folders.list()
+```
+
+### Create a folder
+
+Create a sidebar folder for organizing sessions. New folders go first in your folder list; use createPin to pin one.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`FolderCreateParams`](./src/tembo/types/folder_create_params.py) |
+| Response | [`FolderCreateResponse`](./src/tembo/types/folder_create_response.py) |
+
+```python
+folder = client.folders.create(
+    name="x",
+)
+```
+
+### Update a folder
+
+Rename one of your sidebar folders, change its icon color, move it in your folder list, or add, reorder, or remove its sessions. Use updatePin to move a pinned folder among your pins.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`FolderUpdateParams`](./src/tembo/types/folder_update_params.py) |
+| Response | [`FolderUpdateResponse`](./src/tembo/types/folder_update_response.py) |
+
+```python
+folder = client.folders.update(
+    folder_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
+)
+```
+
+### Delete a folder
+
+Delete one of your sidebar folders. Its sessions are kept and return to your recent sessions.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`FolderDeleteResponse`](./src/tembo/types/folder_delete_response.py) |
+
+```python
+folder = client.folders.delete(
+    folder_id="7c9e6679-7425-40de-944b-e07fc1f90ae7",
 )
 ```
 

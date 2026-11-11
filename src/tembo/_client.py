@@ -55,6 +55,7 @@ if TYPE_CHECKING:
         repositories,
         integrations,
         billing,
+        folders,
         live,
     )
     from .resources.api_keys import APIKeysResource, AsyncAPIKeysResource
@@ -75,6 +76,7 @@ if TYPE_CHECKING:
     from .resources.repositories import RepositoriesResource, AsyncRepositoriesResource
     from .resources.integrations import IntegrationsResource, AsyncIntegrationsResource
     from .resources.billing import BillingResource, AsyncBillingResource
+    from .resources.folders import FoldersResource, AsyncFoldersResource
     from .resources.live import LiveResource, AsyncLiveResource
 
 # Serializes lazy resource imports so concurrent cold access from multiple
@@ -266,6 +268,12 @@ class Tembo(SyncAPIClient):
         with _RESOURCE_IMPORT_LOCK:
             from .resources.billing import BillingResource
         return BillingResource(self)
+
+    @cached_property
+    def folders(self) -> "FoldersResource":
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import FoldersResource
+        return FoldersResource(self)
 
     @cached_property
     def live(self) -> "LiveResource":
@@ -600,6 +608,12 @@ class AsyncTembo(AsyncAPIClient):
         return AsyncBillingResource(self)
 
     @cached_property
+    def folders(self) -> "AsyncFoldersResource":
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import AsyncFoldersResource
+        return AsyncFoldersResource(self)
+
+    @cached_property
     def live(self) -> "AsyncLiveResource":
         with _RESOURCE_IMPORT_LOCK:
             from .resources.live import AsyncLiveResource
@@ -863,6 +877,12 @@ class TemboWithRawResponse:
         return BillingResourceWithRawResponse(self._client.billing)
 
     @cached_property
+    def folders(self) -> folders.FoldersResourceWithRawResponse:
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import FoldersResourceWithRawResponse
+        return FoldersResourceWithRawResponse(self._client.folders)
+
+    @cached_property
     def live(self) -> live.LiveResourceWithRawResponse:
         with _RESOURCE_IMPORT_LOCK:
             from .resources.live import LiveResourceWithRawResponse
@@ -982,6 +1002,12 @@ class AsyncTemboWithRawResponse:
         with _RESOURCE_IMPORT_LOCK:
             from .resources.billing import AsyncBillingResourceWithRawResponse
         return AsyncBillingResourceWithRawResponse(self._client.billing)
+
+    @cached_property
+    def folders(self) -> folders.AsyncFoldersResourceWithRawResponse:
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import AsyncFoldersResourceWithRawResponse
+        return AsyncFoldersResourceWithRawResponse(self._client.folders)
 
     @cached_property
     def live(self) -> live.AsyncLiveResourceWithRawResponse:
@@ -1105,6 +1131,12 @@ class TemboWithStreamedResponse:
         return BillingResourceWithStreamingResponse(self._client.billing)
 
     @cached_property
+    def folders(self) -> folders.FoldersResourceWithStreamingResponse:
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import FoldersResourceWithStreamingResponse
+        return FoldersResourceWithStreamingResponse(self._client.folders)
+
+    @cached_property
     def live(self) -> live.LiveResourceWithStreamingResponse:
         with _RESOURCE_IMPORT_LOCK:
             from .resources.live import LiveResourceWithStreamingResponse
@@ -1224,6 +1256,12 @@ class AsyncTemboWithStreamedResponse:
         with _RESOURCE_IMPORT_LOCK:
             from .resources.billing import AsyncBillingResourceWithStreamingResponse
         return AsyncBillingResourceWithStreamingResponse(self._client.billing)
+
+    @cached_property
+    def folders(self) -> folders.AsyncFoldersResourceWithStreamingResponse:
+        with _RESOURCE_IMPORT_LOCK:
+            from .resources.folders import AsyncFoldersResourceWithStreamingResponse
+        return AsyncFoldersResourceWithStreamingResponse(self._client.folders)
 
     @cached_property
     def live(self) -> live.AsyncLiveResourceWithStreamingResponse:
