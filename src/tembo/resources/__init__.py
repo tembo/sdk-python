@@ -144,6 +144,14 @@ from .billing import (
     BillingResourceWithStreamingResponse,
     AsyncBillingResourceWithStreamingResponse,
 )
+from .folders import (
+    FoldersResource,
+    AsyncFoldersResource,
+    FoldersResourceWithRawResponse,
+    AsyncFoldersResourceWithRawResponse,
+    FoldersResourceWithStreamingResponse,
+    AsyncFoldersResourceWithStreamingResponse,
+)
 from .live import (
     LiveResource,
     AsyncLiveResource,
@@ -262,6 +270,12 @@ __all__ = [
     "AsyncBillingResourceWithRawResponse",
     "BillingResourceWithStreamingResponse",
     "AsyncBillingResourceWithStreamingResponse",
+    "FoldersResource",
+    "AsyncFoldersResource",
+    "FoldersResourceWithRawResponse",
+    "AsyncFoldersResourceWithRawResponse",
+    "FoldersResourceWithStreamingResponse",
+    "AsyncFoldersResourceWithStreamingResponse",
     "LiveResource",
     "AsyncLiveResource",
     "LiveResourceWithRawResponse",

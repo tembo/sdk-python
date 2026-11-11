@@ -11,20 +11,20 @@ __all__ = ["PinUpdateParams", "Placement", "PlacementTarget"]
 
 class PinUpdateParams(TypedDict, total=False):
     resource_type: Required[
-        Annotated[Literal["session", "pull_request", "project"], PropertyInfo(alias="resourceType")]
+        Annotated[Literal["session", "pull_request", "project", "folder"], PropertyInfo(alias="resourceType")]
     ]
-    """Kind of resource to pin or unpin: session, pull_request, or project."""
+    """Kind of resource to pin or unpin: session, pull_request, project, or folder."""
 
     placement: Required[Placement]
     """Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it."""
 
 
 class PlacementTarget(TypedDict, total=False):
-    type: Required[Literal["session", "pull_request", "project"]]
-    """Kind of resource to pin or unpin: session, pull_request, or project."""
+    type: Required[Literal["session", "pull_request", "project", "folder"]]
+    """Kind of resource to pin or unpin: session, pull_request, project, or folder."""
 
     id: Required[str]
-    """ID of the session, pull request, or project, not a separate pin ID."""
+    """ID of the session, pull request, project, or folder, not a separate pin ID."""
 
 
 class Placement(TypedDict, total=False):

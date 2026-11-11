@@ -53,6 +53,7 @@ from .schedules import (
 )
 from ...types.project_update_defaults_response import ProjectUpdateDefaultsResponse
 from ...types import project_update_defaults_params, project_list_params, project_create_params, project_update_params
+from ...types.project_retrieve_defaults_response import ProjectRetrieveDefaultsResponse
 from ...types.project_list_response import ProjectListResponse
 from ...types.project_create_response import ProjectCreateResponse
 from ...types.project_retrieve_response import ProjectRetrieveResponse
@@ -135,6 +136,41 @@ class ProjectsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ProjectUpdateDefaultsResponse,
+        )
+
+    def retrieve_defaults(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ProjectRetrieveDefaultsResponse:
+        """
+        Get the default sandbox size and the largest size the plan allows.
+
+        Args:
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            ProjectRetrieveDefaultsResponse: Retrieve project defaults
+
+        Example:
+            ```python
+            project = client.projects.retrieve_defaults()
+            ```
+        """
+        return self._get(
+            "/v1/projects/defaults",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ProjectRetrieveDefaultsResponse,
         )
 
     def list(
@@ -616,6 +652,41 @@ class AsyncProjectsResource(AsyncAPIResource):
             cast_to=ProjectUpdateDefaultsResponse,
         )
 
+    async def retrieve_defaults(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ProjectRetrieveDefaultsResponse:
+        """
+        Get the default sandbox size and the largest size the plan allows.
+
+        Args:
+            extra_headers: Send extra headers with the request.
+            extra_query: Send extra query parameters with the request.
+            extra_body: Send extra JSON properties with the request.
+            timeout: Override the client-level default timeout for this request, in seconds.
+
+        Returns:
+            ProjectRetrieveDefaultsResponse: Retrieve project defaults
+
+        Example:
+            ```python
+            project = await client.projects.retrieve_defaults()
+            ```
+        """
+        return await self._get(
+            "/v1/projects/defaults",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ProjectRetrieveDefaultsResponse,
+        )
+
     async def list(
         self,
         *,
@@ -1028,6 +1099,9 @@ class ProjectsResourceWithRawResponse:
         self.update_defaults = to_raw_response_wrapper(
             projects.update_defaults,
         )
+        self.retrieve_defaults = to_raw_response_wrapper(
+            projects.retrieve_defaults,
+        )
         self.list = to_raw_response_wrapper(
             projects.list,
         )
@@ -1070,6 +1144,9 @@ class AsyncProjectsResourceWithRawResponse:
 
         self.update_defaults = async_to_raw_response_wrapper(
             projects.update_defaults,
+        )
+        self.retrieve_defaults = async_to_raw_response_wrapper(
+            projects.retrieve_defaults,
         )
         self.list = async_to_raw_response_wrapper(
             projects.list,
@@ -1114,6 +1191,9 @@ class ProjectsResourceWithStreamingResponse:
         self.update_defaults = to_streamed_response_wrapper(
             projects.update_defaults,
         )
+        self.retrieve_defaults = to_streamed_response_wrapper(
+            projects.retrieve_defaults,
+        )
         self.list = to_streamed_response_wrapper(
             projects.list,
         )
@@ -1156,6 +1236,9 @@ class AsyncProjectsResourceWithStreamingResponse:
 
         self.update_defaults = async_to_streamed_response_wrapper(
             projects.update_defaults,
+        )
+        self.retrieve_defaults = async_to_streamed_response_wrapper(
+            projects.retrieve_defaults,
         )
         self.list = async_to_streamed_response_wrapper(
             projects.list,

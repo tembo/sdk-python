@@ -16,6 +16,14 @@ from .members import (
     MembersResourceWithStreamingResponse,
     AsyncMembersResourceWithStreamingResponse,
 )
+from .roles import (
+    RolesResource,
+    AsyncRolesResource,
+    RolesResourceWithRawResponse,
+    AsyncRolesResourceWithRawResponse,
+    RolesResourceWithStreamingResponse,
+    AsyncRolesResourceWithStreamingResponse,
+)
 from .secrets import (
     SecretsResource,
     AsyncSecretsResource,
@@ -54,6 +62,12 @@ __all__ = [
     "AsyncMembersResourceWithRawResponse",
     "MembersResourceWithStreamingResponse",
     "AsyncMembersResourceWithStreamingResponse",
+    "RolesResource",
+    "AsyncRolesResource",
+    "RolesResourceWithRawResponse",
+    "AsyncRolesResourceWithRawResponse",
+    "RolesResourceWithStreamingResponse",
+    "AsyncRolesResourceWithStreamingResponse",
     "SecretsResource",
     "AsyncSecretsResource",
     "SecretsResourceWithRawResponse",

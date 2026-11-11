@@ -99,7 +99,7 @@ class MembersResource(SyncAPIResource):
         organization_id: str,
         *,
         email_address: str,
-        role: Literal["org:admin", "org:member"] | Omit = omit,
+        role_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -113,7 +113,7 @@ class MembersResource(SyncAPIResource):
         Args:
             organization_id: Path parameter.
             email_address: Email address of the user to add or invite.
-            role: Organization role to grant: org:admin or org:member.
+            role_id: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -127,7 +127,7 @@ class MembersResource(SyncAPIResource):
             member = client.organizations.members.create(
                 organization_id="organizationId",
                 email_address="user@example.com",
-                role="org:member",
+                role_id="x",
             )
             ```
         """
@@ -138,7 +138,7 @@ class MembersResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "email_address": email_address,
-                    "role": role,
+                    "role_id": role_id,
                 },
                 member_create_params.MemberCreateParams,
             ),
@@ -202,7 +202,7 @@ class MembersResource(SyncAPIResource):
         member_id: str,
         *,
         organization_id: str,
-        role: Literal["org:admin", "org:member"],
+        role_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -216,7 +216,7 @@ class MembersResource(SyncAPIResource):
         Args:
             member_id: Path parameter.
             organization_id: Path parameter.
-            role: New organization role: org:admin or org:member.
+            role_id: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -230,7 +230,6 @@ class MembersResource(SyncAPIResource):
             member = client.organizations.members.update(
                 organization_id="organizationId",
                 member_id="memberId",
-                role="org:admin",
             )
             ```
         """
@@ -244,7 +243,7 @@ class MembersResource(SyncAPIResource):
                 **{"organizationId": organization_id, "memberId": member_id},
             ),
             body=maybe_transform(
-                {"role": role},
+                {"role_id": role_id},
                 member_update_params.MemberUpdateParams,
             ),
             options=make_request_options(
@@ -375,7 +374,7 @@ class AsyncMembersResource(AsyncAPIResource):
         organization_id: str,
         *,
         email_address: str,
-        role: Literal["org:admin", "org:member"] | Omit = omit,
+        role_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -389,7 +388,7 @@ class AsyncMembersResource(AsyncAPIResource):
         Args:
             organization_id: Path parameter.
             email_address: Email address of the user to add or invite.
-            role: Organization role to grant: org:admin or org:member.
+            role_id: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -403,7 +402,7 @@ class AsyncMembersResource(AsyncAPIResource):
             member = await client.organizations.members.create(
                 organization_id="organizationId",
                 email_address="user@example.com",
-                role="org:member",
+                role_id="x",
             )
             ```
         """
@@ -414,7 +413,7 @@ class AsyncMembersResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "email_address": email_address,
-                    "role": role,
+                    "role_id": role_id,
                 },
                 member_create_params.MemberCreateParams,
             ),
@@ -478,7 +477,7 @@ class AsyncMembersResource(AsyncAPIResource):
         member_id: str,
         *,
         organization_id: str,
-        role: Literal["org:admin", "org:member"],
+        role_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -492,7 +491,7 @@ class AsyncMembersResource(AsyncAPIResource):
         Args:
             member_id: Path parameter.
             organization_id: Path parameter.
-            role: New organization role: org:admin or org:member.
+            role_id: Body parameter.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -506,7 +505,6 @@ class AsyncMembersResource(AsyncAPIResource):
             member = await client.organizations.members.update(
                 organization_id="organizationId",
                 member_id="memberId",
-                role="org:admin",
             )
             ```
         """
@@ -520,7 +518,7 @@ class AsyncMembersResource(AsyncAPIResource):
                 **{"organizationId": organization_id, "memberId": member_id},
             ),
             body=await async_maybe_transform(
-                {"role": role},
+                {"role_id": role_id},
                 member_update_params.MemberUpdateParams,
             ),
             options=make_request_options(

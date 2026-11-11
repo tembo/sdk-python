@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing_extensions import Annotated, Literal, Required, TypedDict
+from typing_extensions import Annotated, Required, TypedDict
 
 from ..._utils import PropertyInfo
 
@@ -13,5 +13,4 @@ class MemberCreateParams(TypedDict, total=False):
     email_address: Required[Annotated[str, PropertyInfo(alias="emailAddress")]]
     """Email address of the user to add or invite."""
 
-    role: Literal["org:admin", "org:member"]
-    """Organization role to grant: org:admin or org:member."""
+    role_id: Required[Annotated[str, PropertyInfo(alias="roleId")]]
