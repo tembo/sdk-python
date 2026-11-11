@@ -29,13 +29,13 @@ class DataTimeSeries(BaseModel):
 
 
 class DataSummaryChanges(BaseModel):
-    prs_created: float = FieldInfo(alias="prsCreated")
+    prs_created: Optional[float] = FieldInfo(alias="prsCreated", default=None)
 
-    prs_merged: float = FieldInfo(alias="prsMerged")
+    prs_merged: Optional[float] = FieldInfo(alias="prsMerged", default=None)
 
-    tasks_completed: float = FieldInfo(alias="tasksCompleted")
+    tasks_completed: Optional[float] = FieldInfo(alias="tasksCompleted", default=None)
 
-    tembo_contribution: float = FieldInfo(alias="temboContribution")
+    tembo_contribution: Optional[float] = FieldInfo(alias="temboContribution", default=None)
 
 
 class DataSummary(BaseModel):
@@ -45,9 +45,13 @@ class DataSummary(BaseModel):
 
     prs_merged: int = FieldInfo(alias="prsMerged")
 
+    model_cost_per_pr_usd: Optional[float] = FieldInfo(alias="modelCostPerPrUsd", default=None)
+    """Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs."""
+
     tembo_contribution: float = FieldInfo(alias="temboContribution")
 
     changes: DataSummaryChanges
+    """Recent period compared with the previous one. Null when the previous period has no baseline, such as when the organization joined during it."""
 
 
 class Data(BaseModel):

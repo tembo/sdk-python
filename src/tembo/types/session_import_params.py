@@ -12,7 +12,7 @@ __all__ = ["SessionImportParams", "Message"]
 
 
 class SessionImportParams(TypedDict, total=False):
-    source: Required[Literal["conductor"]]
+    source: Required[Literal["conductor", "chatgpt", "claude", "devin"]]
     """Application the chat is imported from."""
 
     external_id: Required[Annotated[str, PropertyInfo(alias="externalId")]]
@@ -29,7 +29,7 @@ class Message(TypedDict, total=False):
     id: Required[str]
 
     role: Required[Literal["user", "assistant", "summary"]]
-    """Who wrote the row. Assistant rows hold a Claude Agent SDK message as JSON."""
+    """Who wrote the row. Conductor assistant rows hold Claude Agent SDK JSON; local ChatGPT/Codex, Claude Code, and Devin rows hold native message JSON for API conversion."""
 
     content: Required[str]
 

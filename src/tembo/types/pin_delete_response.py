@@ -8,10 +8,10 @@ __all__ = ["PinDeleteResponse"]
 
 
 class PinDeleteResponse(BaseModel):
-    type: Literal["session", "pull_request", "project"]
-    """Kind of resource to pin or unpin: session, pull_request, or project."""
+    type: Literal["session", "pull_request", "project", "folder"]
+    """Kind of resource to pin or unpin: session, pull_request, project, or folder."""
 
     id: str
-    """ID of the session, pull request, or project, not a separate pin ID."""
+    """ID of the session, pull request, project, or folder, not a separate pin ID."""
 
     deleted: Literal[True]

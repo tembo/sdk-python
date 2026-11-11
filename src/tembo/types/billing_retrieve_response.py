@@ -125,6 +125,8 @@ class Trial(BaseModel):
 
     remaining_allowance: float = FieldInfo(alias="remainingAllowance")
 
+    purchased_credits: float = FieldInfo(alias="purchasedCredits")
+
     exhausted: bool
 
 
