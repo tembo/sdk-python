@@ -163,6 +163,9 @@ class Item(BaseModel):
 
     diff_summary: Optional[ItemDiffSummary] = FieldInfo(alias="diffSummary", default=None)
 
+    folder_id: Optional[str] = FieldInfo(alias="folderId", default=None)
+    """Sidebar folder the authenticated user filed this session in."""
+
     is_pinned: bool = FieldInfo(alias="isPinned")
 
     project: Optional[ItemProject] = None

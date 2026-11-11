@@ -83,7 +83,7 @@ class PinsResource(SyncAPIResource):
     def create(
         self,
         *,
-        type: Literal["session", "pull_request", "project"],
+        type: Literal["session", "pull_request", "project", "folder"],
         id: str,
         placement: pin_create_params.Placement | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -94,11 +94,11 @@ class PinsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinCreateResponse:
         """
-        Pin a session, pull request, or project you have permission to access.
+        Pin a session, pull request, or project you have permission to access, or one of your folders.
 
         Args:
-            type: Kind of resource to pin or unpin: session, pull_request, or project.
-            id: ID of the session, pull request, or project, not a separate pin ID.
+            type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
+            id: ID of the session, pull request, project, or folder, not a separate pin ID.
             placement: Position of a new pin relative to another pin. Omit to add it first. Ignored if the resource is already pinned; use updatePin to reorder.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -136,7 +136,7 @@ class PinsResource(SyncAPIResource):
         self,
         resource_id: str,
         *,
-        resource_type: Literal["session", "pull_request", "project"],
+        resource_type: Literal["session", "pull_request", "project", "folder"],
         placement: pin_update_params.Placement,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -146,11 +146,11 @@ class PinsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinUpdateResponse:
         """
-        Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
+        Reorder a pinned session, pull request, project, or folder before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
 
         Args:
-            resource_id: ID of the pinned session, pull request, or project, not a separate pin ID.
-            resource_type: Kind of resource to pin or unpin: session, pull_request, or project.
+            resource_id: ID of the pinned session, pull request, project, or folder, not a separate pin ID.
+            resource_type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
             placement: Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -191,7 +191,7 @@ class PinsResource(SyncAPIResource):
         self,
         resource_id: str,
         *,
-        resource_type: Literal["session", "pull_request", "project"],
+        resource_type: Literal["session", "pull_request", "project", "folder"],
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -200,11 +200,11 @@ class PinsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinDeleteResponse:
         """
-        Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.
+        Unpin a session, pull request, project, or folder for the authenticated user without deleting or archiving the resource.
 
         Args:
-            resource_id: ID of the pinned session, pull request, or project, not a separate pin ID.
-            resource_type: Kind of resource to pin or unpin: session, pull_request, or project.
+            resource_id: ID of the pinned session, pull request, project, or folder, not a separate pin ID.
+            resource_type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.
@@ -293,7 +293,7 @@ class AsyncPinsResource(AsyncAPIResource):
     async def create(
         self,
         *,
-        type: Literal["session", "pull_request", "project"],
+        type: Literal["session", "pull_request", "project", "folder"],
         id: str,
         placement: pin_create_params.Placement | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -304,11 +304,11 @@ class AsyncPinsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinCreateResponse:
         """
-        Pin a session, pull request, or project you have permission to access.
+        Pin a session, pull request, or project you have permission to access, or one of your folders.
 
         Args:
-            type: Kind of resource to pin or unpin: session, pull_request, or project.
-            id: ID of the session, pull request, or project, not a separate pin ID.
+            type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
+            id: ID of the session, pull request, project, or folder, not a separate pin ID.
             placement: Position of a new pin relative to another pin. Omit to add it first. Ignored if the resource is already pinned; use updatePin to reorder.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -346,7 +346,7 @@ class AsyncPinsResource(AsyncAPIResource):
         self,
         resource_id: str,
         *,
-        resource_type: Literal["session", "pull_request", "project"],
+        resource_type: Literal["session", "pull_request", "project", "folder"],
         placement: pin_update_params.Placement,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -356,11 +356,11 @@ class AsyncPinsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinUpdateResponse:
         """
-        Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
+        Reorder a pinned session, pull request, project, or folder before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
 
         Args:
-            resource_id: ID of the pinned session, pull request, or project, not a separate pin ID.
-            resource_type: Kind of resource to pin or unpin: session, pull_request, or project.
+            resource_id: ID of the pinned session, pull request, project, or folder, not a separate pin ID.
+            resource_type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
             placement: Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
@@ -401,7 +401,7 @@ class AsyncPinsResource(AsyncAPIResource):
         self,
         resource_id: str,
         *,
-        resource_type: Literal["session", "pull_request", "project"],
+        resource_type: Literal["session", "pull_request", "project", "folder"],
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -410,11 +410,11 @@ class AsyncPinsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> PinDeleteResponse:
         """
-        Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.
+        Unpin a session, pull request, project, or folder for the authenticated user without deleting or archiving the resource.
 
         Args:
-            resource_id: ID of the pinned session, pull request, or project, not a separate pin ID.
-            resource_type: Kind of resource to pin or unpin: session, pull_request, or project.
+            resource_id: ID of the pinned session, pull request, project, or folder, not a separate pin ID.
+            resource_type: Kind of resource to pin or unpin: session, pull_request, project, or folder.
             extra_headers: Send extra headers with the request.
             extra_query: Send extra query parameters with the request.
             extra_body: Send extra JSON properties with the request.

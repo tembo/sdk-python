@@ -236,6 +236,9 @@ class SessionRetrieveResponse(BaseModel):
 
     diff_summary: Optional[DiffSummary] = FieldInfo(alias="diffSummary", default=None)
 
+    folder_id: Optional[str] = FieldInfo(alias="folderId", default=None)
+    """Sidebar folder the authenticated user filed this session in."""
+
     html_url: str = FieldInfo(alias="htmlUrl")
 
     is_pinned: bool = FieldInfo(alias="isPinned")

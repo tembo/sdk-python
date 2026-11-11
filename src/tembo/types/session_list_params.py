@@ -34,6 +34,9 @@ class SessionListParams(TypedDict, total=False):
     external_ids: Annotated[SequenceNotStr[str], PropertyInfo(alias="externalIds")]
     """Filter by external source IDs, supplied as a comma-separated list."""
 
+    folder_id: Annotated[str, PropertyInfo(alias="folderId")]
+    """Only sessions in this sidebar folder of the authenticated user. Takes precedence over inFolder."""
+
     has_project: Annotated[bool, PropertyInfo(alias="hasProject")]
     """Filter by whether a session has an assigned project."""
 
@@ -42,6 +45,9 @@ class SessionListParams(TypedDict, total=False):
 
     include_total: Annotated[bool, PropertyInfo(alias="includeTotal")]
     """Include totalCount. Not supported with state=active."""
+
+    in_folder: Annotated[bool, PropertyInfo(alias="inFolder")]
+    """Filter by whether a session is in one of the authenticated user's sidebar folders."""
 
     parent_session_id: Annotated[str, PropertyInfo(alias="parentSessionId")]
     """Filter sessions created by this session."""

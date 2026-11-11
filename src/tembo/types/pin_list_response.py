@@ -31,7 +31,23 @@ __all__ = [
     "Resource3ResourceCodeRepositoryIntegration",
     "Resource4",
     "Resource4Resource",
+    "Resource5",
+    "Resource5Resource",
 ]
+
+
+class Resource5Resource(BaseModel):
+    id: str
+
+    name: str
+
+    color: Literal["neutral", "red", "orange", "yellow", "green", "teal", "blue", "purple", "pink"]
+
+
+class Resource5(BaseModel):
+    type: Literal["folder"]
+
+    resource: Resource5Resource
 
 
 class Resource4Resource(BaseModel):
@@ -214,6 +230,9 @@ class Resource2Resource(BaseModel):
 
     diff_summary: Optional[Resource2ResourceDiffSummary] = FieldInfo(alias="diffSummary", default=None)
 
+    folder_id: Optional[str] = FieldInfo(alias="folderId", default=None)
+    """Sidebar folder you filed this session in."""
+
     state: Resource2ResourceState
 
     is_unread: Optional[bool] = FieldInfo(alias="isUnread", default=None)
@@ -226,7 +245,7 @@ class Resource2(BaseModel):
     resource: Resource2Resource
 
 
-Resource: TypeAlias = Union[Resource2, Resource3, Resource4]
+Resource: TypeAlias = Union[Resource2, Resource3, Resource4, Resource5]
 
 
 class PinListResponse(BaseModel):

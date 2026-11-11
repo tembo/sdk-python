@@ -121,9 +121,11 @@ class SessionsResource(SyncAPIResource):
         limit: int | Omit = omit,
         exclude_pinned: bool | Omit = omit,
         external_ids: SequenceNotStr[str] | Omit = omit,
+        folder_id: str | Omit = omit,
         has_project: bool | Omit = omit,
         include_archived: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        in_folder: bool | Omit = omit,
         parent_session_id: str | Omit = omit,
         participant: SequenceNotStr[str] | Omit = omit,
         pending_reviewer_keys: SequenceNotStr[str] | Omit = omit,
@@ -153,9 +155,11 @@ class SessionsResource(SyncAPIResource):
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
             exclude_pinned: Exclude sessions pinned by the authenticated user.
             external_ids: Filter by external source IDs, supplied as a comma-separated list.
+            folder_id: Only sessions in this sidebar folder of the authenticated user. Takes precedence over inFolder.
             has_project: Filter by whether a session has an assigned project.
             include_archived: Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions.
             include_total: Include totalCount. Not supported with state=active.
+            in_folder: Filter by whether a session is in one of the authenticated user's sidebar folders.
             parent_session_id: Filter sessions created by this session.
             participant: Filter by participant IDs, supplied as a comma-separated list.
             pending_reviewer_keys: Filter by pending reviewer keys, supplied as a comma-separated list.
@@ -202,9 +206,11 @@ class SessionsResource(SyncAPIResource):
                         "limit": limit,
                         "exclude_pinned": exclude_pinned,
                         "external_ids": external_ids,
+                        "folder_id": folder_id,
                         "has_project": has_project,
                         "include_archived": include_archived,
                         "include_total": include_total,
+                        "in_folder": in_folder,
                         "parent_session_id": parent_session_id,
                         "participant": participant,
                         "pending_reviewer_keys": pending_reviewer_keys,
@@ -559,7 +565,7 @@ class SessionsResource(SyncAPIResource):
     def import_(
         self,
         *,
-        source: Literal["conductor"],
+        source: Literal["conductor", "chatgpt", "claude", "devin"],
         external_id: str,
         title: str,
         messages: Iterable[session_import_params.Message],
@@ -757,9 +763,11 @@ class AsyncSessionsResource(AsyncAPIResource):
         limit: int | Omit = omit,
         exclude_pinned: bool | Omit = omit,
         external_ids: SequenceNotStr[str] | Omit = omit,
+        folder_id: str | Omit = omit,
         has_project: bool | Omit = omit,
         include_archived: bool | Omit = omit,
         include_total: bool | Omit = omit,
+        in_folder: bool | Omit = omit,
         parent_session_id: str | Omit = omit,
         participant: SequenceNotStr[str] | Omit = omit,
         pending_reviewer_keys: SequenceNotStr[str] | Omit = omit,
@@ -789,9 +797,11 @@ class AsyncSessionsResource(AsyncAPIResource):
             limit: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
             exclude_pinned: Exclude sessions pinned by the authenticated user.
             external_ids: Filter by external source IDs, supplied as a comma-separated list.
+            folder_id: Only sessions in this sidebar folder of the authenticated user. Takes precedence over inFolder.
             has_project: Filter by whether a session has an assigned project.
             include_archived: Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions.
             include_total: Include totalCount. Not supported with state=active.
+            in_folder: Filter by whether a session is in one of the authenticated user's sidebar folders.
             parent_session_id: Filter sessions created by this session.
             participant: Filter by participant IDs, supplied as a comma-separated list.
             pending_reviewer_keys: Filter by pending reviewer keys, supplied as a comma-separated list.
@@ -838,9 +848,11 @@ class AsyncSessionsResource(AsyncAPIResource):
                         "limit": limit,
                         "exclude_pinned": exclude_pinned,
                         "external_ids": external_ids,
+                        "folder_id": folder_id,
                         "has_project": has_project,
                         "include_archived": include_archived,
                         "include_total": include_total,
+                        "in_folder": in_folder,
                         "parent_session_id": parent_session_id,
                         "participant": participant,
                         "pending_reviewer_keys": pending_reviewer_keys,
@@ -1195,7 +1207,7 @@ class AsyncSessionsResource(AsyncAPIResource):
     async def import_(
         self,
         *,
-        source: Literal["conductor"],
+        source: Literal["conductor", "chatgpt", "claude", "devin"],
         external_id: str,
         title: str,
         messages: Iterable[session_import_params.Message],

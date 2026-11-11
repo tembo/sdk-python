@@ -29,7 +29,23 @@ __all__ = [
     "PinCreateResponse2ResourceCodeRepositoryIntegration",
     "PinCreateResponse3",
     "PinCreateResponse3Resource",
+    "PinCreateResponse4",
+    "PinCreateResponse4Resource",
 ]
+
+
+class PinCreateResponse4Resource(BaseModel):
+    id: str
+
+    name: str
+
+    color: Literal["neutral", "red", "orange", "yellow", "green", "teal", "blue", "purple", "pink"]
+
+
+class PinCreateResponse4(BaseModel):
+    type: Literal["folder"]
+
+    resource: PinCreateResponse4Resource
 
 
 class PinCreateResponse3Resource(BaseModel):
@@ -216,6 +232,9 @@ class PinCreateResponseResource(BaseModel):
 
     diff_summary: Optional[PinCreateResponseResourceDiffSummary] = FieldInfo(alias="diffSummary", default=None)
 
+    folder_id: Optional[str] = FieldInfo(alias="folderId", default=None)
+    """Sidebar folder you filed this session in."""
+
     state: PinCreateResponseResourceState
 
     is_unread: Optional[bool] = FieldInfo(alias="isUnread", default=None)
@@ -228,4 +247,4 @@ class PinCreateResponse(BaseModel):
     resource: PinCreateResponseResource
 
 
-PinCreateResponse: TypeAlias = Union[PinCreateResponse, PinCreateResponse2, PinCreateResponse3]
+PinCreateResponse: TypeAlias = Union[PinCreateResponse, PinCreateResponse2, PinCreateResponse3, PinCreateResponse4]

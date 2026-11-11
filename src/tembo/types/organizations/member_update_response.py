@@ -1,26 +1,32 @@
 # File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-from typing import Optional
+from __future__ import annotations
+
+from typing import Optional, Union
 from datetime import datetime
-from typing_extensions import Literal
+from typing_extensions import Literal, TypeAlias
 
 from pydantic import Field as FieldInfo
 
 from ..._models import BaseModel
 
-__all__ = ["MemberUpdateResponse"]
+__all__ = ["MemberUpdateResponse", "MemberUpdateResponseRole", "MemberUpdateResponse2", "MemberUpdateResponse2Role"]
 
 
-class MemberUpdateResponse(BaseModel):
+class MemberUpdateResponse2Role(BaseModel):
+    id: str
+
+    name: str
+
+
+class MemberUpdateResponse2(BaseModel):
     created_at: datetime = FieldInfo(alias="createdAt")
 
     id: str
 
-    role: Literal["org:admin", "org:member"]
-
     updated_at: datetime = FieldInfo(alias="updatedAt")
 
-    user_id: Optional[str] = FieldInfo(alias="userId", default=None)
+    user_id: None = FieldInfo(alias="userId", default=None)
 
     email_address: str = FieldInfo(alias="emailAddress")
 
@@ -30,4 +36,37 @@ class MemberUpdateResponse(BaseModel):
 
     last_name: Optional[str] = FieldInfo(alias="lastName", default=None)
 
-    status: Literal["active", "pending"]
+    role: Optional[MemberUpdateResponse2Role] = None
+
+    status: Literal["pending"]
+
+
+class MemberUpdateResponseRole(BaseModel):
+    id: str
+
+    name: str
+
+
+class MemberUpdateResponse(BaseModel):
+    created_at: datetime = FieldInfo(alias="createdAt")
+
+    id: str
+
+    updated_at: datetime = FieldInfo(alias="updatedAt")
+
+    user_id: str = FieldInfo(alias="userId")
+
+    email_address: str = FieldInfo(alias="emailAddress")
+
+    first_name: Optional[str] = FieldInfo(alias="firstName", default=None)
+
+    image_url: Optional[str] = FieldInfo(alias="imageUrl", default=None)
+
+    last_name: Optional[str] = FieldInfo(alias="lastName", default=None)
+
+    role: MemberUpdateResponseRole
+
+    status: Literal["active"]
+
+
+MemberUpdateResponse: TypeAlias = Union[MemberUpdateResponse, MemberUpdateResponse2]

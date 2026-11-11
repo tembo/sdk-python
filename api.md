@@ -563,7 +563,7 @@ Invite or add a user to an organization with a role.
 member = client.organizations.members.create(
     organization_id="organizationId",
     email_address="user@example.com",
-    role="org:member",
+    role_id="x",
 )
 ```
 
@@ -595,7 +595,6 @@ Update an organization member role.
 member = client.organizations.members.update(
     organization_id="organizationId",
     member_id="memberId",
-    role="org:admin",
 )
 ```
 
@@ -1916,7 +1915,7 @@ pin = client.pins.list(
 
 ### Create a pin
 
-Pin a session, pull request, or project you have permission to access.
+Pin a session, pull request, or project you have permission to access, or one of your folders.
 
 | Direction | Type |
 | --- | --- |
@@ -1932,7 +1931,7 @@ pin = client.pins.create(
 
 ### Update a pin
 
-Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
+Reorder a pinned session, pull request, project, or folder before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
 
 | Direction | Type |
 | --- | --- |
@@ -1949,7 +1948,7 @@ pin = client.pins.update(
 
 ### Delete a pin
 
-Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.
+Unpin a session, pull request, project, or folder for the authenticated user without deleting or archiving the resource.
 
 | Direction | Type |
 | --- | --- |
@@ -2279,7 +2278,7 @@ run = client.agents.runs.list(
 
 #### Create an agent run
 
-Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
+Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution, and includes the run ID to poll for its status and session.
 
 | Direction | Type |
 | --- | --- |
